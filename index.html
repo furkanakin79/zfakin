@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ders Yıldızı & Matematik Sihirbazı 🌟</title>
+  <meta name="description" content="Kuromi Çalışma Planı ve 4 İşlem Matematik Oyunu Portali.">
+  <meta name="theme-color" content="#7b1fa2">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="images/kr2.png">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Arka Plan Kayan Yıldızlar -->
+  <div class="stars-bg" id="starsBg"></div>
+
+  <!-- Ana Portal Düzeni: Sol Menü + Sağ İçerik Alanı -->
+  <div class="portal-layout">
+    
+    <!-- SOL KENAR ÇUBUĞU (SIDEBAR) -->
+    <aside class="portal-sidebar" id="portalSidebar">
+      <div class="sidebar-brand">
+        <img src="images/kr2.png" class="brand-logo" alt="Kuromi Logo">
+        <div class="brand-text">
+          <h2>Ders Yıldızı</h2>
+          <span>Yaz Tatili Portali 💜</span>
+        </div>
+      </div>
+
+      <!-- Navigasyon Sekmeleri -->
+      <nav class="sidebar-nav">
+        <button class="nav-item-btn active" id="tabBtnPlanner" data-view="planner">
+          <span class="nav-icon">📅</span>
+          <div class="nav-text">
+            <span class="nav-title">Çalışma Planı</span>
+            <span class="nav-sub">Kuromi Ders Takibi</span>
+          </div>
+        </button>
+
+        <button class="nav-item-btn" id="tabBtnMath" data-view="math">
+          <span class="nav-icon">🦄</span>
+          <div class="nav-text">
+            <span class="nav-title">Dört İşlem</span>
+            <span class="nav-sub">Matematik Oyunu</span>
+          </div>
+        </button>
+
+        <button class="nav-item-btn" id="tabBtnClock" data-view="clock">
+          <span class="nav-icon">⏰</span>
+          <div class="nav-text">
+            <span class="nav-title">Saat Çalışması</span>
+            <span class="nav-sub">Analog & Dijital Saat Kiti</span>
+          </div>
+        </button>
+      </nav>
+
+      <!-- Sol Menü Alt Rozet / Karakter Kutusu -->
+      <div class="sidebar-footer-card">
+        <img src="images/kr1.png" class="sidebar-kuromi-cheer" alt="Kuromi">
+        <p>"Bugün harika işler başaracaksın!" ✨</p>
+      </div>
+    </aside>
+
+    <!-- SAĞ ANA İÇERİK ALANI -->
+    <div class="portal-main">
+      
+      <!-- Mobil / Tablet Üst Menü Çubuğu -->
+      <div class="mobile-top-bar">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Menüyü Aç/Kapat">
+          <i data-lucide="menu"></i>
+        </button>
+        <span class="mobile-portal-title" id="mobilePortalTitle">📅 Çalışma Planı</span>
+        <img src="images/kr2.png" class="mobile-logo" alt="Kuromi">
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- GÖRÜNÜM 1: ÇALIŞMA PLANI (KUROMI SUMMER STUDY PLANNER)   -->
+      <!-- ======================================================== -->
+      <section class="portal-view active" id="viewPlanner">
+        
+        <!-- Planner Üst Başlık & Skor Tablosu (8 Kart Tek Satır) -->
+        <header class="planner-header">
+          <div class="top-stats-container">
+            <!-- 1. Gün Seri -->
+            <div class="stat-card streak" title="Günün görevlerinin hepsini tamamladığın ardışık gün sayısı!">
+              <i data-lucide="flame" class="stat-icon"></i>
+              <div class="stat-info">
+                <span class="stat-value" id="statStreak">0</span>
+                <span class="stat-label">Gün Seri 🔥</span>
+              </div>
+            </div>
+            
+            <!-- 2. Seviye -->
+            <div class="stat-card level" title="Çalıştıkça seviye atlarsın!">
+              <i data-lucide="star" class="stat-icon"></i>
+              <div class="stat-info">
+                <span class="stat-value" id="statLevel">1</span>
+                <span class="stat-label">Seviye ⭐</span>
+              </div>
+            </div>
+
+            <!-- 3. Seviye İlerlemesi XP Bar -->
+            <div class="stat-card xp-bar-card">
+              <span class="xp-label">Seviye İlerlemesi</span>
+              <div class="xp-bar-outer">
+                <div class="xp-bar-inner" id="xpBarInner" style="width: 0%;"></div>
+              </div>
+              <span class="xp-text" id="xpText">0 / 100 XP</span>
+            </div>
+
+            <!-- 4. Ceza Puanı -->
+            <div class="stat-card penalties" title="Günü tamamlamadan bitirirsen ceza puanın artar!">
+              <i data-lucide="alert-triangle" class="stat-icon"></i>
+              <div class="stat-info">
+                <span class="stat-value text-danger" id="statPenalties">0</span>
+                <span class="stat-label">Ceza Puanı ⚠️</span>
+              </div>
+            </div>
+
+            <!-- 5. Okunan Kitap (Orange) -->
+            <div class="stat-card mini-stat-card bg-orange">
+              <i data-lucide="book-open" class="stat-icon text-white"></i>
+              <div class="stat-info text-white">
+                <span class="stat-value text-white" id="statBooksRead">0</span>
+                <span class="stat-label text-white-muted">Okunan Kitap</span>
+              </div>
+            </div>
+
+            <!-- 6. Çözülen Soru (Purple) -->
+            <div class="stat-card mini-stat-card bg-purple-solid">
+              <i data-lucide="calculator" class="stat-icon text-white"></i>
+              <div class="stat-info text-white">
+                <span class="stat-value text-white" id="statTotalQuestions">0</span>
+                <span class="stat-label text-white-muted">Çözülen Soru</span>
+              </div>
+            </div>
+
+            <!-- 7. Gitar Tekrarı (Magenta) -->
+            <div class="stat-card mini-stat-card bg-magenta-solid">
+              <i data-lucide="guitar" class="stat-icon text-white"></i>
+              <div class="stat-info text-white">
+                <span class="stat-value text-white" id="statGuitarRepeats">0</span>
+                <span class="stat-label text-white-muted">Gitar Tekrarı</span>
+              </div>
+            </div>
+
+            <!-- 8. Toplam Çalışma (Cyan) -->
+            <div class="stat-card mini-stat-card bg-cyan-solid">
+              <i data-lucide="check-circle2" class="stat-icon text-white"></i>
+              <div class="stat-info text-white">
+                <span class="stat-value text-white" id="statCompletedHours">0 Saat</span>
+                <span class="stat-label text-white-muted">Toplam Çalışma</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- İkinci Satır: Rapor Sekmeleri (Solda) & Yedekleme Butonları (Sağda) -->
+          <div class="planner-sub-bar">
+            <div class="report-tabs-wrapper">
+              <div class="report-tabs">
+                <button class="report-tab-btn" id="btnReportDay" onclick="setReportPeriod('day')">Günlük Rapor</button>
+                <button class="report-tab-btn active" id="btnReportWeek" onclick="setReportPeriod('week')">Haftalık Rapor</button>
+                <button class="report-tab-btn" id="btnReportMonth" onclick="setReportPeriod('month')">Aylık Rapor</button>
+                <button class="report-tab-btn" id="btnReportAll" onclick="setReportPeriod('all')">Tüm Zamanlar</button>
+                <button class="report-tab-btn" id="btnReportCustom" onclick="setReportPeriod('custom')">Özel Tarih 📅</button>
+              </div>
+
+              <div class="date-range-picker-wrap" id="customDateRangeWrap" style="display: none; align-items: center; gap: 0.5rem;">
+                <label for="reportStartDate" style="font-size: 0.75rem; font-weight: 700; color: var(--text-color);">Başlangıç:</label>
+                <input type="date" id="reportStartDate" class="styled-input" style="padding: 0.25rem 0.5rem; width: auto; border: 1px solid rgba(156, 39, 176, 0.15); border-radius: 8px; background: white; font-size: 0.75rem; font-weight: 700; font-family: var(--font-secondary);" onchange="onCustomDateChange()">
+                
+                <label for="reportEndDate" style="font-size: 0.75rem; font-weight: 700; color: var(--text-color);">Bitiş:</label>
+                <input type="date" id="reportEndDate" class="styled-input" style="padding: 0.25rem 0.5rem; width: auto; border: 1px solid rgba(156, 39, 176, 0.15); border-radius: 8px; background: white; font-size: 0.75rem; font-weight: 700; font-family: var(--font-secondary);" onchange="onCustomDateChange()">
+              </div>
+            </div>
+
+            <div class="backup-actions-top">
+              <button class="btn btn-secondary btn-backup-top" id="btnExportBackup" title="Verilerini Bilgisayarına Kaydet">
+                <i data-lucide="download" style="width: 14px; height: 14px;"></i> Yedekle
+              </button>
+              <button class="btn btn-secondary btn-backup-top" id="btnImportBackup" title="Yedek Dosyasından İlerlemeyi Geri Yükle">
+                <i data-lucide="upload" style="width: 14px; height: 14px;"></i> Yükle
+              </button>
+              <button class="btn btn-secondary btn-backup-top btn-reset-top" id="btnResetData" title="Tüm İlerlemeyi Sıfırla (Parola Korumalı)">
+                <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i> Sıfırla
+              </button>
+              <input type="file" id="fileBackupInput" accept=".json" style="display: none;">
+            </div>
+          </div>
+        </header>
+
+        <!-- Planner 3 Eşit Sütunlu Ana İçerik -->
+        <div class="planner-main-content">
+          
+          <!-- SÜTUN 1 (Sol): Takvim & Kitaplığım -->
+          <div class="planner-col planner-col-left">
+            <!-- Takvim Kartı -->
+            <div class="planner-cal-card card-glass">
+              <div class="section-header" style="margin-bottom: 0.75rem;">
+                <h2 id="currentDayTitle" style="font-size: 1.15rem; font-weight: 800; color: var(--primary-purple); line-height: 1.2;">27 Ağustos Perşembe Görevleri</h2>
+              </div>
+
+              <div class="weekly-calendar-container" style="background: rgba(255, 255, 255, 0.6); padding: 0.8rem; border-radius: 18px; border: 1px solid rgba(156, 39, 176, 0.08);">
+                <div class="calendar-header-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+                  <button class="btn btn-secondary" id="btnPrevMonth" style="padding: 0.2rem; border-radius: 10px; height: 28px; width: 28px; display: flex; align-items: center; justify-content: center; margin: 0;" title="Önceki Ay">
+                    <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+                  </button>
+                  <span id="calendarMonthYear" style="font-family: var(--font-primary); font-weight: 800; font-size: 0.9rem; color: var(--primary-purple);">Ağustos 2026</span>
+                  <button class="btn btn-secondary" id="btnNextMonth" style="padding: 0.2rem; border-radius: 10px; height: 28px; width: 28px; display: flex; align-items: center; justify-content: center; margin: 0;" title="Sonraki Ay">
+                    <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+                  </button>
+                </div>
+
+                <div class="calendar-weekdays-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.68rem; font-weight: 800; color: var(--text-muted); margin-bottom: 0.3rem; border-bottom: 1px solid rgba(123, 31, 162, 0.08); padding-bottom: 0.2rem;">
+                  <span>Pzt</span><span>Sal</span><span>Çar</span><span>Per</span><span>Cum</span><span>Cmt</span><span>Paz</span>
+                </div>
+
+                <div class="weekly-calendar-grid" id="weeklyCalendarGrid"></div>
+                
+                <div class="adaptive-info" id="adaptiveMessage" style="margin-top: 0.6rem; font-size: 0.72rem; line-height: 1.35;">
+                  <i data-lucide="sparkles" class="text-gold" style="width: 14px; height: 14px; flex-shrink: 0;"></i>
+                  <span>Programın ders dağılımları performansına göre otomatik dengelenecektir.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Kitaplığım Kartı (Takvimin Altına Alındı) -->
+            <div class="bookshelf-card card-glass" style="margin-top: 1rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h3 style="margin: 0;">Kitaplığım 📚</h3>
+                <button class="btn btn-secondary" id="btnAddBookDirect" style="padding: 0.3rem 0.6rem; font-size: 0.72rem; border-radius: 8px; display: flex; align-items: center; gap: 0.2rem; margin: 0;">
+                  <i data-lucide="plus" style="width: 12px; height: 12px;"></i> Kitap Ekle
+                </button>
+              </div>
+              <div class="bookshelf-list" id="bookshelfList">
+                <p class="empty-books-text">Henüz okunan kitap eklenmemiş. Okuma görevlerini tamamlayıp ilk kitabını ekle! 🌟</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SÜTUN 2 (Orta): Görev Listesi Kartı -->
+          <div class="planner-col planner-col-middle">
+            <div class="planner-tasks-card card-glass">
+              <div class="progress-today-wrap" style="margin-bottom: 0.75rem;">
+                <div class="progress-today-text" style="font-size: 0.78rem; font-weight: 700; margin-bottom: 0.3rem;">Bugünkü Görev İlerlemesi: <strong id="todayProgressPercent">0%</strong></div>
+                <div class="progress-today-bar" style="height: 8px; background: #e0d9e8; border-radius: 4px; overflow: hidden;">
+                  <div class="progress-today-inner" id="todayProgressInner" style="width: 0%; height: 100%; background: linear-gradient(90deg, #a855f7, #ec4899); border-radius: 4px; transition: width 0.3s ease;"></div>
+                </div>
+              </div>
+
+              <div class="task-list" id="taskListContainer" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+
+              <div class="task-actions" style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                <button class="btn btn-secondary btn-icon" id="btnAddExtraTask" style="flex: 1; padding: 0.45rem 0.6rem; font-size: 0.75rem; border-radius: 12px; margin: 0; justify-content: center;">
+                  <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Ekstra Çalışma Ekle
+                </button>
+                <button class="btn btn-alarm-test" id="btnTestAlarm" style="flex: 1; padding: 0.45rem 0.6rem; font-size: 0.75rem; border-radius: 12px; margin: 0; justify-content: center;" title="Saat 20:00 alarmını denemek için tıkla">
+                  <i data-lucide="bell" style="width: 14px; height: 14px;"></i> Alarmı Test Et
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SÜTUN 3 (Sağ): Grafikler -->
+          <div class="planner-col planner-col-right">
+            <!-- Soru Sayıları -->
+            <div class="chart-card card-glass">
+              <h3>Soru Sayıları</h3>
+              <div class="chart-container">
+                <canvas id="mathQuestionsChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Ders Dağılımı -->
+            <div class="chart-card card-glass" style="margin-top: 1rem;">
+              <h3>Ders Dağılımı</h3>
+              <div class="chart-container">
+                <canvas id="subjectDistributionChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Gitar Çalışmalarım -->
+            <div class="chart-card card-glass" style="margin-top: 1rem;">
+              <h3>Gitar Çalışmalarım 🎸</h3>
+              <div class="chart-container">
+                <canvas id="guitarRepeatsChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rozetler: 3 Sütun Boyunca Tek Satırda Sayfayı Kaplar -->
+          <div class="badges-card card-glass full-width-badges">
+            <h3>Kazandığım Yıldız Rozetleri 🏆</h3>
+            <div class="badges-grid" id="badgesGrid"></div>
+          </div>
+
+        </div>
+
+        <footer class="app-footer">
+          <p>&copy; 2026 - Yaz Tatili Çalışma Programı. Kızım için sevgiyle hazırlandı. ❤️</p>
+        </footer>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- GÖRÜNÜM 2: DÖRT İŞLEM (MATEMATİK OYUNU)                 -->
+      <!-- ======================================================== -->
+      <section class="portal-view" id="viewMath">
+        
+        <!-- Üst Başlık & Skor Tablosu -->
+        <header class="app-header math-app-header">
+          <div class="header-left">
+            <div class="logo-badge">
+              <span class="logo-icon">🦄</span>
+              <div class="logo-text">
+                <h1>Dört İşlem</h1>
+                <span class="sub-title">Matematik Yıldız Avcısı ⭐</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="header-center">
+            <div class="score-card star-card" title="Kazanılan Yıldızlar">
+              <span class="icon">⭐</span>
+              <span class="score-val" id="starCount">0</span>
+            </div>
+            <div class="score-card streak-card" title="Üst Üste Doğru Serisi">
+              <span class="icon">🔥</span>
+              <span class="score-val" id="streakCount">0</span>
+              <span class="streak-label">Seri</span>
+            </div>
+          </div>
+
+          <div class="header-right">
+            <button id="soundToggleBtn" class="icon-btn" title="Sesi Aç/Kapat" aria-label="Ses">
+              <span id="soundIcon">🔊</span>
+            </button>
+            <button id="openStatsBtn" class="icon-btn stats-btn" title="İstatistikler & Takvim">
+              <span>📅 İstatistikler</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- Ana Konteyner -->
+        <div class="main-container">
+          
+          <!-- Ayarlar Paneli -->
+          <section class="settings-panel card">
+            <div class="settings-header">
+              <h2>🪄 Oyun Ayarları</h2>
+              <span class="hint">İşlemini, düzenini ve basamaklarını seç!</span>
+            </div>
+
+            <div class="settings-grid">
+              <!-- 1. İşlem Seçimi -->
+              <div class="setting-group operation-group">
+                <label class="setting-title">1. İşlem Türü</label>
+                <div class="op-selector">
+                  <label class="op-radio" title="Toplama">
+                    <input type="radio" name="operation" value="add" checked>
+                    <span class="op-card op-add">
+                      <span class="op-sym">➕</span>
+                      <span class="op-name">Toplama</span>
+                    </span>
+                  </label>
+                  <label class="op-radio" title="Çıkarma">
+                    <input type="radio" name="operation" value="sub">
+                    <span class="op-card op-sub">
+                      <span class="op-sym">➖</span>
+                      <span class="op-name">Çıkarma</span>
+                    </span>
+                  </label>
+                  <label class="op-radio" title="Çarpma">
+                    <input type="radio" name="operation" value="mul">
+                    <span class="op-card op-mul">
+                      <span class="op-sym">✖️</span>
+                      <span class="op-name">Çarpma</span>
+                    </span>
+                  </label>
+                  <label class="op-radio" title="Bölme">
+                    <input type="radio" name="operation" value="div">
+                    <span class="op-card op-div">
+                      <span class="op-sym">➗</span>
+                      <span class="op-name">Bölme</span>
+                    </span>
+                  </label>
+                  <label class="op-radio" title="Karışık">
+                    <input type="radio" name="operation" value="mixed">
+                    <span class="op-card op-mixed">
+                      <span class="op-sym">🎲</span>
+                      <span class="op-name">Karışık</span>
+                    </span>
+                  </label>
+                </div>
+
+                <!-- Görünüm Seçeneği (Klasik vs Düz) -->
+                <div class="view-mode-selector">
+                  <label class="setting-title" style="margin-top: 12px; margin-bottom: 6px;">2. Soru Düzeni</label>
+                  <div class="layout-toggle-wrap">
+                    <label class="layout-radio">
+                      <input type="radio" name="layoutMode" value="classic" checked>
+                      <span class="layout-card">
+                        <span class="layout-icon">📑</span>
+                        <span class="layout-label">Klasik (Alt Alta)</span>
+                      </span>
+                    </label>
+                    <label class="layout-radio">
+                      <input type="radio" name="layoutMode" value="inline">
+                      <span class="layout-card">
+                        <span class="layout-icon">➡️</span>
+                        <span class="layout-label">Düz (Yan Yana)</span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Basamak Sayıları & Süre -->
+              <div class="setting-group digits-timer-group">
+                <label class="setting-title">3. Basamak ve Süre Ayarları</label>
+                <div class="digits-wrapper">
+                  <div class="digit-box">
+                    <label for="digit1Select">1. Sayı (Bölünen)</label>
+                    <select id="digit1Select" class="styled-select">
+                      <option value="1">1 Basamak (1-9)</option>
+                      <option value="2">2 Basamak (10-99)</option>
+                      <option value="3" selected>3 Basamak (100-999)</option>
+                      <option value="4">4 Basamak (1.000-9.999)</option>
+                      <option value="5">5 Basamak (10.000-99.999)</option>
+                    </select>
+                  </div>
+
+                  <div class="digit-box">
+                    <label for="digit2Select">2. Sayı (Bölen)</label>
+                    <select id="digit2Select" class="styled-select">
+                      <option value="1">1 Basamak (1-9)</option>
+                      <option value="2" selected>2 Basamak (10-99)</option>
+                      <option value="3">3 Basamak (100-999)</option>
+                      <option value="4">4 Basamak (1.000-9.999)</option>
+                      <option value="5">5 Basamak (10.000-99.999)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Süre Ayarı ve Başlat Butonu Satırı -->
+                <div class="timer-and-action-row">
+                  <div class="timer-config-box">
+                    <label for="timeLimitInput">Soru Başına Süre (Saniye)</label>
+                    <div class="timer-input-wrap">
+                      <input type="number" id="timeLimitInput" class="styled-number-input" min="3" max="120" value="10">
+                      <span class="unit">sn</span>
+                    </div>
+                    <label class="checkbox-label">
+                      <input type="checkbox" id="unlimitedTimeCheck">
+                      <span>Süresiz Oyna (Serbest Pratik)</span>
+                    </label>
+                  </div>
+
+                  <!-- Başlat / Bitir Butonu (Sağ Tarafa Taşındı) -->
+                  <div class="settings-actions-inline">
+                    <button id="toggleGamePlayBtn" class="btn btn-start-game pulse-btn">
+                      <span id="startBtnIcon">🚀</span>
+                      <span id="startBtnText">Oyunu Başlat</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Oyun Alanı -->
+          <section class="game-board card" id="gameBoardSection">
+            
+            <!-- Karşılama Ekranı -->
+            <div class="idle-splash" id="idleSplash">
+              <div class="splash-icon">🦄✨</div>
+              <h3>Hazır mısın Prenses?</h3>
+              <p>Yukarıdaki ayarlardan dilediğin işlemi ve basamakları seçip <b>"Oyunu Başlat 🚀"</b> butonuna tıkla!</p>
+            </div>
+
+            <!-- Aktif Oyun Bileşenleri -->
+            <div class="active-game-wrap" id="activeGameWrap" style="display: none;">
+              <!-- Üst Ortalanmış Süre Sayacı -->
+              <div class="timer-section" id="timerSection">
+                <div class="timer-bar-bg">
+                  <div class="timer-bar-fill" id="timerBarFill"></div>
+                </div>
+                <div class="timer-text-wrap">
+                  <span class="timer-icon">⏳</span>
+                  <span class="timer-val" id="timerSeconds">10</span>
+                  <span class="timer-unit">saniye kaldı</span>
+                </div>
+              </div>
+
+              <!-- Sol Sütun: İşlem / Soru Kartı -->
+              <div class="game-operation-pane">
+                <div class="question-stage-container" id="questionStageContainer"></div>
+              </div>
+
+              <!-- Sağ Sütun: Numpad (Rakamlar) & Cevapla Butonu -->
+              <div class="game-keypad-pane">
+                <div class="numpad-container">
+                  <div class="numpad-grid">
+                    <button type="button" class="numpad-btn" data-key="1">1</button>
+                    <button type="button" class="numpad-btn" data-key="2">2</button>
+                    <button type="button" class="numpad-btn" data-key="3">3</button>
+                    
+                    <button type="button" class="numpad-btn" data-key="4">4</button>
+                    <button type="button" class="numpad-btn" data-key="5">5</button>
+                    <button type="button" class="numpad-btn" data-key="6">6</button>
+                    
+                    <button type="button" class="numpad-btn" data-key="7">7</button>
+                    <button type="button" class="numpad-btn" data-key="8">8</button>
+                    <button type="button" class="numpad-btn" data-key="9">9</button>
+                    
+                    <button type="button" class="numpad-btn action-clear" id="btnKeyClear" title="Temizle">🧹 Sil</button>
+                    <button type="button" class="numpad-btn" data-key="0">0</button>
+                    <button type="button" class="numpad-btn action-backspace" id="btnKeyBackspace" title="Geri Al">⌫</button>
+                  </div>
+                  
+                  <button type="button" class="submit-btn" id="submitBtn">
+                    <span>Cevapla 🚀 (Enter)</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Alt Ortalanmış Geri Bildirim Banner'ı -->
+              <div class="feedback-banner" id="feedbackBanner">
+                <div class="feedback-content" id="feedbackContent"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Küçük Günlük Özet Şeridi -->
+          <section class="mini-summary-bar">
+            <div class="mini-stat">
+              <span class="label">Bugün Çözülen:</span>
+              <span class="val" id="todayTotalVal">0</span>
+            </div>
+            <div class="mini-stat success">
+              <span class="label">Doğru:</span>
+              <span class="val" id="todayCorrectVal">0</span>
+            </div>
+            <div class="mini-stat error">
+              <span class="label">Yanlış:</span>
+              <span class="val" id="todayWrongVal">0</span>
+            </div>
+            <div class="mini-stat percent">
+              <span class="label">Başarı:</span>
+              <span class="val" id="todaySuccessRate">0%</span>
+            </div>
+          </section>
+        </div>
+
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- GÖRÜNÜM 3: SAAT ÇALIŞMASI (SAAT ÖĞRENME KİTİ)            -->
+      <!-- ======================================================== -->
+      <section class="portal-view" id="viewClock">
+        <header class="app-header math-app-header">
+          <div class="header-left">
+            <div class="logo-badge">
+              <span class="logo-icon">⏰</span>
+              <div class="logo-text">
+                <h1>Saat Öğrenme Kiti</h1>
+                <span class="sub-title">Zamanı ve Saatleri Keşfedelim! ⭐</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="clock-main-wrapper">
+          <div class="clock-portal-grid">
+            
+            <!-- Analog Saat Alanı (3 Sütun) -->
+            <div class="clock-canvas-card card-glass">
+              <canvas id="clockCanvas" width="400" height="400"></canvas>
+            </div>
+            
+            <!-- Kendini Test Et Paneli (1 Sütun) -->
+            <div class="clock-panel-card card-glass quiz-panel">
+              <h3 style="color: #ea580c;">❓ Kendini Test Et</h3>
+              <button class="btn-full" style="background: linear-gradient(135deg, #f97316, #ea580c); font-size: 15px; margin-top: 0;" onclick="generateQuiz()">🎲 Soru Sor</button>
+              
+              <div class="quiz-display-box">
+                <div id="quizDisplay">--:--</div>
+              </div>
+              
+              <button class="btn-full" style="background: linear-gradient(135deg, #10b981, #059669); font-size: 15px;" onclick="checkQuiz()">✅ Kontrol Et</button>
+              
+              <div id="quizFeedback" class="quiz-feedback-box">
+                Soru Sor butonuna basarak başla!
+              </div>
+            </div>
+
+            <!-- 1. Görünüm Ayarları -->
+            <div class="clock-panel-card card-glass">
+              <h3>👁️ 1. Görünüm Ayarları</h3>
+              <label class="clock-checkbox-label">
+                <input type="checkbox" id="chkAllHours" onchange="drawClock()"> 
+                <span>Tüm Saatleri Göster (1, 2, 4...)</span>
+              </label>
+              <label class="clock-checkbox-label">
+                <input type="checkbox" id="chkMinutes" onchange="drawClock()"> 
+                <span>Dakikaları Göster (5, 10...)</span>
+              </label>
+              <label class="clock-checkbox-label">
+                <input type="checkbox" id="chk24Hours" onchange="drawClock()"> 
+                <span>24'lük Saati Göster (13, 14...)</span>
+              </label>
+              <button class="btn-full" style="background: linear-gradient(135deg, #ef4444, #dc2626); font-size: 14px; margin-top: auto;" onclick="resetToZero()">🔄 Sıfırla</button>
+            </div>
+
+            <!-- 2. Analog Saati Değiştir -->
+            <div class="clock-panel-card card-glass">
+              <h3>🎮 2. Analog Saati Değiştir</h3>
+              <div class="clock-btn-row">
+                <button class="btn-clock btn-backward" onclick="addHours(-1)">-1 Saat</button>
+                <button class="btn-clock btn-backward" onclick="addMinutes(-5)">-5 Dk</button>
+                <button class="btn-clock btn-backward" onclick="addMinutes(-1)">-1 Dk</button>
+              </div>
+              <div class="clock-btn-row" style="margin-top: 6px;">
+                <button class="btn-clock btn-forward" onclick="addMinutes(1)">+1 Dk</button>
+                <button class="btn-clock btn-forward" onclick="addMinutes(5)">+5 Dk</button>
+                <button class="btn-clock btn-forward" onclick="addHours(1)">+1 Saat</button>
+              </div>
+              
+              <button class="btn-full" id="btnToggleDigital" style="background: linear-gradient(135deg, #10b981, #059669); margin-top: 10px;" onclick="toggleDigital()">Dijital Saati Göster</button>
+              
+              <div class="clock-display-box">
+                <div id="digitalDisplay">00:00</div>
+              </div>
+            </div>
+
+            <!-- 3. Hedef Saati Gir -->
+            <div class="clock-panel-card card-glass">
+              <h3>🎯 3. Hedef Saati Gir</h3>
+              <input type="time" id="questionInput" value="00:00" class="clock-time-input">
+              <button class="btn-full" style="background: linear-gradient(135deg, #3b82f6, #2563eb);" onclick="applyQuestionTime()">Analog Saatte Göster</button>
+            </div>
+
+            <!-- 4. Saatin Okunuşu -->
+            <div class="clock-panel-card card-glass">
+              <h3>📖 4. Saatin Okunuşu</h3>
+              <label class="clock-checkbox-label" style="background: #f3e8ff; border-color: #d8b4fe;">
+                <input type="checkbox" id="chkPM" onchange="updateSpelledTimeIfVisible()"> 
+                <span>Öğleden Sonra Olarak Oku (13, 14...)</span>
+              </label>
+              <button class="btn-full" id="btnToggleSpelled" style="background: linear-gradient(135deg, #a855f7, #9333ea);" onclick="toggleSpelledTime()">Okunuşu Göster</button>
+              
+              <div class="clock-display-box spelled-box">
+                <div id="spelledTimeDisplay"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODALLAR & DİYALOG PENCERELERİ              -->
+  <!-- ========================================== -->
+
+  <!-- PLANNER MODALLARI -->
+  <!-- Modal: Math Logger -->
+  <div class="modal-overlay" id="mathModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i data-lucide="calculator" class="text-pink"></i> Matematik Soru Girişi</h3>
+        <button class="modal-close" onclick="closeModal('mathModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Harika! Matematik çalışmanı tamamladın. Kaç soru çözdün?</p>
+        <div class="input-wrap">
+          <input type="number" id="mathInput" min="0" placeholder="Örn: 20" class="styled-input">
+          <span class="input-suffix">Soru</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('mathModal')">İptal</button>
+        <button class="btn btn-primary" id="btnSaveMath">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Book Logger -->
+  <div class="modal-overlay" id="bookModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i data-lucide="book-open" class="text-purple"></i> Kitap Girişi</h3>
+        <button class="modal-close" onclick="closeModal('bookModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Müthiş! Okuma saatini tamamladın. Eğer yeni bir kitap bitirdiysen ismini yazabilirsin:</p>
+        <div class="input-wrap">
+          <input type="text" id="bookInput" placeholder="Kitap Adı (Boş bırakabilirsin)" class="styled-input">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('bookModal')">Sadece Tamamla</button>
+        <button class="btn btn-primary" id="btnSaveBook">Kitap Ekle & Tamamla</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Guitar Logger -->
+  <div class="modal-overlay" id="guitarModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i data-lucide="guitar" class="text-purple"></i> Gitar Pratiği Girişi</h3>
+        <button class="modal-close" onclick="closeModal('guitarModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Müthiş! Gitar pratiğini tamamladın. 🎸</p>
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="guitarGoalInput" style="font-weight: 700; font-size: 0.85rem;">Hedef Tekrar Sayısı:</label>
+          <input type="number" id="guitarGoalInput" min="1" class="styled-input" style="border: 1px solid rgba(156, 39, 176, 0.15); border-radius: 8px; padding: 0.5rem; background: #faf9fc; width: 100%;">
+        </div>
+        <div class="form-group">
+          <label for="guitarInput" style="font-weight: 700; font-size: 0.85rem;">Bugün Yapılan Tekrar:</label>
+          <div class="input-wrap">
+            <input type="number" id="guitarInput" min="0" placeholder="Örn: 5" class="styled-input">
+            <span class="input-suffix">Tekrar</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('guitarModal')">İptal</button>
+        <button class="btn btn-primary" id="btnSaveGuitar">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Swap Subject -->
+  <div class="modal-overlay" id="swapModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i data-lucide="shuffle" class="text-blue"></i> Dersi Değiştir</h3>
+        <button class="modal-close" onclick="closeModal('swapModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Bu saatte farklı bir ders mi çalışmak istiyorsun? Yerine çalışacağın dersi seç:</p>
+        <div class="subject-options-grid" id="swapOptionsGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add Extra Task -->
+  <div class="modal-overlay" id="extraTaskModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i data-lucide="plus-circle" class="text-gold"></i> Ekstra Çalışma Ekle</h3>
+        <button class="modal-close" onclick="closeModal('extraTaskModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Bugün için ekstra yapmak istediğin dersi veya çalışmayı seç:</p>
+        <div class="form-group" style="margin-top: 0.75rem;">
+          <label for="extraTaskSubject" style="font-weight: 700; font-size: 0.85rem; color: var(--text-color);">Ders / Aktivite Seç:</label>
+          <select id="extraTaskSubject" class="styled-select" style="width: 100%; border: 2px solid rgba(156, 39, 176, 0.2); border-radius: 12px; padding: 0.6rem 0.8rem; background: #faf9fc; font-weight: 700; color: var(--primary-purple); outline: none; margin-top: 0.25rem;">
+            <option value="Matematik" data-emoji="🧮" selected>🧮 Matematik Çalışması</option>
+            <option value="Türkçe" data-emoji="📚">📚 Türkçe Çalışması</option>
+            <option value="Fen Bilgisi" data-emoji="🧪">🧪 Fen Bilgisi Çalışması</option>
+            <option value="Hayat Bilgisi" data-emoji="🌍">🌍 Hayat Bilgisi / Sosyal</option>
+            <option value="İngilizce" data-emoji="🇬🇧">🇬🇧 İngilizce Çalışması</option>
+            <option value="Kitap Okuma" data-emoji="📖">📖 Kitap Okuma Saati</option>
+            <option value="Gitar" data-emoji="🎸">🎸 Gitar Pratiği</option>
+            <option value="Resim" data-emoji="🎨">🎨 Resim & Görsel Sanatlar</option>
+            <option value="Müzik" data-emoji="🎵">🎵 Müzik & Enstrüman</option>
+            <option value="Spor" data-emoji="🤸">🤸 Beden Eğitimi & Spor</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top: 0.75rem;">
+          <label for="extraTaskDuration" style="font-weight: 700; font-size: 0.85rem; color: var(--text-color);">Çalışma Süresi:</label>
+          <select id="extraTaskDuration" class="styled-select" style="width: 100%; border: 2px solid rgba(156, 39, 176, 0.2); border-radius: 12px; padding: 0.6rem 0.8rem; background: #faf9fc; font-weight: 700; color: var(--primary-purple); outline: none; margin-top: 0.25rem;">
+            <option value="15">15 Dakika</option>
+            <option value="20">20 Dakika</option>
+            <option value="30" selected>30 Dakika</option>
+            <option value="45">45 Dakika</option>
+            <option value="60">60 Dakika (1 Saat)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('extraTaskModal')">Vazgeç</button>
+        <button class="btn btn-primary" id="btnSaveExtraTask">Ekle</button>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal: Alarm Reminder -->
+  <div class="modal-overlay" id="alarmModal">
+    <div class="modal-box modal-alarm animate-wiggle">
+      <div class="modal-header">
+        <h3><i data-lucide="alarm-clock" class="text-danger animate-pulse"></i> Hatırlatma Saati! 🕗</h3>
+        <button class="modal-close" onclick="stopAlarm()">&times;</button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="alarm-bell-icon">🔔</div>
+        <p class="alarm-message">Saat 20:00 oldu! Bugün tamamlaman gereken bazı görevlerin kalmış gibi görünüyor. Hadi yıldızlarını kazanmak için tamamlayalım! 🌟</p>
+        <p class="remaining-tasks-info" id="remainingTasksText">Kalan Görevler: 3 adet</p>
+      </div>
+      <div class="modal-footer justify-center">
+        <button class="btn btn-primary btn-large" onclick="stopAlarm()">Tamam, Çalışmaya Başlıyorum!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 İŞLEM OYUNU MODALLARI -->
+  <!-- İstatistik Modalı -->
+  <div class="modal-overlay" id="statsModalOverlay">
+    <div class="modal-card stats-modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="icon">📊</span>
+          <h3>İstatistikler & Başarı Takvimi</h3>
+        </div>
+        <button class="modal-close-btn" id="closeStatsModalBtn">&times;</button>
+      </div>
+
+      <div class="modal-body stats-modal-body">
+        <!-- Üst 4'lü Özet Kartları -->
+        <div class="stats-cards-grid">
+          <div class="stat-box box-total">
+            <div class="box-icon">🎯</div>
+            <div class="box-data">
+              <span class="box-val" id="modalTotalSolved">0</span>
+              <span class="box-title">Toplam Çözülen</span>
+            </div>
+          </div>
+
+          <div class="stat-box box-correct">
+            <div class="box-icon">🌟</div>
+            <div class="box-data">
+              <span class="box-val" id="modalTotalCorrect">0</span>
+              <span class="box-title">Toplam Doğru</span>
+            </div>
+          </div>
+
+          <div class="stat-box box-wrong">
+            <div class="box-icon">💡</div>
+            <div class="box-data">
+              <span class="box-val" id="modalTotalWrong">0</span>
+              <span class="box-title">Toplam Yanlış</span>
+            </div>
+          </div>
+
+          <div class="stat-box box-rate">
+            <div class="box-icon">🏆</div>
+            <div class="box-data">
+              <span class="box-val" id="modalOverallRate">0%</span>
+              <span class="box-title">Genel Başarı</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 Sütunlu Ana İçerik: Sol Takvim, Sağ Karneler ve Özetler -->
+        <div class="stats-dashboard-grid">
+          
+          <!-- Sol Sütun: İnteraktif Takvim -->
+          <div class="calendar-section">
+            <div class="calendar-header-nav">
+              <div class="cal-nav-left">
+                <button class="cal-nav-btn" id="calPrevMonthBtn" title="Önceki Ay">◀</button>
+                <h4 id="calMonthYearTitle">Ağustos 2026</h4>
+                <button class="cal-nav-btn" id="calNextMonthBtn" title="Sonraki Ay">▶</button>
+              </div>
+              
+              <div class="cal-nav-right">
+                <select id="calYearSelect" class="styled-select cal-select"></select>
+                <select id="calMonthSelect" class="styled-select cal-select"></select>
+                <button id="calTodayBtn" class="btn-secondary-sm">Bugüne Git</button>
+              </div>
+            </div>
+
+            <div class="calendar-grid-weekdays">
+              <span>Pzt</span><span>Sal</span><span>Çar</span><span>Per</span><span>Cum</span><span>Cmt</span><span>Paz</span>
+            </div>
+
+            <div class="calendar-grid-days" id="calendarDaysGrid"></div>
+            
+            <div class="cal-legend">
+              <span class="legend-item"><span class="legend-dot dot-perfect"></span> Süper (%85+)</span>
+              <span class="legend-item"><span class="legend-dot dot-good"></span> İyi (%50-%84)</span>
+              <span class="legend-item"><span class="legend-dot dot-practice"></span> Pratik</span>
+              <span class="legend-item"><span class="legend-dot dot-today"></span> Bugün</span>
+            </div>
+          </div>
+
+          <!-- Sağ Sütun: Dönemsel Özetler ve Seçilen Günün Karnesi -->
+          <div class="stats-sidebar-pane">
+            <div class="period-stats-row">
+              <div class="period-box">
+                <h4>📅 Bugünün Özeti</h4>
+                <p id="todayDetailedSummary">Bugün henüz soru çözülmedi.</p>
+              </div>
+              <div class="period-box">
+                <h4>📈 Bu Haftanın Özeti</h4>
+                <p id="weekDetailedSummary">Bu hafta henüz çözülmüş soru yok.</p>
+              </div>
+            </div>
+
+            <div class="selected-day-details" id="selectedDayDetails">
+              <h4 id="selectedDayTitle">Seçilen Günün Karnesi</h4>
+              <div id="selectedDayStatsContent" class="selected-day-stats-content">
+                <p>Detayları görmek için takvimden bir güne tıklayabilirsiniz.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Alt Veri Yönetimi Çubuğu -->
+        <div class="data-management-section">
+          <div class="backup-actions">
+            <button id="exportDataBtn" class="btn-outline-sm">💾 Verileri İndir (Yedek)</button>
+            <label class="btn-outline-sm file-input-label">
+              📥 Yedekten Yükle
+              <input type="file" id="importDataInput" accept=".json" style="display:none;">
+            </label>
+          </div>
+          <button id="resetDataBtn" class="btn-danger-sm">
+            <span>🗑️ Tüm İstatistikleri Sıfırla</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tebrik Modalı -->
+  <div class="celebration-overlay" id="celebrationOverlay">
+    <div class="celebration-box animate-pop">
+      <div class="celeb-icon" id="celebIcon">🎉</div>
+      <h2 id="celebTitle">Harikasın Prenses!</h2>
+      <p id="celebMsg">10 soruluk harika bir seri yakaladın!</p>
+      <button class="btn btn-primary" id="closeCelebBtn">Devam Et ⭐</button>
+    </div>
+  </div>
+
+  <!-- Onay Modalı -->
+  <div class="confirm-modal-overlay" id="confirmModalOverlay">
+    <div class="confirm-modal-card">
+      <div class="confirm-icon">⚠️</div>
+      <h3>İstatistikleri Sıfırla?</h3>
+      <p>Tüm geçmiş soru, takvim ve yıldız kayıtların silinecek. Emin misin?</p>
+      <div class="confirm-buttons">
+        <button id="cancelResetBtn" class="btn btn-secondary">Vazgeç</button>
+        <button id="confirmResetBtn" class="btn btn-danger">Evet, Sıfırla</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Canvas for Confetti -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Scriptler -->
+  <script src="confetti.js"></script>
+  <script src="planner.js"></script>
+  <script src="math.js"></script>
+  <script src="clock.js"></script>
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>

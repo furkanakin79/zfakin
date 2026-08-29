@@ -1,0 +1,16 @@
+{
+  "name": "Sihirli Matematik Dünyası",
+  "short_name": "Matematik",
+  "description": "4. Sınıf 4 İşlem Matematik Oyunu",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#2e1065",
+  "theme_color": "#d946ef",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦄</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
