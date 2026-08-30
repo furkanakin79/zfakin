@@ -3071,114 +3071,131 @@ body {
     border: 1px solid #d8b4fe;
 }
 
-/* 3. SAYI DOĞRUSU MODELİ STILLERI */
+/* 3. SAYI DOĞRUSU MODELİ STILLERI (SVG YARIM DAİRELER & ZIPLAYAN EMOJİLER) */
 .numline-stage-wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 1.2rem;
     width: 100%;
 }
 
-.numline-jumps-history {
+.numline-scroll-container {
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px 0;
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
     justify-content: center;
 }
 
-.numline-jump-badge {
-    background: #fdf4ff;
-    border: 1.5px solid #d946ef;
-    padding: 4px 10px;
-    border-radius: 10px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #86198f;
+.numline-svg-canvas {
+    overflow: visible;
 }
 
-.numline-track-scroll {
-    width: 100%;
-    overflow-x: auto;
-    padding: 15px 0;
+.svg-baseline {
+    stroke: #c084fc;
+    stroke-width: 4px;
+    stroke-linecap: round;
 }
 
-.numline-track {
-    position: relative;
-    min-width: 600px;
-    padding: 20px 10px;
+.svg-tick {
+    stroke: #c084fc;
+    stroke-width: 2px;
+    stroke-linecap: round;
 }
 
-.numline-line {
-    position: absolute;
-    top: 25px;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: #a855f7;
-    border-radius: 2px;
+.svg-tick.tick-major {
+    stroke: #a855f7;
+    stroke-width: 3px;
 }
 
-.numline-points-grid {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    z-index: 2;
+.svg-tick.tick-step {
+    stroke: #ec4899;
+    stroke-width: 4px;
 }
 
-.numline-point {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.svg-tick.tick-final {
+    stroke: #10b981;
+    stroke-width: 5px;
 }
 
-.point-tick {
-    width: 3px;
-    height: 14px;
-    background: #a855f7;
-    margin-bottom: 6px;
-}
-
-.point-num {
+.svg-num-label {
     font-family: 'Consolas', monospace;
-    font-size: 0.85rem;
+    font-size: 14px;
     font-weight: 700;
-    color: #6b21a8;
+    fill: #7e22ce;
 }
 
-.numline-point.step-point .point-tick {
-    height: 20px;
-    background: #ec4899;
-    width: 4px;
-}
-
-.numline-point.step-point .point-num {
-    color: #db2777;
+.svg-num-label.label-step {
     font-weight: 900;
+    font-size: 16px;
+    fill: #db2777;
 }
 
-.numline-point.final-point .point-tick {
-    height: 26px;
-    background: #10b981;
-    width: 5px;
-}
-
-.numline-point.final-point .point-num {
-    color: #059669;
-    font-size: 1.1rem;
+.svg-num-label.label-final {
     font-weight: 900;
-    background: #d1fae5;
-    padding: 2px 6px;
-    border-radius: 6px;
+    font-size: 19px;
+    fill: #059669;
+}
+
+/* Animasyonlu Zıplama Yayları (Yarım Daireler) */
+.animated-jump-arc {
+    fill: none;
+    stroke: url(#arcGrad);
+    stroke-width: 4.5px;
+    stroke-linecap: round;
+    stroke-dasharray: 450;
+    stroke-dashoffset: 450;
+    animation: drawJumpArc 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes drawJumpArc {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.arc-badge-group {
+    opacity: 0;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.arc-badge-bg {
+    fill: #ffffff;
+    stroke: #d946ef;
+    stroke-width: 1.8px;
+    filter: drop-shadow(0 2px 4px rgba(217, 70, 239, 0.2));
+}
+
+.arc-badge-text {
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+    font-weight: 900;
+    fill: #c026d3;
+    dominant-baseline: middle;
+}
+
+.jumping-emoji-marker {
+    font-size: 22px;
+    opacity: 0;
+    animation: jumpPopLand 0.45s ease forwards;
+}
+
+@keyframes jumpPopLand {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.4); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 .numline-character-bubble {
     background: linear-gradient(135deg, #f5f3ff, #fdf2f8);
     border: 2px solid #c084fc;
-    padding: 8px 18px;
+    padding: 10px 20px;
     border-radius: 16px;
-    font-size: 0.95rem;
+    font-size: 0.98rem;
     color: #581c87;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.1);
 }
 
 /* 4. TEKRARLI TOPLAMA MODELİ STILLERI */

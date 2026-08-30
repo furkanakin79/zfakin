@@ -197,7 +197,7 @@ class MultiplicationExplorer {
       this.dom.quizNextBtn.addEventListener('click', () => this.newQuizQuestion());
     }
 
-    // Numpad Butonları
+    // Numpad Butonları (Düz / Doğal Yazım)
     document.querySelectorAll('.mult-numpad-btn[data-key]').forEach(btn => {
       btn.addEventListener('pointerdown', (e) => e.preventDefault());
       btn.addEventListener('click', (e) => {
@@ -206,11 +206,10 @@ class MultiplicationExplorer {
         const key = btn.getAttribute('data-key');
         if (this.dom.quizInput) {
           if (this.dom.quizInput.value.length < 5) {
-            // Sağdan sola yazım (yeni basamak sola eklenir)
-            this.dom.quizInput.value = key + this.dom.quizInput.value;
+            // Doğal düz yazım: 4'e sonra 6'ya basınca 46 yazar
+            this.dom.quizInput.value += key;
           }
           this.dom.quizInput.focus();
-          this.dom.quizInput.setSelectionRange(0, 0);
         }
       });
     });
@@ -224,7 +223,6 @@ class MultiplicationExplorer {
         if (this.dom.quizInput) {
           this.dom.quizInput.value = '';
           this.dom.quizInput.focus();
-          this.dom.quizInput.setSelectionRange(0, 0);
         }
       });
     }
@@ -236,43 +234,31 @@ class MultiplicationExplorer {
         e.preventDefault();
         this.sound.playPop();
         if (this.dom.quizInput && this.dom.quizInput.value.length > 0) {
-          this.dom.quizInput.value = this.dom.quizInput.value.slice(1);
+          this.dom.quizInput.value = this.dom.quizInput.value.slice(0, -1);
           this.dom.quizInput.focus();
-          this.dom.quizInput.setSelectionRange(0, 0);
         }
       });
     }
 
-    // Fiziksel Klavye Girişi (Sağdan Sola + İmleç Solda)
+    // Fiziksel Klavye Girişi (Doğal Düz Yazım)
     if (this.dom.quizInput) {
-      const keepCursorLeft = () => {
-        setTimeout(() => {
-          try { this.dom.quizInput.setSelectionRange(0, 0); } catch(e){}
-        }, 10);
-      };
-      this.dom.quizInput.addEventListener('click', keepCursorLeft);
-      this.dom.quizInput.addEventListener('focus', keepCursorLeft);
-
       this.dom.quizInput.addEventListener('keydown', (e) => {
         if (/^[0-9]$/.test(e.key)) {
           e.preventDefault();
           this.sound.playPop();
           if (this.dom.quizInput.value.length < 5) {
-            this.dom.quizInput.value = e.key + this.dom.quizInput.value;
-            this.dom.quizInput.setSelectionRange(0, 0);
+            this.dom.quizInput.value += e.key;
           }
         } else if (e.key === 'Backspace') {
           e.preventDefault();
           this.sound.playPop();
           if (this.dom.quizInput.value.length > 0) {
-            this.dom.quizInput.value = this.dom.quizInput.value.slice(1);
-            this.dom.quizInput.setSelectionRange(0, 0);
+            this.dom.quizInput.value = this.dom.quizInput.value.slice(0, -1);
           }
         } else if (e.key === 'Delete') {
           e.preventDefault();
           this.sound.playPop();
           this.dom.quizInput.value = '';
-          this.dom.quizInput.setSelectionRange(0, 0);
         } else if (e.key === 'Enter') {
           e.preventDefault();
           if (!this.isAnswered) {
@@ -514,46 +500,107 @@ class MultiplicationExplorer {
     `;
   }
 
-  // 3. SAYI DOĞRUSU / RİTMİK ZIPLAMA MODELİ
+  // 3. SAYI DOĞRUSU / RİTMİK ZIPLAMA MODELİ (Yarım Daire Yayları & Zıplayan Emoji)
   renderNumberLineModel(a, b, product) {
     const maxVal = Math.max(product + b, 12);
-    let pointsHtml = '';
-    let arcsHtml = '';
+    const emoji = this.selectedItemEmoji;
+    const stepWidth = 38;
+    const padX = 45;
+    const svgWidth = padX * 2 + maxVal * stepWidth;
+    const baselineY = 135;
+    const svgHeight = 190;
 
-    // Sayı doğrusu noktaları
-    for (let p = 0; p <= maxVal; p++) {
-      const isTarget = (p % b === 0 && p <= product && p > 0);
-      const isFinal = (p === product);
-      pointsHtml += `
-        <div class="numline-point ${isFinal ? 'final-point' : (isTarget ? 'step-point' : '')}">
-          <div class="point-tick"></div>
-          <span class="point-num">${p}</span>
-        </div>
+    let svgArcs = '';
+    let svgMarkers = '';
+    let svgTicks = '';
+    let svgLabels = '';
+
+    // 1. Zıplama Yayları (Yarım Daire / Parabolik Eğriler)
+    for (let s = 1; s <= a; s++) {
+      const x1 = padX + (s - 1) * b * stepWidth;
+      const x2 = padX + s * b * stepWidth;
+      const dx = x2 - x1;
+      const midX = (x1 + x2) / 2;
+      const arcH = Math.min(dx * 0.45 + 30, 85);
+      const midY = baselineY - arcH;
+      const delay = (s - 1) * 0.6;
+
+      // SVG Parabolik Yay Çizgisi
+      svgArcs += `
+        <path d="M ${x1},${baselineY} Q ${midX},${baselineY - arcH * 1.8} ${x2},${baselineY}" 
+              class="animated-jump-arc" 
+              style="animation-delay: ${delay}s;" />
+      `;
+
+      // Yayın Tepesindeki Adım Rozeti (+b)
+      svgArcs += `
+        <g class="arc-badge-group" style="animation-delay: ${delay + 0.2}s;">
+          <rect x="${midX - 20}" y="${midY - 14}" width="40" height="22" rx="7" class="arc-badge-bg" />
+          <text x="${midX}" y="${midY + 2}" text-anchor="middle" class="arc-badge-text">+${b}</text>
+        </g>
+      `;
+
+      // Ucunda Zıplayan Sevimli Emoji
+      svgMarkers += `
+        <text x="${x2}" y="${baselineY - 8}" text-anchor="middle" class="jumping-emoji-marker" 
+              style="animation-delay: ${delay + 0.45}s;">${emoji}</text>
       `;
     }
 
-    // Zıplama Yayları
-    for (let step = 1; step <= a; step++) {
-      const fromVal = (step - 1) * b;
-      const toVal = step * b;
-      arcsHtml += `
-        <div class="numline-jump-badge animate-bounce-in" style="animation-delay: ${step * 0.1}s">
-          <span>${step}. Zıplama: +${b} (→ ${toVal})</span>
-        </div>
+    // 2. Sayı Doğrusu Çizgisi, Tırtıkları ve Sayı Etiketleri
+    for (let p = 0; p <= maxVal; p++) {
+      const xp = padX + p * stepWidth;
+      const isTarget = (p % b === 0 && p <= product && p > 0);
+      const isFinal = (p === product);
+      const isMajor = (p % b === 0 || p % 5 === 0);
+
+      const tickTop = baselineY - (isFinal ? 12 : (isMajor ? 8 : 4));
+      const tickBottom = baselineY + (isFinal ? 12 : (isMajor ? 8 : 4));
+
+      svgTicks += `
+        <line x1="${xp}" y1="${tickTop}" x2="${xp}" y2="${tickBottom}" 
+              class="svg-tick ${isFinal ? 'tick-final' : (isTarget ? 'tick-step' : (isMajor ? 'tick-major' : ''))}" />
+      `;
+
+      svgLabels += `
+        <text x="${xp}" y="${baselineY + 24}" text-anchor="middle" 
+              class="svg-num-label ${isFinal ? 'label-final' : (isTarget ? 'label-step' : '')}">
+          ${p}
+        </text>
       `;
     }
 
     this.dom.visualStage.innerHTML = `
       <div class="numline-stage-wrap">
-        <div class="numline-jumps-history">${arcsHtml}</div>
-        <div class="numline-track-scroll">
-          <div class="numline-track">
-            <div class="numline-line"></div>
-            <div class="numline-points-grid">${pointsHtml}</div>
-          </div>
+        <div class="numline-scroll-container">
+          <svg class="numline-svg-canvas" viewBox="0 0 ${svgWidth} ${svgHeight}" style="width: ${svgWidth}px; height: ${svgHeight}px;">
+            <defs>
+              <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#db2777" />
+                <stop offset="100%" stop-color="#8b5cf6" />
+              </linearGradient>
+            </defs>
+
+            <!-- Ana Sayı Doğrusu Çizgisi -->
+            <line x1="${padX - 10}" y1="${baselineY}" x2="${svgWidth - padX + 15}" y2="${baselineY}" class="svg-baseline" />
+            <polygon points="${svgWidth - padX + 22},${baselineY} ${svgWidth - padX + 12},${baselineY - 5} ${svgWidth - padX + 12},${baselineY + 5}" fill="#a855f7" />
+
+            <!-- Tırtıklar -->
+            ${svgTicks}
+
+            <!-- Sayılar -->
+            ${svgLabels}
+
+            <!-- Animasyonlu Zıplama Yayları -->
+            ${svgArcs}
+
+            <!-- Zıplayan Emojiler -->
+            ${svgMarkers}
+          </svg>
         </div>
+
         <div class="numline-character-bubble animate-bounce">
-          🐰 Kuromi <b>${b}'şer</b> zıplayarak <b>${a} adımda ${product}</b>'a ulaştı!
+          🐰 <b>0</b>'dan başlayıp <b>${b}'şer</b> adımlarla <b>${a} yarım daire zıplayarak ${product}</b>'a ulaştık! (<b>${a} × ${b} = ${product} ${emoji}</b>)
         </div>
       </div>
     `;
