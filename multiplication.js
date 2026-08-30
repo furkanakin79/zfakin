@@ -502,7 +502,7 @@ class MultiplicationExplorer {
 
   // 3. SAYI DOĞRUSU / RİTMİK ZIPLAMA MODELİ (Yarım Daire Yayları & Zıplayan Emoji)
   renderNumberLineModel(a, b, product) {
-    const maxVal = Math.max(product + b, 12);
+    const maxVal = product;
     const emoji = this.selectedItemEmoji;
     const stepWidth = 38;
     const padX = 45;
