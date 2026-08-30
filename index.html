@@ -325,42 +325,39 @@
       <!-- ======================================================== -->
       <section class="portal-view" id="viewMath">
         
-        <!-- Üst Başlık & Skor Tablosu -->
-        <header class="app-header math-app-header">
-          <div class="header-left">
-            <div class="logo-badge">
-              <span class="logo-icon">🦄</span>
-              <div class="logo-text">
-                <h1>Dört İşlem</h1>
-                <span class="sub-title">Matematik Yıldız Avcısı ⭐</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="header-center">
-            <div class="score-card star-card" title="Kazanılan Yıldızlar">
-              <span class="icon">⭐</span>
-              <span class="score-val" id="starCount">0</span>
-            </div>
-            <div class="score-card streak-card" title="Üst Üste Doğru Serisi">
-              <span class="icon">🔥</span>
-              <span class="score-val" id="streakCount">0</span>
-              <span class="streak-label">Seri</span>
-            </div>
-          </div>
-
-          <div class="header-right">
-            <button id="soundToggleBtn" class="icon-btn" title="Sesi Aç/Kapat" aria-label="Ses">
-              <span id="soundIcon">🔊</span>
-            </button>
-            <button id="openStatsBtn" class="icon-btn stats-btn" title="İstatistikler & Takvim">
-              <span>📅 İstatistikler</span>
-            </button>
-          </div>
-        </header>
-
         <!-- Ana Konteyner -->
         <div class="main-container">
+
+          <!-- Üst Başlık & Skor Tablosu Banner -->
+          <div class="mult-top-banner card-glass">
+            <div class="mult-title-wrap">
+              <div class="mult-icon-badge" style="background: linear-gradient(135deg, #a855f7, #ec4899);">
+                <span>🦄</span>
+              </div>
+              <div class="mult-title-text">
+                <h2>Dört İşlem Sihirbazı</h2>
+                <p>Toplama, çıkarma, çarpma ve bölme ile matematik yıldızlarını topla! ⭐</p>
+              </div>
+            </div>
+
+            <div class="mult-mode-toggle-bar" style="align-items: center; gap: 8px;">
+              <div class="score-card star-card" title="Kazanılan Yıldızlar" style="border-radius: 10px; padding: 6px 14px; margin: 0;">
+                <span class="icon">⭐</span>
+                <span class="score-val" id="starCount">0</span>
+              </div>
+              <div class="score-card streak-card" title="Üst Üste Doğru Serisi" style="border-radius: 10px; padding: 6px 14px; margin: 0;">
+                <span class="icon">🔥</span>
+                <span class="score-val" id="streakCount">0</span>
+                <span class="streak-label" style="font-size: 0.75rem;">Seri</span>
+              </div>
+              <button id="soundToggleBtn" class="btn-mode" title="Sesi Aç/Kapat" aria-label="Ses" style="padding: 8px 12px;">
+                <span id="soundIcon">🔊</span>
+              </button>
+              <button id="openStatsBtn" class="btn-mode active" title="İstatistikler & Takvim" style="padding: 8px 16px;">
+                <span>📅 İstatistikler</span>
+              </button>
+            </div>
+          </div>
           
           <!-- Ayarlar Paneli -->
           <section class="settings-panel card">
@@ -576,19 +573,29 @@
       <!-- GÖRÜNÜM 3: SAAT ÇALIŞMASI (SAAT ÖĞRENME KİTİ)            -->
       <!-- ======================================================== -->
       <section class="portal-view" id="viewClock">
-        <header class="app-header math-app-header">
-          <div class="header-left">
-            <div class="logo-badge">
-              <span class="logo-icon">⏰</span>
-              <div class="logo-text">
-                <h1>Saat Öğrenme Kiti</h1>
-                <span class="sub-title">Zamanı ve Saatleri Keşfedelim! ⭐</span>
+        <div class="clock-main-wrapper">
+
+          <!-- Üst Başlık Banner -->
+          <div class="mult-top-banner card-glass" style="margin-bottom: 1.25rem;">
+            <div class="mult-title-wrap">
+              <div class="mult-icon-badge" style="background: linear-gradient(135deg, #f97316, #ec4899);">
+                <span>⏰</span>
+              </div>
+              <div class="mult-title-text">
+                <h2>Saat Öğrenme & Keşif Kiti</h2>
+                <p>Analog ve dijital saatlerin mantığını öğren, zamanı keşfet! ⭐</p>
               </div>
             </div>
-          </div>
-        </header>
 
-        <div class="clock-main-wrapper">
+            <div class="mult-mode-toggle-bar">
+              <button class="btn-mode active" onclick="resetToZero()" style="padding: 8px 16px;">
+                <span>🔄</span> Saati Sıfırla
+              </button>
+              <button class="btn-mode" onclick="generateQuiz()" style="padding: 8px 16px; background: #ffffff; color: #ea580c; font-weight: 800; box-shadow: 0 2px 8px rgba(234, 88, 12, 0.15);">
+                <span>🎲</span> Soru Sor
+              </button>
+            </div>
+          </div>
           <div class="clock-portal-grid">
             
             <!-- Analog Saat Alanı (3 Sütun) -->
@@ -713,8 +720,8 @@
               <div class="mult-card card-glass mult-quiz-card">
                 <div class="quiz-card-header">
                   <div class="filter-wrap">
-                    <label for="multTableFilter">🎯 Çarpan:</label>
-                    <select id="multTableFilter" class="styled-select">
+                    <label for="multTableFilter">🎯 Çarpım Tablosu:</label>
+                    <select id="multTableFilter" class="styled-mult-select">
                       <option value="all">Karışık Tüm Tablo (1-10)</option>
                       <option value="2">2'ler Tablosu</option>
                       <option value="3">3'ler Tablosu</option>
@@ -764,11 +771,11 @@
                 <div id="multQuizFeedback" class="mult-feedback-box" style="display: none;"></div>
               </div>
 
-              <!-- Sağ / Alt: Canlı Görsel Animasyon & Mantık Sahnesi -->
-              <div class="mult-card card-glass mult-visual-card">
+              <!-- Sağ Sütun: Görsel Bölüm (Üst Kontrol ve Alt Sahne) -->
+              <div class="mult-visual-column">
                 
-                <!-- Görsel Model Seçim Çubuğu -->
-                <div class="mult-visual-header">
+                <!-- 1. Üst Kutu: Görsel Model ve Emoji Kontrol Paneli -->
+                <div class="mult-card card-glass mult-visual-control-card">
                   <div class="mult-model-tabs-group">
                     <button class="mult-model-tab-btn active" data-model="baskets">
                       <span>🧺</span> Sepet & Gruplar
@@ -801,14 +808,20 @@
                   </div>
                 </div>
 
-                <!-- Denklem Başlığı & Mantık Açıklaması -->
-                <div class="mult-concept-header">
-                  <div class="mult-equation-hero" id="multEquationDisplay">4 × 6 = 24</div>
-                  <div class="mult-concept-desc" id="multConceptSubtitle">🧺 4 Sepet içinde 6'şar elma var. Toplam: 24 elma</div>
+                <!-- 2. Alt Kutu: Canlı Görsel Animasyon & Mantık Sahnesi (Cevaplayınca Görünür) -->
+                <div class="mult-card card-glass mult-visual-stage-card" id="multVisualStageCard" style="display: none;">
+                  <!-- Denklem Başlığı -->
+                  <div class="mult-concept-header">
+                    <div class="mult-equation-hero" id="multEquationDisplay">4 × 6 = 24</div>
+                  </div>
+
+                  <!-- Dinamik Görsel Animasyon Sahnesi (Sırayla Dolar) -->
+                  <div class="mult-visual-stage" id="multVisualStage"></div>
+
+                  <!-- Alt Açıklama (En Son Gelir) -->
+                  <div class="mult-concept-desc-card" id="multConceptSubtitle">🧺 4 Sepet içinde 6'şar elma var. Toplam: 24 elma</div>
                 </div>
 
-                <!-- Dinamik Görsel Animasyon Sahnesi -->
-                <div class="mult-visual-stage" id="multVisualStage"></div>
               </div>
 
             </div>
