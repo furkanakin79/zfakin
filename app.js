@@ -6,10 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const tabBtnPlanner = document.getElementById('tabBtnPlanner');
   const tabBtnMath = document.getElementById('tabBtnMath');
   const tabBtnClock = document.getElementById('tabBtnClock');
+  const tabBtnMultiplication = document.getElementById('tabBtnMultiplication');
 
   const viewPlanner = document.getElementById('viewPlanner');
   const viewMath = document.getElementById('viewMath');
   const viewClock = document.getElementById('viewClock');
+  const viewMultiplication = document.getElementById('viewMultiplication');
 
   const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
   const portalSidebar = document.getElementById('portalSidebar');
@@ -20,10 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tabBtnPlanner) tabBtnPlanner.classList.remove('active');
     if (tabBtnMath) tabBtnMath.classList.remove('active');
     if (tabBtnClock) tabBtnClock.classList.remove('active');
+    if (tabBtnMultiplication) tabBtnMultiplication.classList.remove('active');
 
     if (viewPlanner) viewPlanner.classList.remove('active');
     if (viewMath) viewMath.classList.remove('active');
     if (viewClock) viewClock.classList.remove('active');
+    if (viewMultiplication) viewMultiplication.classList.remove('active');
 
     if (viewName === 'planner') {
       if (tabBtnPlanner) tabBtnPlanner.classList.add('active');
@@ -47,6 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.drawClock) {
         window.drawClock();
       }
+    } else if (viewName === 'multiplication') {
+      if (tabBtnMultiplication) tabBtnMultiplication.classList.add('active');
+      if (viewMultiplication) viewMultiplication.classList.add('active');
+      if (mobilePortalTitle) mobilePortalTitle.textContent = '🌟 Çarpım Tablosu';
+
+      if (window.initMultiplicationPage) {
+        window.initMultiplicationPage();
+      }
     }
 
     // Mobilde/Tablette tıklandıktan sonra sol menüyü kapat
@@ -65,6 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (tabBtnClock) {
     tabBtnClock.addEventListener('click', () => switchTab('clock'));
+  }
+
+  if (tabBtnMultiplication) {
+    tabBtnMultiplication.addEventListener('click', () => switchTab('multiplication'));
   }
 
   if (sidebarToggleBtn && portalSidebar) {

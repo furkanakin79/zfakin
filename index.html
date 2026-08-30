@@ -63,6 +63,14 @@
             <span class="nav-sub">Analog & Dijital Saat Kiti</span>
           </div>
         </button>
+
+        <button class="nav-item-btn" id="tabBtnMultiplication" data-view="multiplication">
+          <span class="nav-icon">🌟</span>
+          <div class="nav-text">
+            <span class="nav-title">Çarpım Tablosu</span>
+            <span class="nav-sub">Görsel Mantık & Keşif</span>
+          </div>
+        </button>
       </nav>
 
       <!-- Sol Menü Alt Rozet / Karakter Kutusu -->
@@ -668,6 +676,162 @@
         </div>
       </section>
 
+      <!-- ========================================== -->
+      <!-- GÖRÜNÜM 4: ÇARPIM TABLOSU KEŞİF PORTALİ     -->
+      <!-- ========================================== -->
+      <section class="portal-view" id="viewMultiplication">
+        <div class="mult-container">
+          
+          <!-- Üst Başlık & Mod Seçimi -->
+          <div class="mult-top-banner card-glass">
+            <div class="mult-title-wrap">
+              <div class="mult-icon-badge">🌟</div>
+              <div>
+                <h2>Çarpım Tablosu Keşif Dünyası</h2>
+                <p>Ezberlemeye son! Çarpmanın arkasındaki görsel mantığı keşfet, eğlenerek anla 🎨</p>
+              </div>
+            </div>
+
+            <!-- Mod Değiştirici Butonlar -->
+            <div class="mult-mode-toggle-bar">
+              <button class="btn-mode active" id="multTabBtnQuiz">
+                <span class="btn-mode-icon">🎯</span>
+                <span>Animasyonlu Soru & Pratik</span>
+              </button>
+              <button class="btn-mode" id="multTabBtnMatrix">
+                <span class="btn-mode-icon">📊</span>
+                <span>10×10 İnteraktif Tablo</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- İÇERİK 1: QUIZ & ALIŞTIRMA ALANI -->
+          <div id="multPaneQuiz" class="mult-pane">
+            <div class="mult-quiz-grid">
+              
+              <!-- Sol / Üst: Soru ve Giriş Kartı -->
+              <div class="mult-card card-glass mult-quiz-card">
+                <div class="quiz-card-header">
+                  <div class="filter-wrap">
+                    <label for="multTableFilter">🎯 Çarpan:</label>
+                    <select id="multTableFilter" class="styled-select">
+                      <option value="all">Karışık Tüm Tablo (1-10)</option>
+                      <option value="2">2'ler Tablosu</option>
+                      <option value="3">3'ler Tablosu</option>
+                      <option value="4">4'ler Tablosu</option>
+                      <option value="5">5'ler Tablosu</option>
+                      <option value="6">6'lar Tablosu</option>
+                      <option value="7">7'ler Tablosu</option>
+                      <option value="8">8'ler Tablosu</option>
+                      <option value="9">9'lar Tablosu</option>
+                      <option value="10">10'lar Tablosu</option>
+                    </select>
+                  </div>
+                  <div class="quiz-stats-mini">
+                    <span class="stat-badge">🔥 Seri: <b id="multQuizStreakText">0</b></span>
+                    <span class="stat-badge">⭐ Doğru: <b id="multQuizScoreText">0 / 0</b></span>
+                  </div>
+                </div>
+
+                <div class="quiz-question-stage">
+                  <div class="quiz-question-text" id="multQuizQText">4 × 6 = ?</div>
+                  <div class="quiz-input-row">
+                    <input type="text" inputmode="numeric" id="multQuizInput" class="mult-answer-input" placeholder="?" maxlength="4" autocomplete="off">
+                    <button id="multQuizSubmitBtn" class="btn btn-primary btn-submit-mult">Cevapla 🚀</button>
+                    <button id="multQuizNextBtn" class="btn btn-next-mult" style="display: none;">Sonraki Soru ➡️</button>
+                  </div>
+
+                  <!-- Numpad -->
+                  <div class="mult-numpad-container">
+                    <div class="mult-numpad-grid">
+                      <button class="mult-numpad-btn" data-key="1">1</button>
+                      <button class="mult-numpad-btn" data-key="2">2</button>
+                      <button class="mult-numpad-btn" data-key="3">3</button>
+                      <button class="mult-numpad-btn" data-key="4">4</button>
+                      <button class="mult-numpad-btn" data-key="5">5</button>
+                      <button class="mult-numpad-btn" data-key="6">6</button>
+                      <button class="mult-numpad-btn" data-key="7">7</button>
+                      <button class="mult-numpad-btn" data-key="8">8</button>
+                      <button class="mult-numpad-btn" data-key="9">9</button>
+                      <button class="mult-numpad-btn btn-fn" id="multKeyClear">C</button>
+                      <button class="mult-numpad-btn" data-key="0">0</button>
+                      <button class="mult-numpad-btn btn-fn" id="multKeyBackspace">⌫</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sonuç Açıklama / Tebrik Balonu -->
+                <div id="multQuizFeedback" class="mult-feedback-box" style="display: none;"></div>
+              </div>
+
+              <!-- Sağ / Alt: Canlı Görsel Animasyon & Mantık Sahnesi -->
+              <div class="mult-card card-glass mult-visual-card">
+                
+                <!-- Görsel Model Seçim Çubuğu -->
+                <div class="mult-visual-header">
+                  <div class="mult-model-tabs-group">
+                    <button class="mult-model-tab-btn active" data-model="baskets">
+                      <span>🧺</span> Sepet & Gruplar
+                    </button>
+                    <button class="mult-model-tab-btn" data-model="grid">
+                      <span>🍫</span> Alan & Kareli Blok
+                    </button>
+                    <button class="mult-model-tab-btn" data-model="numberline">
+                      <span>🐰</span> Sayı Doğrusu
+                    </button>
+                    <button class="mult-model-tab-btn" data-model="addition">
+                      <span>➕</span> Tekrarlı Toplama
+                    </button>
+                  </div>
+
+                  <!-- Nesne / Emoji & Ters Çevirme Kontrolleri -->
+                  <div class="mult-stage-tools">
+                    <div class="mult-emoji-choices" id="multEmojiSelector">
+                      <button class="emoji-choice-btn active" data-emoji="🍎" title="Elma">🍎</button>
+                      <button class="emoji-choice-btn" data-emoji="🍓" title="Çilek">🍓</button>
+                      <button class="emoji-choice-btn" data-emoji="⭐" title="Yıldız">⭐</button>
+                      <button class="emoji-choice-btn" data-emoji="🧁" title="Kek">🧁</button>
+                      <button class="emoji-choice-btn" data-emoji="🌸" title="Çiçek">🌸</button>
+                      <button class="emoji-choice-btn" data-emoji="🎈" title="Balon">🎈</button>
+                    </div>
+
+                    <button id="btnMultFlipOrder" class="btn-flip-order" title="Sayıların yerini değiştirip aynı sonucu incele!">
+                      🔄 Yer Değiştir (Tersini Gör)
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Denklem Başlığı & Mantık Açıklaması -->
+                <div class="mult-concept-header">
+                  <div class="mult-equation-hero" id="multEquationDisplay">4 × 6 = 24</div>
+                  <div class="mult-concept-desc" id="multConceptSubtitle">🧺 4 Sepet içinde 6'şar elma var. Toplam: 24 elma</div>
+                </div>
+
+                <!-- Dinamik Görsel Animasyon Sahnesi -->
+                <div class="mult-visual-stage" id="multVisualStage"></div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- İÇERİK 2: 10x10 İNTERAKTİF MATRİS TABLOSU -->
+          <div id="multPaneMatrix" class="mult-pane" style="display: none;">
+            <div class="mult-card card-glass mult-matrix-card">
+              <div class="matrix-header-info">
+                <h3>🌈 1-10 Arası İnteraktif Çarpım Tablosu</h3>
+                <p>İstediğin sayının üzerine gel veya tıkla, hem çarpımı hem de görsel modelini anında keşfet!</p>
+                <div class="matrix-current-badge" id="multMatrixHoverInfo">Bir kutucuğa tıkla veya üzerine gel! ✨</div>
+              </div>
+
+              <div class="mult-matrix-scroll-wrap">
+                <div class="mult-matrix-grid" id="multMatrixGrid"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
     </div>
   </div>
 
@@ -973,6 +1137,7 @@
   <script src="planner.js"></script>
   <script src="math.js"></script>
   <script src="clock.js"></script>
+  <script src="multiplication.js"></script>
   <script src="app.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
