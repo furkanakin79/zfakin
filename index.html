@@ -19,7 +19,7 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  <link rel="stylesheet" href="style.css?v=2.1">
+  <link rel="stylesheet" href="style.css?v=2.2">
 </head>
 <body>
   <!-- Arka Plan Kayan Yıldızlar -->
@@ -69,6 +69,14 @@
           <div class="nav-text">
             <span class="nav-title">Çarpım Tablosu</span>
             <span class="nav-sub">Görsel Mantık & Keşif</span>
+          </div>
+        </button>
+
+        <button class="nav-item-btn" id="tabBtnAreaMult" data-view="area-multiplication">
+          <span class="nav-icon">🧩</span>
+          <div class="nav-text">
+            <span class="nav-title">Çarpma</span>
+            <span class="nav-sub">Alan Modeli Bulmacası</span>
           </div>
         </button>
       </nav>
@@ -845,6 +853,101 @@
         </div>
       </section>
 
+      <!-- ======================================================== -->
+      <!-- GÖRÜNÜM 5: ÇARPMA (ALAN MODELİ & BLOK BİRLEŞTİRME OYUNU) -->
+      <!-- ======================================================== -->
+      <section class="portal-view" id="viewAreaMultiplication">
+        <div class="area-mult-container">
+
+          <!-- Üst Banner & Kontrol Çubuğu -->
+          <div class="mult-top-banner card-glass">
+            <div class="mult-title-wrap">
+              <div class="mult-icon-badge" style="background: linear-gradient(135deg, #f43f5e, #8b5cf6);">
+                <span>🧩</span>
+              </div>
+              <div class="mult-title-text">
+                <h2>Alan Modeli ile Çarpma Bulmacası</h2>
+                <p>Sayıları basamaklarına ayır, dikdörtgen blokları birleştirerek çarpmanın mantığını keşfet! 🎨</p>
+              </div>
+            </div>
+
+            <div class="mult-mode-toggle-bar" style="align-items: center; gap: 8px; flex-wrap: wrap;">
+              <select id="areaLevelSelect" class="styled-mult-select" title="Basamak Seviyesini Seç">
+                <option value="2x2" selected>2×2 Basamak (Örn: 12 × 23)</option>
+                <option value="2x1">2×1 Basamak (Örn: 34 × 6)</option>
+                <option value="3x1">3×1 Basamak (Örn: 145 × 4)</option>
+                <option value="3x2">3×2 Basamak (Örn: 124 × 15)</option>
+                <option value="3x3">3×3 Basamak (Örn: 124 × 235)</option>
+              </select>
+
+              <button id="areaToggleDimsBtn" class="btn-mode active" style="padding: 8px 14px;" title="Kenar basamak sayılarını aç/kapat">
+                <span>👁️</span> Kenar Sayıları: Açık
+              </button>
+
+              <button id="areaNewQBtn" class="btn-mode active" style="padding: 8px 14px;">
+                <span>🎲</span> Yeni Soru
+              </button>
+            </div>
+          </div>
+
+          <!-- Ana Oyun Kartı -->
+          <div class="area-game-card card-glass">
+
+            <!-- 1. KATMAN: Üstte Tek Satır Soru Başlığı -->
+            <div class="area-question-bar">
+              <div class="area-question-hero" id="areaQuestionText">
+                <span class="q-num q-n1">12</span> <span class="q-op">×</span> <span class="q-num q-n2">23</span> <span class="q-op">=</span> <span class="q-placeholder">?</span>
+              </div>
+              <div class="area-stats-mini">
+                <span class="stat-badge">🔥 Seri: <b id="areaStatStreak">0</b></span>
+                <span class="stat-badge">⭐ Çözülen: <b id="areaStatSolved">0</b></span>
+              </div>
+            </div>
+
+            <!-- 2. KATMAN: Ortada 2 Sütun (Sol: Dikdörtgen Alanı, Sağ: Blok Parçaları) -->
+            <div class="area-middle-2col">
+
+              <!-- Sol Sütun: Dikdörtgen Birleştirme Izgarası -->
+              <div class="area-stage-card-wrap">
+                <div class="area-puzzle-stage" id="areaPuzzleStage"></div>
+              </div>
+
+              <!-- Sağ Sütun: Çarpım İşlemleri & Sonuç Blokları Havuzu -->
+              <div class="area-pool-section">
+                <!-- 1. Çarpım İşlemleri -->
+                <div class="area-pool-block">
+                  <div class="area-pool-title">
+                    <span>✖️ Çarpım İşlemleri (Şekle Sürükle / Dokun):</span>
+                  </div>
+                  <div class="area-calcs-pool" id="areaCalcsPool"></div>
+                </div>
+
+                <div class="area-pool-divider"></div>
+
+                <!-- 2. Sonuç Blokları -->
+                <div class="area-pool-block">
+                  <div class="area-pool-title">
+                    <span>🔢 Çarpım Sonuçları (Şekle Sürükle / Dokun):</span>
+                  </div>
+                  <div class="area-pieces-pool" id="areaPiecesPool"></div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- 3. KATMAN: Altta Tek Satır Cevap & Tamamlanma Alanı -->
+            <div class="area-summary-card" id="areaSummaryCard" style="display: none;">
+              <div class="area-sum-equation" id="areaSumEquation"></div>
+              <button class="btn-area-next animate-bounce" id="areaNextBtn" style="display: none;">
+                <span>Sonraki Soru ➡️</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
     </div>
   </div>
 
@@ -1146,12 +1249,13 @@
   <canvas id="confettiCanvas"></canvas>
 
   <!-- Scriptler -->
-  <script src="confetti.js?v=2.1"></script>
-  <script src="planner.js?v=2.1"></script>
-  <script src="math.js?v=2.1"></script>
-  <script src="clock.js?v=2.1"></script>
-  <script src="multiplication.js?v=2.1"></script>
-  <script src="app.js?v=2.1"></script>
+  <script src="confetti.js?v=2.2"></script>
+  <script src="planner.js?v=2.2"></script>
+  <script src="math.js?v=2.2"></script>
+  <script src="clock.js?v=2.2"></script>
+  <script src="multiplication.js?v=2.2"></script>
+  <script src="area-multiplication.js?v=2.2"></script>
+  <script src="app.js?v=2.2"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(() => {});

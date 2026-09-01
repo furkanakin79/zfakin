@@ -7,11 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const tabBtnMath = document.getElementById('tabBtnMath');
   const tabBtnClock = document.getElementById('tabBtnClock');
   const tabBtnMultiplication = document.getElementById('tabBtnMultiplication');
+  const tabBtnAreaMult = document.getElementById('tabBtnAreaMult');
 
   const viewPlanner = document.getElementById('viewPlanner');
   const viewMath = document.getElementById('viewMath');
   const viewClock = document.getElementById('viewClock');
   const viewMultiplication = document.getElementById('viewMultiplication');
+  const viewAreaMultiplication = document.getElementById('viewAreaMultiplication');
 
   const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
   const portalSidebar = document.getElementById('portalSidebar');
@@ -23,11 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tabBtnMath) tabBtnMath.classList.remove('active');
     if (tabBtnClock) tabBtnClock.classList.remove('active');
     if (tabBtnMultiplication) tabBtnMultiplication.classList.remove('active');
+    if (tabBtnAreaMult) tabBtnAreaMult.classList.remove('active');
 
     if (viewPlanner) viewPlanner.classList.remove('active');
     if (viewMath) viewMath.classList.remove('active');
     if (viewClock) viewClock.classList.remove('active');
     if (viewMultiplication) viewMultiplication.classList.remove('active');
+    if (viewAreaMultiplication) viewAreaMultiplication.classList.remove('active');
 
     if (viewName === 'planner') {
       if (tabBtnPlanner) tabBtnPlanner.classList.add('active');
@@ -59,6 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.initMultiplicationPage) {
         window.initMultiplicationPage();
       }
+    } else if (viewName === 'area-multiplication') {
+      if (tabBtnAreaMult) tabBtnAreaMult.classList.add('active');
+      if (viewAreaMultiplication) viewAreaMultiplication.classList.add('active');
+      if (mobilePortalTitle) mobilePortalTitle.textContent = '🧩 Çarpma (Alan Modeli)';
+
+      if (window.initAreaMultiplicationPage) {
+        window.initAreaMultiplicationPage();
+      }
     }
 
     // Mobilde/Tablette tıklandıktan sonra sol menüyü kapat
@@ -81,6 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (tabBtnMultiplication) {
     tabBtnMultiplication.addEventListener('click', () => switchTab('multiplication'));
+  }
+
+  if (tabBtnAreaMult) {
+    tabBtnAreaMult.addEventListener('click', () => switchTab('area-multiplication'));
   }
 
   if (sidebarToggleBtn && portalSidebar) {

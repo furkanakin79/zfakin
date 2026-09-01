@@ -3467,24 +3467,583 @@ body {
 .animate-bounce-in { animation: bounceIn 0.4s ease forwards; }
 .animate-glow { animation: gentleGlow 2.5s infinite ease-in-out; }
 
-/* Responsive Düzenlemeler */
+/* ========================================================================== */
+/* ALAN MODELİ İLE ÇARPMA BULMACASI (AREA MULTIPLICATION PUZZLE) STİLLERİ     */
+/* ========================================================================== */
+
+.area-mult-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 1.5rem 0;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+}
+
+.area-game-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.08);
+}
+
+.area-middle-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: stretch;
+    width: 100%;
+}
+
+/* Soru Başlık Çubuğu */
+.area-question-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px dashed rgba(216, 180, 254, 0.6);
+}
+
+.area-question-hero {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 2.3rem;
+    font-weight: 900;
+    color: #4c1d95;
+    background: #faf5ff;
+    padding: 6px 20px;
+    border-radius: 16px;
+    border: 3px solid #d8b4fe;
+    box-shadow: inset 0 2px 6px rgba(168, 85, 247, 0.1);
+    letter-spacing: 2px;
+}
+
+.area-question-hero .q-n1 { color: #db2777; }
+.area-question-hero .q-n2 { color: #7c3aed; }
+.area-question-hero .q-op { color: #a855f7; margin: 0 6px; }
+.area-question-hero .q-placeholder { color: #ec4899; }
+.area-question-hero .q-result-total { color: #059669; }
+
+.area-stats-mini {
+    display: flex;
+    gap: 0.8rem;
+}
+
+/* Ana Birleştirme Çerçevesi */
+.area-stage-card-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.area-puzzle-stage {
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Kenar Sayılarını Gizleme Durumu */
+.area-puzzle-stage.hide-dimensions .area-dim-tag span {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.area-stage-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.area-top-labels-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 6px;
+}
+
+.area-label-corner {
+    width: 48px;
+    flex-shrink: 0;
+}
+
+.area-dim-tag {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #4c1d95;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+
+.area-dim-top {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.area-main-body-row {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    height: 340px;
+}
+
+.area-left-labels-col {
+    width: 48px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.area-dim-left {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 14px;
+    box-sizing: border-box;
+}
+
+/* Resimdeki Gibi Kırmızı Çerçeveli Grid Sahnesi (YALNIZCA 4 SLOT) */
+.area-grid-canvas {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    border: 4px solid #ef4444;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(239, 68, 68, 0.15);
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.area-slots-row {
+    display: flex;
+    width: 100%;
+}
+
+.area-puzzle-slot {
+    border-right: 4px solid #ef4444;
+    border-bottom: 4px solid #ef4444;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.area-slots-row .area-puzzle-slot:last-child {
+    border-right: none;
+}
+
+.area-grid-canvas .area-slots-row:last-child .area-puzzle-slot {
+    border-bottom: none;
+}
+
+.area-puzzle-slot.empty {
+    background: repeating-linear-gradient(
+        45deg,
+        #fafafa,
+        #fafafa 10px,
+        #ffffff 10px,
+        #ffffff 20px
+    );
+}
+
+.slot-placeholder-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    opacity: 0.65;
+    user-select: none;
+}
+
+.slot-guide-mult {
+    font-family: 'Consolas', monospace;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #a855f7;
+    background: #f3e8ff;
+    padding: 2px 10px;
+    border-radius: 8px;
+}
+
+.slot-drop-txt {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #9ca3af;
+}
+
+.area-puzzle-slot.ready-target {
+    background: #fdf2f8;
+    box-shadow: inset 0 0 12px rgba(236, 72, 153, 0.25);
+    cursor: pointer;
+}
+
+.area-puzzle-slot.drag-over {
+    background: #fce7f3;
+    box-shadow: inset 0 0 20px rgba(236, 72, 153, 0.45);
+    transform: scale(0.98);
+}
+
+/* Slot İçeriği Stilleri (Sol Kırmızı Dikdörtgen) */
+.placed-slot-both {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+    gap: 2px;
+}
+
+.placed-slot-calc-only {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #fdf4ff;
+    gap: 4px;
+}
+
+.placed-slot-prod-only {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #f0fdf4;
+    gap: 4px;
+}
+
+.placed-calc-sub-lg {
+    font-family: 'Consolas', monospace;
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: #7c3aed;
+    background: #f3e8ff;
+    padding: 4px 12px;
+    border-radius: 8px;
+    border: 1px solid #d8b4fe;
+}
+
+.placed-awaiting-hint {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #db2777;
+}
+
+.placed-prod-val {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #1e1b4b;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.placed-calc-sub {
+    font-family: 'Consolas', monospace;
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #7c3aed;
+    background: #f3e8ff;
+    padding: 2px 10px;
+    border-radius: 6px;
+}
+
+/* Sağ Sütun: Havuz Bölümü (2 Eşit Bölüm) */
+.area-pool-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.85rem;
+    background: #faf5ff;
+    border: 2px dashed #d8b4fe;
+    border-radius: 20px;
+    padding: 1.1rem;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.area-pool-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    flex: 1;
+    width: 100%;
+}
+
+.area-pool-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #6b21a8;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.area-pool-divider {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #c084fc, transparent);
+    margin: 2px 0;
+}
+
+/* 1. Çarpım İşlemleri Havuzu */
+.area-calcs-pool {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 68px;
+}
+
+.calc-draggable-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 64px;
+    padding: 4px 6px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ffffff, #faf5ff);
+    border: 2.5px solid #8b5cf6;
+    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.18);
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    touch-action: none;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.calc-draggable-card:hover {
+    transform: translateY(-3px) scale(1.04);
+    border-color: #7c3aed;
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+.calc-draggable-card.selected {
+    border-color: #ec4899;
+    background: #fdf2f8;
+    transform: scale(1.08);
+    box-shadow: 0 0 18px rgba(236, 72, 153, 0.5);
+}
+
+.calc-draggable-card.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+.calc-card-text {
+    font-family: 'Consolas', monospace;
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: #581c87;
+    white-space: nowrap;
+}
+
+.calc-card-hint {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #9333ea;
+    margin-top: 2px;
+}
+
+/* 2. Sonuç Blokları Havuzu */
+.area-pieces-pool {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 68px;
+}
+
+.puzzle-draggable-piece {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 72px;
+    padding: 4px 6px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ffffff, #fdf4ff);
+    border: 2.5px solid #ec4899;
+    box-shadow: 0 4px 14px rgba(236, 72, 153, 0.18);
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    touch-action: none;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.puzzle-draggable-piece:hover {
+    transform: translateY(-3px) scale(1.04);
+    border-color: #d946ef;
+    box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
+}
+
+.puzzle-draggable-piece.selected {
+    border-color: #8b5cf6;
+    background: #ede9fe;
+    transform: scale(1.08);
+    box-shadow: 0 0 18px rgba(139, 92, 246, 0.5);
+}
+
+.puzzle-draggable-piece.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+.piece-prod-preview {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: #1e1b4b;
+    white-space: nowrap;
+}
+
+.piece-touch-hint {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #db2777;
+    margin-top: 2px;
+}
+
+.pool-done-badge {
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #059669;
+    background: #ecfdf5;
+    padding: 6px 14px;
+    border-radius: 10px;
+    border: 1px solid #a7f3d0;
+}
+
+/* Tamamlanma & Özet Kartı */
+.area-summary-card {
+    background: linear-gradient(135deg, #ecfdf5 0%, #fdf2f8 100%);
+    border: 3px solid #10b981;
+    border-radius: 20px;
+    padding: 1.4rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+}
+
+.area-sum-equation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.sum-step-line {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #065f46;
+    letter-spacing: 1px;
+}
+
+.sum-step-line .sum-terms {
+    color: #7c3aed;
+}
+
+.sum-step-line .sum-eq {
+    color: #ec4899;
+    margin: 0 8px;
+}
+
+.sum-step-line .sum-total-val {
+    color: #059669;
+    background: #ffffff;
+    padding: 4px 18px;
+    border-radius: 14px;
+    border: 2px solid #34d399;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.sum-congrats-text {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #581c87;
+}
+
+.btn-area-next {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 800;
+    padding: 12px 28px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    transition: all 0.2s ease;
+}
+
+.btn-area-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.45);
+}
+
+@keyframes shakeError {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}
+
+.shake-error {
+    animation: shakeError 0.35s ease;
+    border-color: #ef4444 !important;
+    background-color: #fee2e2 !important;
+}
+
+/* Mobil / Tablet Uyumu */
 @media (max-width: 960px) {
-    .mult-quiz-grid {
+    .area-middle-2col {
         grid-template-columns: 1fr;
     }
-    .mult-visual-header {
-        flex-direction: column;
-        align-items: stretch;
+}
+
+@media (max-width: 768px) {
+    .area-grid-canvas {
+        height: 280px;
     }
-    .mult-stage-tools {
-        justify-content: space-between;
+    .area-question-hero {
+        font-size: 1.8rem;
+        padding: 6px 14px;
     }
-    .mult-matrix-grid {
-        grid-template-columns: repeat(11, 38px);
-        grid-template-rows: repeat(11, 38px);
+    .sum-step-line {
+        font-size: 1.5rem;
     }
-    .matrix-cell {
-        font-size: 0.85rem;
+    .placed-prod-val {
+        font-size: 1.5rem;
     }
 }
+
 
