@@ -1,0 +1,1652 @@
+    #viewSayiAvcilari {
+      --bg: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.85);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.35);
+      --accent: #f43f5e;
+      --amber: #fbbf24;
+      --emerald: #34d399;
+      --violet: #a855f7;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-display: 'Fredoka', cursive, sans-serif;
+      --font-body: 'Nunito', sans-serif;
+    }
+
+    #viewSayiAvcilari, #viewSayiAvcilari * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #viewSayiAvcilari {
+      background: radial-gradient(circle at 50% 10%, #1e1b4b 0%, #0f172a 60%, #020617 100%);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      
+    }
+
+    /* HEADER */
+    #viewSayiAvcilari header {
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    #viewSayiAvcilari .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #viewSayiAvcilari .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+
+    #viewSayiAvcilari .brand-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      background: linear-gradient(to right, #38bdf8, #c084fc, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    #viewSayiAvcilari .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    /* NAV TABS */
+    #viewSayiAvcilari .tabs {
+      display: flex;
+      background: rgba(30, 41, 59, 0.9);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+      gap: 4px;
+    }
+
+    #viewSayiAvcilari .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #viewSayiAvcilari .tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    #viewSayiAvcilari .tab-btn.active {
+      color: #fff;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+    }
+
+    /* SOUND TOGGLE BUTTON */
+    #viewSayiAvcilari .btn-sound {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
+    #viewSayiAvcilari .btn-sound:hover {
+      transform: scale(1.08);
+    }
+
+    /* MAIN CONTAINER */
+    #viewSayiAvcilari main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #viewSayiAvcilari .view-section {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      animation: fadeIn 0.35s ease forwards;
+    }
+
+    #viewSayiAvcilari .view-section.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CARDS */
+    #viewSayiAvcilari .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    /* MULTIPLICATION SECTION */
+    #viewSayiAvcilari .controls-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 18px 24px;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+    }
+
+    #viewSayiAvcilari .stepper-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #viewSayiAvcilari .stepper-label {
+      font-family: var(--font-display);
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    #viewSayiAvcilari .stepper-val-box {
+      min-width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1e293b, #334155);
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      color: #38bdf8;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    #viewSayiAvcilari .step-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #334155;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    #viewSayiAvcilari .step-btn:hover {
+      background: #475569;
+      transform: scale(1.08);
+    }
+    #viewSayiAvcilari .step-btn:active {
+      transform: scale(0.92);
+    }
+
+    #viewSayiAvcilari .math-operator {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    #viewSayiAvcilari .formula-banner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      padding: 10px 20px;
+      border-radius: 14px;
+    }
+
+    #viewSayiAvcilari .formula-banner .total-result {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 700;
+      color: #fb7185;
+      text-shadow: 0 0 20px rgba(244, 63, 94, 0.5);
+    }
+
+    /* STRATEGY (SPLIT) TOGGLE */
+    #viewSayiAvcilari .strategy-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.1), rgba(168, 85, 247, 0.1));
+      border: 1px dashed rgba(168, 85, 247, 0.4);
+      padding: 14px 20px;
+      border-radius: 14px;
+    }
+
+    #viewSayiAvcilari .strategy-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    #viewSayiAvcilari .strategy-btn {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      border: none;
+      color: white;
+      padding: 8px 18px;
+      border-radius: 10px;
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.35);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #viewSayiAvcilari .strategy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
+    }
+
+    /* 3D POP-UP CANVAS CONTAINER */
+    #viewSayiAvcilari .canvas-wrapper {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+      border-radius: 18px;
+      border: 1px solid var(--card-border);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+    }
+
+    #viewSayiAvcilari #legoCanvas {
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+    #viewSayiAvcilari #legoCanvas:active {
+      cursor: grabbing;
+    }
+
+    #viewSayiAvcilari .canvas-hint {
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid var(--card-border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* =======================================================
+       MULTIPLICATION VIEW MODES & STACKING ANIMATION
+       ======================================================= */
+    #viewSayiAvcilari .mult-mode-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 12px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+      margin-top: 14px;
+    }
+
+    #viewSayiAvcilari .mode-pills-group {
+      display: flex;
+      gap: 6px;
+      background: rgba(30, 41, 59, 0.7);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+    }
+
+    #viewSayiAvcilari .mode-pill-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #viewSayiAvcilari .mode-pill-btn:hover {
+      color: #fff;
+    }
+
+    #viewSayiAvcilari .mode-pill-btn.active {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 700;
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    #viewSayiAvcilari .btn-animate-stack {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: none;
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 9px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+      transition: all 0.2s;
+    }
+
+    #viewSayiAvcilari .btn-animate-stack:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.55);
+    }
+
+    /* REPEATED ADDITION STRIP */
+    #viewSayiAvcilari .repeated-addition-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 18px;
+      margin-top: 12px;
+    }
+
+    #viewSayiAvcilari .repeat-badge {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--card-border);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: #38bdf8;
+      transition: all 0.25s;
+    }
+
+    #viewSayiAvcilari .repeat-badge.active-landed {
+      background: #fbbf24;
+      color: #0f172a;
+      border-color: #fbbf24;
+      transform: scale(1.15);
+      box-shadow: 0 0 16px rgba(251, 191, 36, 0.5);
+    }
+
+    #viewSayiAvcilari .repeat-plus {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      color: #a855f7;
+    }
+
+    #viewSayiAvcilari .repeat-total {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      color: #f43f5e;
+      margin-left: 4px;
+    }
+
+    #viewSayiAvcilari .split-breakdown-card {
+      display: none;
+      background: rgba(15, 23, 42, 0.85);
+      border: 2px solid #a855f7;
+      border-radius: 14px;
+      padding: 14px 20px;
+      align-items: center;
+      justify-content: space-around;
+      gap: 12px;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #viewSayiAvcilari .split-breakdown-card.show {
+      display: flex;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    #viewSayiAvcilari .breakdown-box {
+      text-align: center;
+    }
+    #viewSayiAvcilari .breakdown-box .sub-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    #viewSayiAvcilari .breakdown-box .sub-math {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+    }
+    #viewSayiAvcilari .sub-math.cyan { color: #38bdf8; }
+    #viewSayiAvcilari .sub-math.purple { color: #c084fc; }
+    #viewSayiAvcilari .sub-math.gold { color: #fbbf24; }
+
+    /* =====================================
+       DIVISION SECTION (HAZINE SANDIKLARI)
+       ===================================== */
+    #viewSayiAvcilari .division-setup {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #viewSayiAvcilari .treasure-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    #viewSayiAvcilari .btn-action {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: none;
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #viewSayiAvcilari .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(16, 185, 129, 0.55);
+    }
+    #viewSayiAvcilari .btn-action:active {
+      transform: translateY(1px);
+    }
+
+    #viewSayiAvcilari .chests-stage {
+      min-height: 400px;
+      background: radial-gradient(circle at 50% 30%, #1e293b 0%, #0f172a 100%);
+      border-radius: 20px;
+      border: 1px solid var(--card-border);
+      padding: 24px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    #viewSayiAvcilari .gem-source-area {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      min-height: 110px;
+      max-height: 220px;
+      overflow-y: auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      position: relative;
+    }
+
+    #viewSayiAvcilari .gem-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f59e0b;
+      color: #000;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+
+    #viewSayiAvcilari .chests-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 16px;
+      flex: 1;
+    }
+
+    #viewSayiAvcilari .chest-card {
+      background: rgba(30, 41, 59, 0.75);
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 180px;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #viewSayiAvcilari .chest-card.glow {
+      border-color: #38bdf8;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+      transform: translateY(-4px);
+    }
+
+    #viewSayiAvcilari .chest-icon {
+      font-size: 44px;
+      margin-bottom: 6px;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+    }
+
+    #viewSayiAvcilari .chest-gems-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3px;
+      max-height: 120px;
+      overflow-y: auto;
+      width: 100%;
+      padding: 6px 4px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 8px;
+    }
+
+    #viewSayiAvcilari .coin-gem {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fef08a, #eab308 60%, #ca8a04 100%);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4), inset 0 0 2px #fff;
+      display: inline-block;
+      animation: coinSpawn 0.25s ease-out;
+    }
+
+    @keyframes coinSpawn {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    #viewSayiAvcilari .chest-count-badge {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-top: 8px;
+    }
+
+    #viewSayiAvcilari .remainder-box {
+      display: none;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px dashed #ef4444;
+      border-radius: 12px;
+      padding: 10px 16px;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 15px;
+      color: #fca5a5;
+    }
+
+    #viewSayiAvcilari .remainder-box.show {
+      display: flex;
+    }
+
+    /* =====================================
+       TRAINING & SPEED GAME (HIZ ANTRENMANI)
+       ===================================== */
+    #viewSayiAvcilari .game-arena {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      max-width: 680px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    #viewSayiAvcilari .level-selector-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    #viewSayiAvcilari .level-pill {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    #viewSayiAvcilari .level-pill.active {
+      background: #38bdf8;
+      color: #000;
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    #viewSayiAvcilari .score-stats {
+      display: flex;
+      width: 100%;
+      justify-content: space-around;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid var(--card-border);
+    }
+
+    #viewSayiAvcilari .stat-item {
+      text-align: center;
+    }
+    #viewSayiAvcilari .stat-num {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--emerald);
+    }
+    #viewSayiAvcilari .stat-title {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    #viewSayiAvcilari .quiz-card {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 36px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    #viewSayiAvcilari .quiz-question-box {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-family: var(--font-display);
+      font-size: 58px;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 4px 20px rgba(56, 189, 248, 0.35);
+    }
+
+    #viewSayiAvcilari .quiz-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    #viewSayiAvcilari .option-btn {
+      background: rgba(51, 65, 85, 0.8);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      padding: 16px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    #viewSayiAvcilari .option-btn:hover {
+      background: #475569;
+      transform: translateY(-3px);
+      border-color: #38bdf8;
+    }
+    #viewSayiAvcilari .option-btn:active {
+      transform: translateY(1px);
+    }
+    #viewSayiAvcilari .option-btn.correct {
+      background: #10b981 !important;
+      border-color: #34d399 !important;
+      animation: bounce 0.4s ease;
+    }
+    #viewSayiAvcilari .option-btn.wrong {
+      background: #ef4444 !important;
+      border-color: #f87171 !important;
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    /* HINT / STRATEGY HELPER */
+    #viewSayiAvcilari .hint-trigger-btn {
+      background: transparent;
+      border: 1px dashed var(--amber);
+      color: var(--amber);
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #viewSayiAvcilari .hint-trigger-btn:hover {
+      background: rgba(251, 191, 36, 0.15);
+      transform: scale(1.04);
+    }
+
+    #viewSayiAvcilari .hint-bubble {
+      display: none;
+      width: 100%;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #fef08a;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+    }
+    #viewSayiAvcilari .hint-bubble.show {
+      display: block;
+    }
+
+    /* =======================================================
+       STEP DIVISION (ADIM ADIM BÖLME) STYLES
+       ======================================================= */
+    #viewSayiAvcilari .step-div-container {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 900px) {
+      #viewSayiAvcilari .step-div-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* KARELİ DEFTER TAHTASI */
+    #viewSayiAvcilari .math-notebook-board {
+      background: #0f172a;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 36px 36px;
+      border: 2px solid #334155;
+      border-radius: 20px;
+      padding: 28px 24px;
+      min-height: 480px;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5), 0 10px 25px rgba(0, 0, 0, 0.3);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-x: auto;
+    }
+
+    /* BÖLME İŞLEMİ DÜZENİ */
+    #viewSayiAvcilari .division-layout {
+      display: flex;
+      align-items: flex-start;
+      margin-top: 10px;
+    }
+
+    #viewSayiAvcilari .div-left-column {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    #viewSayiAvcilari .div-right-column {
+      border-left: 4px solid #38bdf8;
+      display: flex;
+      flex-direction: column;
+      margin-left: 8px;
+      padding-left: 12px;
+      min-width: 130px;
+    }
+
+    #viewSayiAvcilari .div-divisor-box {
+      border-bottom: 4px solid #38bdf8;
+      padding-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    #viewSayiAvcilari .div-quotient-box {
+      padding-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      min-height: 52px;
+    }
+
+    #viewSayiAvcilari .digit-cell {
+      width: 36px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      color: #f8fafc;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    #viewSayiAvcilari .digit-cell.empty {
+      color: transparent;
+    }
+
+    #viewSayiAvcilari .digit-cell.highlight-active {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      border-radius: 8px;
+      box-shadow: 0 0 12px var(--primary-glow);
+      transform: scale(1.08);
+    }
+
+    #viewSayiAvcilari .digit-cell.highlight-down {
+      color: #34d399;
+      background: rgba(52, 211, 153, 0.2);
+      border-radius: 8px;
+      box-shadow: 0 0 14px rgba(52, 211, 153, 0.4);
+      animation: dropIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #viewSayiAvcilari .digit-cell.quotient-active {
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.2);
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.45);
+      animation: popIn 0.3s ease;
+    }
+
+    @keyframes dropIn {
+      from { transform: translateY(-16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    #viewSayiAvcilari .subtraction-row {
+      display: flex;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    #viewSayiAvcilari .sub-line {
+      width: 100%;
+      height: 3px;
+      background: #e2e8f0;
+      border-radius: 2px;
+      margin: 4px 0 6px 0;
+    }
+
+    #viewSayiAvcilari .sub-sign {
+      width: 24px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      color: #f43f5e;
+      margin-right: 4px;
+    }
+
+    /* REHBER PANELİ */
+    #viewSayiAvcilari .coach-panel {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      min-height: 480px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    #viewSayiAvcilari .coach-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 14px;
+    }
+
+    #viewSayiAvcilari .coach-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #a855f7, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+    }
+
+    #viewSayiAvcilari .coach-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    #viewSayiAvcilari .coach-step-badge {
+      font-size: 13px;
+      color: #38bdf8;
+      font-weight: 700;
+    }
+
+    #viewSayiAvcilari .coach-bubble {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 22px 20px;
+      font-size: 17px;
+      line-height: 1.65;
+      color: #f1f5f9;
+      flex: 1;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 16px 0 20px 0;
+      transition: border-color 0.25s ease, background 0.25s ease;
+      overflow-y: auto;
+    }
+
+    #viewSayiAvcilari .coach-bubble.trap-alert {
+      border-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.12);
+      color: #fef08a;
+    }
+
+    #viewSayiAvcilari .coach-bubble.finish-success {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.15);
+      color: #a7f3d0;
+    }
+
+    /* STEP CONTROLS (SABİTLENMİŞ BUTONLAR) */
+    #viewSayiAvcilari .step-ctrls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: auto;
+      padding-top: 10px;
+    }
+
+    #viewSayiAvcilari .btn-step {
+      flex: 1;
+      min-width: 110px;
+      background: rgba(51, 65, 85, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 12px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    #viewSayiAvcilari .btn-step:hover:not(:disabled) {
+      background: #475569;
+      transform: translateY(-2px);
+    }
+
+    #viewSayiAvcilari .btn-step:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    #viewSayiAvcilari .btn-step.primary {
+      background: linear-gradient(135deg, #38bdf8, #2563eb);
+      border: none;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+    }
+    #viewSayiAvcilari .btn-step.primary:hover:not(:disabled) {
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+    }
+
+    /* INPUTS & EXAMPLE PILLS */
+    #viewSayiAvcilari .custom-input-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+    }
+
+    #viewSayiAvcilari .inputs-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #viewSayiAvcilari .num-input {
+      width: 90px;
+      height: 44px;
+      border-radius: 12px;
+      background: #1e293b;
+      border: 2px solid #475569;
+      color: #38bdf8;
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    #viewSayiAvcilari .num-input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    #viewSayiAvcilari .example-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #viewSayiAvcilari .ex-pill {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    #viewSayiAvcilari .ex-pill:hover {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border-color: #38bdf8;
+      transform: scale(1.05);
+    }
+
+    /* CONFETTI CANVAS */
+    #saConfettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* FOOTER */
+    #viewSayiAvcilari footer {
+      text-align: center;
+      padding: 16px;
+      color: var(--text-muted);
+      font-size: 13px;
+      border-top: 1px solid var(--card-border);
+      background: rgba(15, 23, 42, 0.5);
+    }
+
+    @media (max-width: 768px) {
+      #viewSayiAvcilari header {
+        flex-direction: column;
+        gap: 12px;
+      }
+      #viewSayiAvcilari .tabs {
+        width: 100%;
+        justify-content: center;
+      }
+      #viewSayiAvcilari .canvas-wrapper {
+        height: 360px;
+      }
+      #viewSayiAvcilari .quiz-question-box {
+        font-size: 44px;
+      }
+      #viewSayiAvcilari .option-btn {
+        font-size: 26px;
+        padding: 12px;
+      }
+    }
+#viewSayiAvcilari.active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   DERS YILDIZI / KUROMI AÇIK PASTEL TEMA UYUMU
+   ========================================================================== */
+#viewSayiAvcilari {
+  --bg: transparent;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(123, 31, 162, 0.16);
+  --primary: #8b5cf6;
+  --primary-glow: rgba(139, 92, 246, 0.28);
+  --accent: #ec4899;
+  --amber: #d97706;
+  --emerald: #059669;
+  --violet: #7c3aed;
+  --text: #2e1065;
+  --text-muted: #6b7280;
+  --font-display: 'Fredoka', 'Nunito', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+  background: transparent;
+  color: var(--text);
+}
+
+#viewSayiAvcilari header {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  margin: 1.5rem 1.5rem 0 1.5rem;
+  padding: 14px 20px;
+  box-shadow: 0 10px 28px rgba(168, 85, 247, 0.09);
+  position: static;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+#viewSayiAvcilari .brand-icon {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.3);
+}
+
+#viewSayiAvcilari .brand-title {
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#viewSayiAvcilari .tabs {
+  background: #f5f3ff;
+  border: 1px solid #e9d5ff;
+  flex-wrap: wrap;
+}
+
+#viewSayiAvcilari .tab-btn {
+  color: #6b21a8;
+}
+
+#viewSayiAvcilari .tab-btn:hover {
+  color: #4c1d95;
+  background: #ede9fe;
+}
+
+#viewSayiAvcilari .tab-btn.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35);
+}
+
+#viewSayiAvcilari .btn-sound {
+  background: #f5f3ff;
+  border: 1px solid #d8b4fe;
+  color: #6b21a8;
+}
+
+#viewSayiAvcilari main {
+  max-width: none;
+  padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+}
+
+#viewSayiAvcilari .glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(168, 85, 247, 0.08);
+}
+
+#viewSayiAvcilari .controls-grid,
+#viewSayiAvcilari .mult-mode-bar,
+#viewSayiAvcilari .custom-input-bar,
+#viewSayiAvcilari .chests-stage,
+#viewSayiAvcilari .repeated-addition-strip,
+#viewSayiAvcilari .split-breakdown-card {
+  background: #faf5ff;
+  border: 1.5px solid #e9d5ff;
+  box-shadow: none;
+}
+
+#viewSayiAvcilari .stepper-label {
+  color: #581c87;
+  font-weight: 700;
+}
+
+#viewSayiAvcilari .stepper-val-box {
+  background: #ffffff;
+  border: 2px solid #8b5cf6;
+  color: #6d28d9;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+}
+
+#viewSayiAvcilari .step-btn {
+  background: #ffffff;
+  border: 1.5px solid #d8b4fe;
+  color: #6b21a8;
+}
+
+#viewSayiAvcilari .step-btn:hover {
+  background: #f3e8ff;
+  border-color: #a855f7;
+}
+
+#viewSayiAvcilari .formula-banner {
+  background: linear-gradient(135deg, #fdf2f8, #faf5ff);
+  border: 1.5px solid #fbcfe8;
+}
+
+#viewSayiAvcilari .formula-banner .total-result {
+  color: #db2777;
+  text-shadow: none;
+}
+
+#viewSayiAvcilari .btn-sa-new-q {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border: none;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.32);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+#viewSayiAvcilari .btn-sa-new-q:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.42);
+}
+
+#viewSayiAvcilari .btn-sa-new-q:active {
+  transform: scale(0.96);
+}
+
+#viewSayiAvcilari .strategy-bar {
+  background: linear-gradient(90deg, #f5f3ff, #fdf2f8);
+  border: 1.5px dashed #c084fc;
+  color: #4c1d95;
+}
+
+#viewSayiAvcilari .split-breakdown-card.show {
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+#viewSayiAvcilari .breakdown-box {
+  background: #ffffff;
+  border: 1.5px solid #e9d5ff;
+  border-radius: 16px;
+  padding: 12px 22px;
+  min-width: 155px;
+  color: #4c1d95;
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.08);
+}
+
+#viewSayiAvcilari .add-chip {
+  background: #ffffff;
+  border: 1px solid #e9d5ff;
+  color: #4c1d95;
+}
+
+#viewSayiAvcilari .mode-pills-group {
+  background: #ffffff;
+  border: 1px solid #e9d5ff;
+}
+
+#viewSayiAvcilari .mode-pill-btn {
+  color: #6b21a8;
+}
+
+#viewSayiAvcilari .mode-pill-btn:hover {
+  color: #4c1d95;
+  background: #f5f3ff;
+}
+
+#viewSayiAvcilari .mode-pill-btn.active {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.28);
+}
+
+#viewSayiAvcilari .canvas-wrapper {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 55%, #fdf2f8 100%);
+  border: 2px solid #e9d5ff;
+  box-shadow: inset 0 0 24px rgba(139, 92, 246, 0.06);
+}
+
+#viewSayiAvcilari .canvas-hint {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e9d5ff;
+  color: #6b21a8;
+}
+
+#viewSayiAvcilari .gem-source-area {
+  background: #ffffff;
+  border: 1.5px dashed #d8b4fe;
+}
+
+#viewSayiAvcilari .gem-badge {
+  background: #f3e8ff;
+  color: #6b21a8;
+  border: 1px solid #d8b4fe;
+}
+
+#viewSayiAvcilari .remainder-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+
+#viewSayiAvcilari .chest-card {
+  background: #ffffff;
+  border: 2px solid #e9d5ff;
+  color: #31105e;
+  box-shadow: 0 6px 18px rgba(139, 92, 246, 0.08);
+}
+
+#viewSayiAvcilari .chest-title {
+  color: #4c1d95;
+}
+
+#viewSayiAvcilari .chest-count {
+  color: #059669;
+}
+
+#viewSayiAvcilari .num-input {
+  background: #ffffff;
+  border: 2px solid #c084fc;
+  color: #581c87;
+}
+
+#viewSayiAvcilari .num-input:focus {
+  border-color: #ec4899;
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.25);
+}
+
+#viewSayiAvcilari .ex-pill {
+  background: #ffffff;
+  border: 1.5px solid #d8b4fe;
+  color: #6b21a8;
+}
+
+#viewSayiAvcilari .ex-pill:hover {
+  background: #f3e8ff;
+  color: #4c1d95;
+  border-color: #8b5cf6;
+}
+
+/* Kareli Defter ve Rehber Paneli */
+#viewSayiAvcilari .math-notebook-board {
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(to right, rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+  border: 2px solid #d8b4fe;
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.08);
+}
+
+#viewSayiAvcilari .div-cell {
+  color: #31105e;
+}
+
+#viewSayiAvcilari .div-cell.quotient {
+  color: #059669;
+}
+
+#viewSayiAvcilari .div-cell.divisor {
+  color: #7c3aed;
+}
+
+#viewSayiAvcilari .div-cell.sub {
+  color: #db2777;
+}
+
+#viewSayiAvcilari .div-cell.line-bottom {
+  border-bottom-color: #6b21a8;
+}
+
+#viewSayiAvcilari .div-cell.line-left {
+  border-left-color: #6b21a8;
+}
+
+#viewSayiAvcilari .coach-panel {
+  background: #faf5ff;
+  border: 1.5px solid #e9d5ff;
+  box-shadow: none;
+}
+
+#viewSayiAvcilari .coach-title {
+  color: #4c1d95;
+}
+
+#viewSayiAvcilari .coach-bubble {
+  background: #ffffff;
+  border: 1.5px solid #e9d5ff;
+  color: #31105e;
+}
+
+#viewSayiAvcilari .coach-bubble.trap-alert {
+  background: #fffbeb;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+#viewSayiAvcilari .coach-bubble.finish-success {
+  background: #ecfdf5;
+  border-color: #10b981;
+  color: #065f46;
+}
+
+#viewSayiAvcilari .btn-step {
+  background: #ffffff;
+  border: 1.5px solid #d8b4fe;
+  color: #6b21a8;
+}
+
+#viewSayiAvcilari .btn-step:hover:not(:disabled) {
+  background: #f3e8ff;
+}
+
+#viewSayiAvcilari .btn-step.primary {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: #ffffff;
+  border: none;
+}
+
+/* Hızlı Zihin Oyunu */
+#viewSayiAvcilari .level-pill {
+  background: #ffffff;
+  border: 1.5px solid #d8b4fe;
+  color: #6b21a8;
+}
+
+#viewSayiAvcilari .level-pill.active {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+#viewSayiAvcilari .stat-item {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1.5px solid #e9d5ff;
+  box-shadow: 0 6px 18px rgba(139, 92, 246, 0.08);
+}
+
+#viewSayiAvcilari .stat-num {
+  color: #6d28d9;
+}
+
+#viewSayiAvcilari .stat-title {
+  color: #6b7280;
+}
+
+#viewSayiAvcilari .quiz-card {
+  background: rgba(255, 255, 255, 0.94);
+  border: 2px solid #e9d5ff;
+  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.12);
+}
+
+#viewSayiAvcilari .quiz-question-box {
+  color: #31105e;
+  text-shadow: none;
+}
+
+#viewSayiAvcilari .hint-trigger-btn {
+  background: #fffbeb;
+  border: 1.5px solid #fcd34d;
+  color: #b45309;
+}
+
+#viewSayiAvcilari .hint-bubble {
+  background: #faf5ff;
+  border: 1.5px solid #d8b4fe;
+  color: #4c1d95;
+}
+
+#viewSayiAvcilari .option-btn {
+  background: #ffffff;
+  border: 2px solid #d8b4fe;
+  color: #4c1d95;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.08);
+}
+
+#viewSayiAvcilari .option-btn:hover {
+  background: #f5f3ff;
+  border-color: #8b5cf6;
+}
+
+#viewSayiAvcilari footer {
+  background: rgba(255, 255, 255, 0.7);
+  border-top: 1px solid #e9d5ff;
+  color: #6b21a8;
+  margin-top: auto;
+}

@@ -625,6 +625,25 @@ class AreaMultiplicationGame {
     });
   }
 
+  showMicroHint(msg) {
+    let hintEl = document.getElementById('areaMicroHint');
+    if (!hintEl && this.dom.stage && this.dom.stage.parentElement) {
+      hintEl = document.createElement('div');
+      hintEl.id = 'areaMicroHint';
+      hintEl.className = 'area-micro-hint';
+      this.dom.stage.parentElement.appendChild(hintEl);
+    }
+    if (hintEl) {
+      hintEl.innerHTML = msg;
+      hintEl.style.display = 'block';
+    }
+  }
+
+  hideMicroHint() {
+    const hintEl = document.getElementById('areaMicroHint');
+    if (hintEl) hintEl.style.display = 'none';
+  }
+
   tryPlacePiece(pieceType, pieceId, slotId) {
     const slot = this.slots.find(s => s.id === slotId);
     if (!slot) return;
@@ -636,6 +655,7 @@ class AreaMultiplicationGame {
       const isCorrect = (piece.rowVal === slot.rowVal && piece.colVal === slot.colVal);
 
       if (isCorrect) {
+        this.hideMicroHint();
         this.sound.playSnap();
         piece.isPlaced = true;
         slot.placedCalc = true;
@@ -647,6 +667,7 @@ class AreaMultiplicationGame {
         this.checkPuzzleCompletion();
       } else {
         this.sound.playPop();
+        this.showMicroHint(`💡 <b>İpucu:</b> <b>${piece.rowVal} × ${piece.colVal}</b> kartını, soldaki <b>${piece.rowVal}</b> satırı ile üstteki <b>${piece.colVal}</b> sütununun kesiştiği kutuya koymalısın!`);
         const slotEl = document.getElementById(slotId);
         if (slotEl) {
           slotEl.classList.add('shake-error');
@@ -660,6 +681,7 @@ class AreaMultiplicationGame {
       const isCorrect = (piece.prodVal === slot.prodVal && piece.rowVal === slot.rowVal && piece.colVal === slot.colVal);
 
       if (isCorrect) {
+        this.hideMicroHint();
         this.sound.playSnap();
         piece.isPlaced = true;
         slot.placedProd = true;
@@ -671,6 +693,9 @@ class AreaMultiplicationGame {
         this.checkPuzzleCompletion();
       } else {
         this.sound.playPop();
+        const rBase = String(piece.rowVal).replace(/0+$/, '') || String(piece.rowVal);
+        const cBase = String(piece.colVal).replace(/0+$/, '') || String(piece.colVal);
+        this.showMicroHint(`💡 <b>İpucu:</b> <b>${piece.prodVal}</b> sayısı için <b>${piece.rowVal} × ${piece.colVal}</b> kutusunu bul! (Sıfırları sakla: ${rBase} × ${cBase} = ${Number(rBase) * Number(cBase)})`);
         const slotEl = document.getElementById(slotId);
         if (slotEl) {
           slotEl.classList.add('shake-error');

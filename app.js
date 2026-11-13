@@ -8,12 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const tabBtnClock = document.getElementById('tabBtnClock');
   const tabBtnMultiplication = document.getElementById('tabBtnMultiplication');
   const tabBtnAreaMult = document.getElementById('tabBtnAreaMult');
+  const tabBtnSayiAvcilari = document.getElementById('tabBtnSayiAvcilari');
+  const tabBtnFractions = document.getElementById('tabBtnFractions');
+  const tabBtnBarModel = document.getElementById('tabBtnBarModel');
+  const tabBtnGeometry = document.getElementById('tabBtnGeometry');
 
   const viewPlanner = document.getElementById('viewPlanner');
   const viewMath = document.getElementById('viewMath');
   const viewClock = document.getElementById('viewClock');
   const viewMultiplication = document.getElementById('viewMultiplication');
   const viewAreaMultiplication = document.getElementById('viewAreaMultiplication');
+  const viewSayiAvcilari = document.getElementById('viewSayiAvcilari');
+  const viewFractions = document.getElementById('viewFractions');
+  const viewBarModel = document.getElementById('viewBarModel');
+  const viewGeometry = document.getElementById('viewGeometry');
 
   const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
   const portalSidebar = document.getElementById('portalSidebar');
@@ -26,12 +34,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tabBtnClock) tabBtnClock.classList.remove('active');
     if (tabBtnMultiplication) tabBtnMultiplication.classList.remove('active');
     if (tabBtnAreaMult) tabBtnAreaMult.classList.remove('active');
+    if (tabBtnSayiAvcilari) tabBtnSayiAvcilari.classList.remove('active');
+    if (tabBtnFractions) tabBtnFractions.classList.remove('active');
+    if (tabBtnBarModel) tabBtnBarModel.classList.remove('active');
+    if (tabBtnGeometry) tabBtnGeometry.classList.remove('active');
 
     if (viewPlanner) viewPlanner.classList.remove('active');
     if (viewMath) viewMath.classList.remove('active');
     if (viewClock) viewClock.classList.remove('active');
     if (viewMultiplication) viewMultiplication.classList.remove('active');
     if (viewAreaMultiplication) viewAreaMultiplication.classList.remove('active');
+    if (viewSayiAvcilari) viewSayiAvcilari.classList.remove('active');
+    if (viewFractions) viewFractions.classList.remove('active');
+    if (viewBarModel) viewBarModel.classList.remove('active');
+    if (viewGeometry) viewGeometry.classList.remove('active');
 
     if (viewName === 'planner') {
       if (tabBtnPlanner) tabBtnPlanner.classList.add('active');
@@ -71,6 +87,38 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.initAreaMultiplicationPage) {
         window.initAreaMultiplicationPage();
       }
+    } else if (viewName === 'sayi-avcilari') {
+      if (tabBtnSayiAvcilari) tabBtnSayiAvcilari.classList.add('active');
+      if (viewSayiAvcilari) viewSayiAvcilari.classList.add('active');
+      if (mobilePortalTitle) mobilePortalTitle.textContent = '⚡ Sayı Avcıları';
+
+      if (window.initSayiAvcilariPage) {
+        window.initSayiAvcilariPage();
+      }
+    } else if (viewName === 'fractions') {
+      if (tabBtnFractions) tabBtnFractions.classList.add('active');
+      if (viewFractions) viewFractions.classList.add('active');
+      if (mobilePortalTitle) mobilePortalTitle.textContent = '🍕 Kesirler';
+
+      if (window.initFractionsPage) {
+        window.initFractionsPage();
+      }
+    } else if (viewName === 'bar-model') {
+      if (tabBtnBarModel) tabBtnBarModel.classList.add('active');
+      if (viewBarModel) viewBarModel.classList.add('active');
+      if (mobilePortalTitle) mobilePortalTitle.textContent = '📖 Problem Barı';
+
+      if (window.initBarModelPage) {
+        window.initBarModelPage();
+      }
+    } else if (viewName === 'geometry') {
+      if (tabBtnGeometry) tabBtnGeometry.classList.add('active');
+      if (viewGeometry) viewGeometry.classList.add('active');
+      if (mobilePortalTitle) mobilePortalTitle.textContent = '📏 Alan & Yuvarlama';
+
+      if (window.initGeometryPage) {
+        window.initGeometryPage();
+      }
     }
 
     // Mobilde/Tablette tıklandıktan sonra sol menüyü kapat
@@ -97,6 +145,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (tabBtnAreaMult) {
     tabBtnAreaMult.addEventListener('click', () => switchTab('area-multiplication'));
+  }
+
+  if (tabBtnSayiAvcilari) {
+    tabBtnSayiAvcilari.addEventListener('click', () => switchTab('sayi-avcilari'));
+  }
+
+  if (tabBtnFractions) {
+    tabBtnFractions.addEventListener('click', () => switchTab('fractions'));
+  }
+
+  if (tabBtnBarModel) {
+    tabBtnBarModel.addEventListener('click', () => switchTab('bar-model'));
+  }
+
+  if (tabBtnGeometry) {
+    tabBtnGeometry.addEventListener('click', () => switchTab('geometry'));
   }
 
   if (sidebarToggleBtn && portalSidebar) {

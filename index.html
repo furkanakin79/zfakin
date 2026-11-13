@@ -19,7 +19,8 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  <link rel="stylesheet" href="style.css?v=2.2">
+  <link rel="stylesheet" href="style.css?v=2.4">
+  <link rel="stylesheet" href="sayi-avcilari.css?v=2.4">
 </head>
 <body>
   <!-- Arka Plan Kayan Yıldızlar -->
@@ -77,6 +78,37 @@
           <div class="nav-text">
             <span class="nav-title">Çarpma</span>
             <span class="nav-sub">Alan Modeli Bulmacası</span>
+          </div>
+        </button>
+
+        <button class="nav-item-btn" id="tabBtnSayiAvcilari" data-view="sayi-avcilari">
+          <span class="nav-icon">⚡</span>
+          <div class="nav-text">
+            <span class="nav-title">Sayı Avcıları</span>
+            <span class="nav-sub">3D Çarpma & Bölme</span>
+          </div>
+        </button>
+        <button class="nav-item-btn" id="tabBtnFractions" data-view="fractions">
+          <span class="nav-icon">🍕</span>
+          <div class="nav-text">
+            <span class="nav-title">Kesirler</span>
+            <span class="nav-sub">Pizza, Çubuk & Denk Kesir</span>
+          </div>
+        </button>
+
+        <button class="nav-item-btn" id="tabBtnBarModel" data-view="bar-model">
+          <span class="nav-icon">📖</span>
+          <div class="nav-text">
+            <span class="nav-title">Problem Barı</span>
+            <span class="nav-sub">Singapur Çubuk Modeli</span>
+          </div>
+        </button>
+
+        <button class="nav-item-btn" id="tabBtnGeometry" data-view="geometry">
+          <span class="nav-icon">📏</span>
+          <div class="nav-text">
+            <span class="nav-title">Alan & Yuvarlama</span>
+            <span class="nav-sub">Birim Kare & Sayı Doğrusu</span>
           </div>
         </button>
       </nav>
@@ -948,6 +980,677 @@
         </div>
       </section>
 
+      <!-- ======================================================== -->
+      <!-- GÖRÜNÜM 6: SAYI AVCILARI (3D ÇARPMA VE BÖLME ATÖLYESİ)   -->
+      <!-- ======================================================== -->
+      <section class="portal-view" id="viewSayiAvcilari">
+
+  <canvas id="saConfettiCanvas"></canvas>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <div>
+        <div class="brand-title">Sayı Avcıları</div>
+        <div class="brand-subtitle">3D Görsel Matematik Laboratuvarı</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="SA.switchTab('multiplication')">
+        <span>🧱</span> Çarpma Kaşifi
+      </button>
+      <button class="tab-btn" onclick="SA.switchTab('division')">
+        <span>💎</span> Hazine Bölüşümü
+      </button>
+      <button class="tab-btn" onclick="SA.switchTab('stepDivision')">
+        <span>➗</span> Adım Adım Bölme
+      </button>
+      <button class="tab-btn" onclick="SA.switchTab('speed')">
+        <span>🚀</span> Hızlı Zihin Oyunu
+      </button>
+    </div>
+
+    <button class="btn-sound" id="soundBtn" onclick="SA.toggleSound()" title="Sesi Aç/Kapat">
+      🔊
+    </button>
+  </header>
+
+  <!-- MAIN VIEW -->
+  <main>
+    
+    <!-- ==============================================
+         TAB 1: MULTIPLICATION 3D EXPLORER (LEGO GRID)
+         ============================================== -->
+    <section id="multiplicationView" class="view-section active">
+      <div class="glass-card">
+        <!-- CONTROLS -->
+        <div class="controls-grid">
+          <!-- FACTOR A -->
+          <div class="stepper-group">
+            <span class="stepper-label">Grup Sayısı (Tane):</span>
+            <button class="step-btn" onclick="SA.changeFactorA(-1)">-</button>
+            <div class="stepper-val-box" id="factorABox">7</div>
+            <button class="step-btn" onclick="SA.changeFactorA(1)">+</button>
+          </div>
+
+          <div class="math-operator">×</div>
+
+          <!-- FACTOR B -->
+          <div class="stepper-group">
+            <span class="stepper-label">Her Gruptaki Blok:</span>
+            <button class="step-btn" onclick="SA.changeFactorB(-1)">-</button>
+            <div class="stepper-val-box" id="factorBBox">6</div>
+            <button class="step-btn" onclick="SA.changeFactorB(1)">+</button>
+          </div>
+
+          <div class="math-operator">=</div>
+
+          <!-- RESULT BANNER -->
+          <div class="formula-banner" onclick="SA.toggleMultResultReveal()" style="cursor: pointer;" title="Cevabı göstermek veya gizlemek için tıkla">
+            <span class="stepper-label">Toplam Blok:</span>
+            <span class="total-result" id="totalResult">?</span>
+          </div>
+
+          <button class="btn-sa-new-q" onclick="SA.randomMultiplication()" title="Rastgele çarpma sorusu getir">
+            <span>🎲</span> Yeni Soru
+          </button>
+        </div>
+
+        <!-- ÖNCE TAHMİN ET BARI -->
+        <div class="sa-guess-bar">
+          <span class="sa-guess-label">🎯 Önce Tahmin Et:</span>
+          <input type="number" id="saGuessInput" class="sa-guess-input" placeholder="?" min="0" max="200" onkeydown="if(event.key==='Enter')SA.checkMultGuess()">
+          <button class="sa-guess-btn" onclick="SA.checkMultGuess()">Tahmin Et ✨</button>
+          <span id="saGuessFeedback" class="sa-guess-feedback"></span>
+        </div>
+
+        <!-- STRATEGY (SİHİRLİ PARÇALAMA) BAR -->
+        <div class="strategy-bar" style="margin-top: 16px;">
+          <div class="strategy-info">
+            <span>✨</span>
+            <span id="strategyPrompt">Bunu daha hızlı çarpmak ister misin? <b>7'yi 5 + 2</b> olarak parçala!</span>
+          </div>
+          <button class="strategy-btn" id="splitBtn" onclick="SA.toggleSplitStrategy()">
+            <span>🪄</span> Sihirli Parçala
+          </button>
+        </div>
+
+        <!-- BREAKDOWN DETAILS (AÇILDIĞINDA GÖRÜNÜR) -->
+        <div class="split-breakdown-card" id="splitCard" style="margin-top: 12px;">
+          <div class="breakdown-box">
+            <div class="sub-label" id="splitLabelA">1. Parça (Kolay 5'li Grup)</div>
+            <div class="sub-math cyan" id="splitMathA">6 × 5 = 30</div>
+          </div>
+          <div style="font-size: 26px; font-weight: 800; color: #a855f7;">+</div>
+          <div class="breakdown-box">
+            <div class="sub-label">2. Parça (Kalan Grup)</div>
+            <div class="sub-math purple" id="splitMathB">6 × 2 = 12</div>
+          </div>
+          <div style="font-size: 26px; font-weight: 800; color: #fbbf24;">=</div>
+          <div class="breakdown-box">
+            <div class="sub-label" id="splitMathTotalLabel">Sonuç (30 + 12)</div>
+            <div class="sub-math gold" id="splitMathTotal">? 🎯</div>
+          </div>
+        </div>
+
+        <!-- VIEW MODES (YAN YANA / ÜST ÜSTE KULE / IZGARA) & ANIMATION -->
+        <div class="mult-mode-bar">
+          <div class="mode-pills-group">
+            <button class="mode-pill-btn active" id="btnModeGroups" onclick="SA.setMultViewMode('groups')">
+              <span>🧱</span> Yan Yana Gruplar
+            </button>
+            <button class="mode-pill-btn" id="btnModeTower" onclick="SA.setMultViewMode('tower')">
+              <span>🏢</span> Üst Üste Yığılan Kule
+            </button>
+            <button class="mode-pill-btn" id="btnModeGrid" onclick="SA.setMultViewMode('grid')">
+              <span>📐</span> Izgara Alanı
+            </button>
+          </div>
+
+          <button class="btn-animate-stack" id="btnAnimStack" onclick="SA.animateMultiplicationStack()">
+            <span>🎬</span> Kat Kat Yığ / Canlandır!
+          </button>
+        </div>
+
+        <!-- REPEATED ADDITION STRIP -->
+        <div class="repeated-addition-strip" id="repeatedAdditionStrip">
+          <!-- Dynamic 6 + 6 + ... = 42 -->
+        </div>
+
+        <!-- 3D LEGO CANVAS -->
+        <div class="canvas-wrapper" style="margin-top: 16px;">
+          <canvas id="legoCanvas"></canvas>
+          <div class="canvas-hint">
+            <span>👆 Blokları incele (üzerine gel), tıkla (zıplat) veya basılı tutup 3D döndür!</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TAB 2: DIVISION & TREASURE CHESTS (BÖLME)
+         ============================================== -->
+    <section id="divisionView" class="view-section">
+      <div class="glass-card">
+        <div class="division-setup">
+          <div class="treasure-controls">
+            <div class="stepper-group">
+              <span class="stepper-label">Toplam Elmas:</span>
+              <button class="step-btn" onclick="SA.changeDividend(-10)" title="10 Azalt" style="font-size:12px; width:40px;">-10</button>
+              <button class="step-btn" onclick="SA.changeDividend(-1)" title="1 Azalt">-</button>
+              <div class="stepper-val-box" id="dividendBox" style="color: #fbbf24; border-color: #fbbf24; min-width: 60px;">24</div>
+              <button class="step-btn" onclick="SA.changeDividend(1)" title="1 Arttır">+</button>
+              <button class="step-btn" onclick="SA.changeDividend(10)" title="10 Arttır" style="font-size:12px; width:40px;">+10</button>
+            </div>
+
+            <div class="math-operator" style="color: #10b981;">÷</div>
+
+            <div class="stepper-group">
+              <span class="stepper-label">Sandık Sayısı:</span>
+              <button class="step-btn" onclick="SA.changeDivisor(-1)">-</button>
+              <div class="stepper-val-box" id="divisorBox" style="color: #10b981; border-color: #10b981;">4</div>
+              <button class="step-btn" onclick="SA.changeDivisor(1)">+</button>
+            </div>
+
+            <button class="btn-sa-new-q" onclick="SA.randomDivision()" title="Rastgele bölme sorusu getir">
+              <span>🎲</span> Yeni Soru
+            </button>
+          </div>
+        </div>
+
+        <!-- QUICK ELMAS PRESETS -->
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 12px;">
+          <span style="font-size: 13px; color: var(--text-muted); font-weight: 700;">Hızlı Elmas Seç:</span>
+          <button class="ex-pill" onclick="SA.setDividendDirect(20)">20 Elmas</button>
+          <button class="ex-pill" onclick="SA.setDividendDirect(24)">24 Elmas</button>
+          <button class="ex-pill" onclick="SA.setDividendDirect(48)">48 Elmas</button>
+          <button class="ex-pill" onclick="SA.setDividendDirect(60)">60 Elmas</button>
+          <button class="ex-pill" onclick="SA.setDividendDirect(75)">75 Elmas</button>
+          <button class="ex-pill" onclick="SA.setDividendDirect(100)" style="border-color:#fbbf24; color:#fbbf24; font-weight:800;">💎 100 Elmas (Maksimum)</button>
+        </div>
+
+        <!-- DIVISION VIEW MODES (SANDIKLAR vs RENKLİ KÜP IZGARASI) -->
+        <div class="mult-mode-bar" style="margin-top: 14px;">
+          <div class="mode-pills-group">
+            <button class="mode-pill-btn active" id="btnDivChests" onclick="SA.setDivMode('chests')">
+              <span>📦</span> Sandıklara Paylaştır
+            </button>
+            <button class="mode-pill-btn" id="btnDivGrid" onclick="SA.setDivMode('grid')">
+              <span>🧱</span> Renkli Küp Izgarası (Gruplama)
+            </button>
+          </div>
+
+          <button class="btn-action" id="btnDivAction" onclick="SA.runDivisionAction()" style="padding: 10px 22px; font-size: 16px;">
+            <span>✨</span> <span id="divActionLabel">Eşit Paylaştır!</span>
+          </button>
+        </div>
+
+        <!-- STAGE 1: CHESTS STAGE -->
+        <div class="chests-stage" id="chestsStage" style="margin-top: 16px;">
+          <!-- GEM SOURCE -->
+          <div class="gem-source-area" id="gemSourceArea">
+            <span class="gem-badge" id="gemSourceBadge">Hazine Havuzu (24 Elmas)</span>
+          </div>
+
+          <!-- REMAINDER (KALAN) -->
+          <div class="remainder-box" id="remainderBox">
+            <span>⚠️</span>
+            <span id="remainderText">Kalan: 0 Elmas (Eşit bölünemeyenler)</span>
+          </div>
+
+          <!-- CHESTS GRID -->
+          <div class="chests-grid" id="chestsGrid">
+            <!-- Chest cards generated dynamically -->
+          </div>
+        </div>
+
+        <!-- STAGE 2: COLORFUL DIVISION CUBE GRID STAGE -->
+        <div id="divGridStage" style="display: none; margin-top: 16px; flex-direction: column; gap: 14px;">
+          <!-- STRIP: 4 + 4 + 4 + 4 + 4 = 20 -->
+          <div class="repeated-addition-strip" id="divRepeatedStrip">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <div class="canvas-wrapper" style="height: 480px;">
+            <canvas id="divGridCanvas"></canvas>
+            <div class="canvas-hint">
+              <span>👆 Her renk grubu tam bölen kadar küp içerir!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TAB 3: STEP-BY-STEP LONG DIVISION (ADIM ADIM BÖLME)
+         ============================================== -->
+    <section id="stepDivisionView" class="view-section">
+      <div class="glass-card">
+        <!-- INPUTS & PRESETS -->
+        <div class="custom-input-bar">
+          <div class="inputs-wrapper">
+            <span class="stepper-label">Bölünen:</span>
+            <input type="number" id="stepDividendInput" class="num-input" value="4872" min="1000" max="9999">
+            <span class="math-operator" style="font-size: 24px; color: #38bdf8;">÷</span>
+            <span class="stepper-label">Bölen:</span>
+            <input type="number" id="stepDivisorInput" class="num-input" value="12" min="1" max="99" style="width: 70px;">
+            <button class="btn-step primary" onclick="SA.loadCustomStepDivision()" style="min-width: auto; padding: 10px 18px;">
+              <span>🎬</span> Hazırla
+            </button>
+            <button class="btn-sa-new-q" onclick="SA.randomStepDivision()" title="Rastgele 4 basamaklı bölme sorusu getir">
+              <span>🎲</span> Yeni Soru
+            </button>
+          </div>
+
+          <!-- EXAMPLE PRESETS -->
+          <div class="example-pills">
+            <span style="font-size: 13px; color: var(--text-muted); font-weight: 700;">Hazır Örnekler:</span>
+            <button class="ex-pill" onclick="SA.loadStepExample(4872, 12)">4872 ÷ 12 (Standart)</button>
+            <button class="ex-pill" onclick="SA.loadStepExample(8428, 14)">8428 ÷ 14 (Orta)</button>
+            <button class="ex-pill" onclick="SA.loadStepExample(6240, 6)" style="border-color: #fbbf24; color: #fbbf24;">6240 ÷ 6 (0 Tuzağı! ⚠️)</button>
+            <button class="ex-pill" onclick="SA.loadStepExample(7531, 25)">7531 ÷ 25 (Kalanlı)</button>
+            <button class="ex-pill" onclick="SA.loadStepExample(3456, 8)">3456 ÷ 8 (Tek Basamak)</button>
+          </div>
+        </div>
+
+        <!-- MAIN STEP DIVISION STAGE -->
+        <div class="step-div-container" style="margin-top: 20px;">
+          
+          <!-- LEFT: KARELİ DEFTER TAHTASI -->
+          <div class="math-notebook-board">
+            <div style="font-family: var(--font-display); font-size: 14px; color: var(--text-muted); margin-bottom: 12px; align-self: flex-start;">
+              📓 Matematik Defteri Görünümü (Klasik Bölme Çizgisi)
+            </div>
+
+            <!-- DYNAMIC DIVISION BOARD -->
+            <div class="division-layout" id="divisionLayoutContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- RIGHT: COACH / REHBER ANLATIM PANELİ -->
+          <div class="coach-panel">
+            <div class="coach-header">
+              <div class="coach-avatar" id="coachAvatar">🦉</div>
+              <div>
+                <div class="coach-title" id="coachTitle">Adım Adım Bölme Rehberi</div>
+                <div class="coach-step-badge" id="coachStepBadge">Adım 1 / 6</div>
+              </div>
+            </div>
+
+            <!-- SPEECH BUBBLE -->
+            <div class="coach-bubble" id="coachBubble">
+              İşleme en büyük basamaktan başlıyoruz...
+            </div>
+
+            <!-- İZLE / BEN ÇÖZEYİM MODU -->
+            <div class="sa-practice-toggle">
+              <button class="sa-practice-mode-btn active" id="btnStepModeWatch" onclick="SA.toggleStepPracticeMode(false)">👀 İzle &amp; Öğren</button>
+              <button class="sa-practice-mode-btn" id="btnStepModeSolve" onclick="SA.toggleStepPracticeMode(true)">✍️ Ben Çözeyim</button>
+            </div>
+
+            <div class="sa-practice-pad" id="stepPracticePad" style="display: none;">
+              <div class="sa-practice-prompt">Bu basamakta bölüme hangi rakam yazılır?</div>
+              <div class="sa-digit-grid">
+                <button class="sa-digit-btn" onclick="SA.submitStepDigit(0)">0</button>
+                <button class="sa-digit-btn" onclick="SA.submitStepDigit(1)">1</button>
+                <button class="sa-digit-btn" onclick="SA.submitStepDigit(2)">2</button>
+                <button class="sa-digit-btn" onclick="SA.submitStepDigit(3)">3</button>
+                <button class="sa-digit-btn" onclick="SA.submitStepDigit(4)">4</button>
+                <button class="sa-digit-btn" onclick="SA.submitStepDigit(5)">5</button>
+                <button class="sa-digit-btn" onclick="SA.submitStepDigit(6)">6</button>
+                <button class="sa-digit-btn" onclick="SA.submitStepDigit(7)">7</button>
+                <button class="sa-digit-btn" onclick="SA.submitStepDigit(8)">8</button>
+                <button class="sa-digit-btn" onclick="SA.submitStepDigit(9)">9</button>
+              </div>
+              <div class="sa-practice-feedback" id="stepPracticeFeedback"></div>
+            </div>
+
+            <!-- CONTROLS -->
+            <div class="step-ctrls">
+              <button class="btn-step" id="btnStepPrev" onclick="SA.stepDivPrev()">
+                <span>◀️</span> Önceki
+              </button>
+              <button class="btn-step primary" id="btnStepNext" onclick="SA.stepDivNext()">
+                Sonraki Adım <span>▶️</span>
+              </button>
+              <button class="btn-step" id="btnStepAuto" onclick="SA.stepDivToggleAuto()">
+                <span>▶️</span> Otomatik Oynat
+              </button>
+              <button class="btn-step" onclick="SA.stepDivReset()">
+                <span>🔄</span> Başa Sar
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TAB 4: SPEED & FLUENCY GAME (HIZ ANTRENMANI)
+         ============================================== -->
+    <section id="speedView" class="view-section">
+      <div class="game-arena">
+        
+        <!-- LEVEL SELECTOR -->
+        <div class="level-selector-pills">
+          <button class="level-pill active" onclick="SA.setQuizLevel('easy')">🌱 2, 5 ve 10'lar</button>
+          <button class="level-pill" onclick="SA.setQuizLevel('doubles')">✨ İkiz Sayılar (6×6, 7×7...)</button>
+          <button class="level-pill" onclick="SA.setQuizLevel('hard')">🔥 Zorlu Çarpımlar (6, 7, 8, 9)</button>
+          <button class="level-pill" onclick="SA.setQuizLevel('div')">💎 Bölme Ustası</button>
+          <button class="level-pill" id="saMistakesLevelBtn" onclick="SA.setQuizLevel('mistakes')">📌 Zorlandıklarım (0)</button>
+        </div>
+
+        <!-- STATS -->
+        <div class="score-stats">
+          <div class="stat-item">
+            <div class="stat-num" id="saStatStreak">0 🔥</div>
+            <div class="stat-title">Üst Üste Doğru</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="statScore">0 ⭐</div>
+            <div class="stat-title">Kazanılan Yıldız</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="statAccuracy">100%</div>
+            <div class="stat-title">İsabet Oranı</div>
+          </div>
+        </div>
+
+        <!-- QUIZ CARD -->
+        <div class="quiz-card">
+          <div class="quiz-question-box" id="quizQuestion">
+            6 × 7 = ?
+          </div>
+
+          <!-- HINT TRIGGER -->
+          <button class="hint-trigger-btn" onclick="SA.toggleQuizHint()">
+            <span>💡</span> Hızlı Çarpma İpucu Al
+          </button>
+
+          <!-- HINT BUBBLE -->
+          <div class="hint-bubble" id="quizHintBubble">
+            7'yi <b>5 + 2</b> diye düşün: (6 × 5 = 30) ve (6 × 2 = 12). 30 + 12 = 42!
+          </div>
+
+          <!-- OPTIONS -->
+          <div class="quiz-options-grid" id="quizOptions">
+            <button class="option-btn" onclick="SA.checkAnswer(0)">36</button>
+            <button class="option-btn" onclick="SA.checkAnswer(1)">42</button>
+            <button class="option-btn" onclick="SA.checkAnswer(2)">48</button>
+            <button class="option-btn" onclick="SA.checkAnswer(3)">45</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Sevgili kızımız için sevgi ve matematikle tasarlandı · 3D İnteraktif Öğrenme Deneyimi
+  </footer>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- GÖRÜNÜM 7: KESİRLER ATÖLYESİ               -->
+      <!-- ========================================== -->
+      <section id="viewFractions" class="portal-view">
+        <div class="area-mult-container">
+          <div class="mult-top-banner card-glass">
+            <div class="mult-title-wrap">
+              <div class="mult-icon-badge" style="background: linear-gradient(135deg, #ec4899, #f59e0b);">
+                <span>🍕</span>
+              </div>
+              <div class="mult-title-text">
+                <h2>Kesirler Atölyesi</h2>
+                <p>Pay ve paydayı değiştir, pizzaları boya ve denk kesirleri keşfet! 🎨</p>
+              </div>
+            </div>
+            <div class="mult-mode-toggle-bar">
+              <button class="btn-mode frac-mode-btn active" id="fracBtn_explore" onclick="FRAC.setMode('explore')">
+                <span class="btn-mode-icon">🎨</span>
+                <span>Keşfet &amp; Boya</span>
+              </button>
+              <button class="btn-mode frac-mode-btn" id="fracBtn_compare" onclick="FRAC.setMode('compare')">
+                <span class="btn-mode-icon">⚖️</span>
+                <span>Denk Kesir Karşılaştır</span>
+              </button>
+              <button class="btn-mode frac-mode-btn" id="fracBtn_quiz" onclick="FRAC.setMode('quiz')">
+                <span class="btn-mode-icon">🎯</span>
+                <span>Kesir Görevi</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- PANEL 1: KEŞFET & BOYA -->
+          <div id="fracPanel_explore" class="ped-card card-glass frac-panel active">
+            <div class="frac-top-bar">
+              <div class="frac-vis-switch">
+                <button class="btn-mode frac-vis-btn active" id="fracVis_pizza" onclick="FRAC.setVisualType('pizza')">🍕 Pizza</button>
+                <button class="btn-mode frac-vis-btn" id="fracVis_bar" onclick="FRAC.setVisualType('bar')">🍫 Çikolata Çubuğu</button>
+              </div>
+              <div class="frac-controls">
+                <div class="frac-stepper">
+                  <span>Pay (Boyalı):</span>
+                  <button class="btn-mini-step" onclick="FRAC.changeNum(-1)">-</button>
+                  <strong id="fracNumVal">3</strong>
+                  <button class="btn-mini-step" onclick="FRAC.changeNum(1)">+</button>
+                </div>
+                <div class="frac-stepper">
+                  <span>Payda (Toplam Parça):</span>
+                  <button class="btn-mini-step" onclick="FRAC.changeDen(-1)">-</button>
+                  <strong id="fracDenVal">4</strong>
+                  <button class="btn-mini-step" onclick="FRAC.changeDen(1)">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="fracExploreStage" class="frac-stage"></div>
+            <div id="fracExplainBox" class="ped-explain-box"></div>
+          </div>
+
+          <!-- PANEL 2: DENK KESİR KARŞILAŞTIR -->
+          <div id="fracPanel_compare" class="ped-card card-glass frac-panel">
+            <div class="frac-preset-row">
+              <span>Hızlı Denk Kesir Örnekleri:</span>
+              <button class="btn-preset-chip" onclick="FRAC.loadEquivalentExample(1,2,2,4)">1/2 = 2/4</button>
+              <button class="btn-preset-chip" onclick="FRAC.loadEquivalentExample(1,2,3,6)">1/2 = 3/6</button>
+              <button class="btn-preset-chip" onclick="FRAC.loadEquivalentExample(2,3,4,6)">2/3 = 4/6</button>
+              <button class="btn-preset-chip" onclick="FRAC.loadEquivalentExample(1,3,2,6)">1/3 = 2/6</button>
+              <button class="btn-preset-chip" onclick="FRAC.loadEquivalentExample(3,4,6,8)">3/4 = 6/8</button>
+            </div>
+
+            <div class="frac-compare-grid">
+              <div class="frac-comp-col">
+                <div class="frac-comp-ctrls">
+                  <button class="btn-mini-step" onclick="FRAC.changeComp(1,'num',-1)">-</button>
+                  <span id="fracC1Num" class="frac-big-num">1</span>
+                  <button class="btn-mini-step" onclick="FRAC.changeComp(1,'num',1)">+</button>
+                  <span>/</span>
+                  <button class="btn-mini-step" onclick="FRAC.changeComp(1,'den',-1)">-</button>
+                  <span id="fracC1Den" class="frac-big-num">2</span>
+                  <button class="btn-mini-step" onclick="FRAC.changeComp(1,'den',1)">+</button>
+                </div>
+                <div id="fracComp1Visual" class="frac-comp-vis"></div>
+              </div>
+
+              <div class="frac-comp-vs">⚖️</div>
+
+              <div class="frac-comp-col">
+                <div class="frac-comp-ctrls">
+                  <button class="btn-mini-step" onclick="FRAC.changeComp(2,'num',-1)">-</button>
+                  <span id="fracC2Num" class="frac-big-num">2</span>
+                  <button class="btn-mini-step" onclick="FRAC.changeComp(2,'num',1)">+</button>
+                  <span>/</span>
+                  <button class="btn-mini-step" onclick="FRAC.changeComp(2,'den',-1)">-</button>
+                  <span id="fracC2Den" class="frac-big-num">4</span>
+                  <button class="btn-mini-step" onclick="FRAC.changeComp(2,'den',1)">+</button>
+                </div>
+                <div id="fracComp2Visual" class="frac-comp-vis"></div>
+              </div>
+            </div>
+
+            <div id="fracCompResult" class="ped-explain-box"></div>
+          </div>
+
+          <!-- PANEL 3: KESİR GÖREVİ -->
+          <div id="fracPanel_quiz" class="ped-card card-glass frac-panel">
+            <div class="frac-quiz-header">
+              <div id="fracQuizPrompt" class="frac-quiz-prompt">Pizzanın 3/4'ünü boya!</div>
+              <div class="ped-score-badge">Puan: <span id="fracQuizScore">0</span> ⭐</div>
+            </div>
+            <div id="fracQuizVisual" class="frac-stage"></div>
+            <div class="frac-quiz-actions">
+              <button class="btn btn-primary" onclick="FRAC.checkQuiz()">Kontrol Et ✨</button>
+              <button class="btn btn-secondary" onclick="FRAC.newQuiz()">Yeni Görev 🎲</button>
+            </div>
+            <div id="fracQuizFeedback" class="frac-quiz-feedback"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- GÖRÜNÜM 8: PROBLEM BARI (SİNGAPUR MODELİ)  -->
+      <!-- ========================================== -->
+      <section id="viewBarModel" class="portal-view">
+        <div class="area-mult-container">
+          <div class="mult-top-banner card-glass">
+            <div class="mult-title-wrap">
+              <div class="mult-icon-badge" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">
+                <span>📖</span>
+              </div>
+              <div class="mult-title-text">
+                <h2>Problem Barı (Çubuk Modeli)</h2>
+                <p>Uzun sözel problemleri renkli çubuklara böl, gözünde canlandır ve çöz! 🧩</p>
+              </div>
+            </div>
+            <div class="mult-mode-toggle-bar" style="align-items: center; gap: 8px;">
+              <div class="ped-score-badge">Çözülen: <span id="bmSolvedCount">0</span> 🎯</div>
+              <button class="btn-mode active" onclick="BM.prevProblem()">◀️ Önceki</button>
+              <button class="btn-mode active" onclick="BM.nextProblem()">Sonraki ▶️</button>
+              <button class="btn-mode active" onclick="BM.randomProblem()">🎲 Yeni Soru</button>
+            </div>
+          </div>
+
+          <div class="ped-card card-glass">
+            <div class="bm-top-row">
+              <h3 id="bmTitle" class="bm-title">Soru 1</h3>
+            </div>
+
+            <div id="bmProblemText" class="bm-problem-text"></div>
+
+            <div class="bm-action-bar">
+              <button class="btn-mode active" onclick="BM.toggleBars()">📊 Çubuk Modelini Göster / Gizle</button>
+              <button class="btn-mode" onclick="BM.toggleHint()">💡 Çözüm İpucu</button>
+            </div>
+
+            <div id="bmVisualStage" class="bm-visual-stage"></div>
+            <div id="bmHintBox" class="ped-explain-box" style="display: none;"></div>
+
+            <div class="bm-answer-row">
+              <label for="bmAnswerInput">Cevabın:</label>
+              <input type="number" id="bmAnswerInput" class="bm-answer-input" placeholder="?" onkeydown="if(event.key==='Enter')BM.checkAnswer()">
+              <span id="bmUnitLabel" class="bm-unit-label"></span>
+              <button class="btn btn-primary" onclick="BM.checkAnswer()">Kontrol Et ✨</button>
+            </div>
+            <div id="bmFeedback" class="bm-feedback"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- GÖRÜNÜM 9: ALAN, ÇEVRE & YUVARLAMA         -->
+      <!-- ========================================== -->
+      <section id="viewGeometry" class="portal-view">
+        <div class="area-mult-container">
+          <div class="mult-top-banner card-glass">
+            <div class="mult-title-wrap">
+              <div class="mult-icon-badge" style="background: linear-gradient(135deg, #10b981, #8b5cf6);">
+                <span>📏</span>
+              </div>
+              <div class="mult-title-text">
+                <h2>Alan, Çevre &amp; Yuvarlama</h2>
+                <p>Birim kareleri boyayarak alan-çevre ilişkisini gör, sayı doğrusunda yuvarla! 🚗</p>
+              </div>
+            </div>
+            <div class="mult-mode-toggle-bar">
+              <button class="btn-mode geo-tab-btn active" id="geoTab_area" onclick="GEO.switchTab('area')">
+                <span class="btn-mode-icon">🟩</span>
+                <span>Alan &amp; Çevre Tahtası</span>
+              </button>
+              <button class="btn-mode geo-tab-btn" id="geoTab_round" onclick="GEO.switchTab('round')">
+                <span class="btn-mode-icon">🚗</span>
+                <span>Sayı Doğrusu Yuvarlama</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- PANEL 1: ALAN & ÇEVRE TAHTASI -->
+          <div id="geoPanel_area" class="ped-card card-glass geo-panel active">
+            <div id="geoMissionBox" class="geo-mission-box"></div>
+
+            <div class="geo-layout">
+              <div id="geoGridBoard" class="geo-grid-board"></div>
+
+              <div class="geo-stats-panel">
+                <div class="geo-stat-box">
+                  <span class="geo-stat-label">Alan (İçteki Kareler)</span>
+                  <strong class="geo-stat-val"><span id="geoAreaVal">0</span> br²</strong>
+                </div>
+                <div class="geo-stat-box">
+                  <span class="geo-stat-label">Çevre (Dış Kenar Uzunluğu)</span>
+                  <strong class="geo-stat-val"><span id="geoPerimVal">0</span> br</strong>
+                </div>
+                <button class="btn btn-secondary" onclick="GEO.clearGrid()">🧹 Tahtayı Temizle</button>
+                <button class="btn btn-primary" onclick="GEO.nextMission()">Yeni Görev 🎲</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL 2: SAYI DOĞRUSU YUVARLAMA -->
+          <div id="geoPanel_round" class="ped-card card-glass geo-panel">
+            <div class="geo-round-top">
+              <div class="mult-mode-toggle-bar" style="gap: 8px;">
+                <button class="btn-mode round-mode-btn active" id="roundMode_ten" onclick="GEO.setRoundMode('ten')">🔟 En Yakın Onluk</button>
+                <button class="btn-mode round-mode-btn" id="roundMode_hundred" onclick="GEO.setRoundMode('hundred')">💯 En Yakın Yüzlük</button>
+              </div>
+              <div class="ped-score-badge">Puan: <span id="roundScoreVal">0</span> ⭐</div>
+            </div>
+
+            <div class="round-question-banner">
+              <span id="roundTargetNum" class="round-target-num">47</span> sayısını yuvarlarsan araba hangi durağa gider?
+            </div>
+
+            <div class="round-track-wrap">
+              <div class="round-track">
+                <div class="round-mid-tick"></div>
+                <div id="roundCarMarker" class="round-car-marker">🚗</div>
+              </div>
+              <div class="round-labels">
+                <span id="roundLineLow">40</span>
+                <span id="roundLineMid">45 (Orta Nokta)</span>
+                <span id="roundLineHigh">50</span>
+              </div>
+            </div>
+
+            <div class="round-choices">
+              <button id="roundOptLow" class="btn-round-choice" onclick="GEO.checkRounding('low')">40</button>
+              <button id="roundOptHigh" class="btn-round-choice" onclick="GEO.checkRounding('high')">50</button>
+            </div>
+            <div id="roundFeedback" class="round-feedback"></div>
+            <div style="text-align: center; margin-top: 12px;">
+              <button class="btn btn-secondary" onclick="GEO.newRoundQuestion()">Yeni Sayı 🎲</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </div>
 
@@ -1249,13 +1952,17 @@
   <canvas id="confettiCanvas"></canvas>
 
   <!-- Scriptler -->
-  <script src="confetti.js?v=2.2"></script>
-  <script src="planner.js?v=2.2"></script>
-  <script src="math.js?v=2.2"></script>
-  <script src="clock.js?v=2.2"></script>
-  <script src="multiplication.js?v=2.2"></script>
-  <script src="area-multiplication.js?v=2.2"></script>
-  <script src="app.js?v=2.2"></script>
+  <script src="confetti.js?v=2.4"></script>
+  <script src="planner.js?v=2.4"></script>
+  <script src="math.js?v=2.4"></script>
+  <script src="clock.js?v=2.4"></script>
+  <script src="multiplication.js?v=2.4"></script>
+  <script src="area-multiplication.js?v=3.0"></script>
+  <script src="sayi-avcilari.js?v=3.8"></script>
+  <script src="fractions.js?v=3.0"></script>
+  <script src="bar-model.js?v=3.4"></script>
+  <script src="geometry.js?v=3.0"></script>
+  <script src="app.js?v=3.0"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(() => {});

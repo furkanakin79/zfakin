@@ -4047,3 +4047,944 @@ body {
 }
 
 
+
+
+
+/* ========================================== */
+/* PEDAGOJİK İYİLEŞTİRMELER & YENİ MODÜLLER     */
+/* ========================================== */
+
+/* Area Multiplication Error-Friendly Micro Hint */
+.area-micro-hint {
+  margin: 10px auto 4px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 2px solid #f59e0b;
+  color: #92400e;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.16);
+  animation: saFadeInUp 0.2s ease;
+}
+
+/* Sayı Avcıları: Önce Tahmin Et Barı */
+.sa-guess-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 14px;
+  padding: 14px 20px;
+  min-height: 68px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fdf4ff 0%, #f5f3ff 100%);
+  border: 1.5px solid #d8b4fe;
+  box-sizing: border-box;
+}
+
+.sa-guess-label {
+  font-weight: 800;
+  color: #6b21a8;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.sa-guess-input {
+  width: 100px;
+  height: 44px;
+  padding: 6px 12px;
+  border-radius: 14px;
+  border: 2px solid #c084fc;
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-align: center;
+  color: #4c1d95;
+  background: #ffffff;
+  outline: none;
+  box-sizing: border-box;
+  -moz-appearance: textfield;
+}
+
+.sa-guess-input::-webkit-outer-spin-button,
+.sa-guess-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.sa-guess-input:focus {
+  border-color: #9333ea;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.16);
+}
+
+.sa-guess-btn {
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  color: #fff;
+  font-size: 0.98rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sa-guess-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.28);
+}
+
+.sa-guess-feedback {
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.sa-guess-feedback.ok { color: #059669; }
+.sa-guess-feedback.hint { color: #b45309; }
+.sa-guess-feedback.warn { color: #db2777; }
+
+/* Sayı Avcıları: Adım Adım Bölme "Ben Çözeyim" Modu */
+.sa-practice-toggle {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.sa-practice-mode-btn {
+  flex: 1;
+  padding: 9px 12px;
+  border-radius: 12px;
+  border: 1.5px solid #e2d4f0;
+  background: #faf5ff;
+  color: #5b21b6;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sa-practice-mode-btn.active {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+}
+
+.sa-practice-pad {
+  background: #f5f3ff;
+  border: 1.5px solid #ddd6fe;
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.sa-practice-prompt {
+  font-weight: 800;
+  color: #5b21b6;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.sa-digit-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.sa-digit-btn {
+  padding: 10px 0;
+  border-radius: 10px;
+  border: 1.5px solid #c4b5fd;
+  background: #ffffff;
+  color: #4c1d95;
+  font-weight: 800;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.sa-digit-btn:hover {
+  background: #ede9fe;
+  transform: translateY(-1px);
+}
+
+.sa-practice-feedback {
+  margin-top: 8px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  min-height: 20px;
+}
+
+.sa-practice-feedback.ok { color: #059669; }
+.sa-practice-feedback.err { color: #d97706; }
+
+/* Ortak Pedagoji Kartları ve Hap Butonlar */
+.pedagogy-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ped-pill {
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1.5px solid #e9d5ff;
+  background: rgba(255, 255, 255, 0.85);
+  color: #6b21a8;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.ped-pill.active,
+.ped-pill:hover {
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.24);
+}
+
+.ped-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(216, 180, 254, 0.55);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.1);
+}
+
+.ped-explain-box {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f5f3ff, #fdf2f8);
+  border: 1.5px solid #ddd6fe;
+  color: #4c1d95;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.ped-score-badge {
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.ped-feedback {
+  margin-top: 14px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.05rem;
+  min-height: 26px;
+}
+
+.ped-feedback.ok { color: #059669; }
+.ped-feedback.err { color: #dc2626; }
+
+.btn-mini-step {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1.5px solid #c4b5fd;
+  background: #faf5ff;
+  color: #5b21b6;
+  font-weight: 800;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.btn-mini-step:hover {
+  background: #ede9fe;
+}
+
+/* KESİRLER ATÖLYESİ */
+.frac-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.frac-vis-switch {
+  display: flex;
+  gap: 8px;
+}
+
+.frac-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.frac-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #faf5ff;
+  padding: 8px 14px;
+  border-radius: 14px;
+  border: 1.5px solid #e9d5ff;
+  font-weight: 700;
+  color: #4c1d95;
+}
+
+.frac-stepper strong {
+  font-size: 1.2rem;
+  min-width: 24px;
+  text-align: center;
+  color: #9333ea;
+}
+
+.frac-stage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  min-height: 200px;
+  padding: 16px;
+  background: #fdfaff;
+  border-radius: 18px;
+  border: 1.5px dashed #d8b4fe;
+}
+
+.frac-svg-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.frac-bar-wrap {
+  display: flex;
+  width: 100%;
+  max-width: 520px;
+  height: 64px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2.5px solid #7c3aed;
+  background: #fff;
+}
+
+.frac-bar-seg {
+  flex: 1;
+  border-right: 1.5px solid #c4b5fd;
+  background: #f5f3ff;
+  transition: background 0.2s ease;
+}
+
+.frac-bar-seg:last-child { border-right: none; }
+.frac-bar-seg.filled {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+}
+
+.frac-preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  font-weight: 700;
+  color: #5b21b6;
+}
+
+.btn-preset-chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1.5px solid #c4b5fd;
+  background: #f5f3ff;
+  color: #5b21b6;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-preset-chip:hover {
+  background: #ede9fe;
+}
+
+.frac-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.frac-comp-col {
+  background: #faf5ff;
+  border: 1.5px solid #e9d5ff;
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.frac-comp-ctrls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #4c1d95;
+}
+
+.frac-big-num {
+  min-width: 24px;
+  text-align: center;
+  color: #9333ea;
+}
+
+.frac-comp-vs {
+  font-size: 2rem;
+}
+
+.frac-comp-vis {
+  display: flex;
+  justify-content: center;
+}
+
+.frac-quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.frac-quiz-prompt {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #4c1d95;
+}
+
+.frac-quiz-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* PROBLEM BARI (SİNGAPUR ÇUBUK MODELİ) */
+.bm-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bm-title {
+  margin: 0;
+  color: #5b21b6;
+  font-size: 1.25rem;
+}
+
+.bm-nav-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.bm-problem-text {
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: #faf5ff;
+  border: 1.5px solid #e9d5ff;
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #1e1b4b;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.bm-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.bm-visual-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 18px;
+  background: #fdfaff;
+  border: 1.5px dashed #c084fc;
+}
+
+.bm-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bm-row-label {
+  font-weight: 800;
+  color: #4c1d95;
+  font-size: 0.95rem;
+}
+
+.bm-units-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.bm-unit-block {
+  flex: 1;
+  min-width: 72px;
+  padding: 12px 10px;
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.bm-answer-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+  font-weight: 800;
+  color: #4c1d95;
+}
+
+.bm-answer-input {
+  width: 110px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 2px solid #c084fc;
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-align: center;
+  color: #4c1d95;
+}
+
+.bm-unit-label {
+  color: #6b21a8;
+  font-weight: 700;
+}
+
+/* ALAN, ÇEVRE & YUVARLAMA */
+.geo-mission-box {
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f5f3ff, #fdf2f8);
+  border: 1.5px solid #d8b4fe;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #4c1d95;
+  margin-bottom: 18px;
+}
+
+.geo-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.geo-grid-board {
+  display: grid;
+  grid-template-columns: repeat(10, 38px);
+  gap: 4px;
+  padding: 12px;
+  background: #faf5ff;
+  border-radius: 18px;
+  border: 2px solid #d8b4fe;
+}
+
+.geo-cell {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: 1.5px solid #e9d5ff;
+  background: #ffffff;
+  cursor: pointer;
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.geo-cell:hover {
+  border-color: #a855f7;
+  transform: scale(1.05);
+}
+
+.geo-cell.filled {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  border-color: #7e22ce;
+  box-shadow: 0 3px 8px rgba(168, 85, 247, 0.28);
+}
+
+.geo-stats-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 220px;
+}
+
+.geo-stat-box {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #faf5ff;
+  border: 1.5px solid #e9d5ff;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.geo-stat-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #6b21a8;
+}
+
+.geo-stat-val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #4c1d95;
+}
+
+.geo-round-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.round-question-banner {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #4c1d95;
+  margin-bottom: 24px;
+}
+
+.round-target-num {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+  color: #ffffff;
+  font-size: 1.45rem;
+}
+
+.round-track-wrap {
+  max-width: 620px;
+  margin: 0 auto 24px;
+}
+
+.round-track {
+  position: relative;
+  height: 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #c4b5fd, #fbcfe8);
+  margin: 26px 0 12px;
+}
+
+.round-mid-tick {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  width: 4px;
+  height: 26px;
+  background: #7c3aed;
+  transform: translateX(-50%);
+  border-radius: 4px;
+}
+
+.round-car-marker {
+  position: absolute;
+  top: -32px;
+  transform: translateX(-50%);
+  font-size: 1.8rem;
+  transition: left 0.35s ease;
+}
+
+.round-labels {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  color: #5b21b6;
+  font-size: 0.95rem;
+}
+
+.round-choices {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-round-choice {
+  min-width: 120px;
+  padding: 14px 24px;
+  border-radius: 16px;
+  border: 2px solid #c084fc;
+  background: #ffffff;
+  color: #4c1d95;
+  font-size: 1.3rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-round-choice:hover {
+  background: #f5f3ff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(147, 51, 234, 0.2);
+}
+
+@media (max-width: 720px) {
+  .frac-compare-grid {
+    grid-template-columns: 1fr;
+  }
+  .geo-grid-board {
+    grid-template-columns: repeat(10, 28px);
+  }
+  .geo-cell {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+
+/* ========================================== */
+/* PANEL GEÇİŞLERİ & JS SINIF DÜZELTMELERİ    */
+/* ========================================== */
+.frac-panel,
+.geo-panel {
+  display: none;
+}
+
+.frac-panel.active,
+.geo-panel.active {
+  display: block;
+  animation: saFadeInUp 0.22s ease;
+}
+
+.frac-visual-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.frac-badge-type {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ede9fe, #fce7f3);
+  border: 1.5px solid #c084fc;
+  color: #6b21a8;
+  font-weight: 800;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.frac-bar-strip {
+  display: flex;
+  width: 100%;
+  max-width: 480px;
+  min-width: 220px;
+  height: 54px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2.5px solid #7c3aed;
+  background: #ffffff;
+  margin-top: 10px;
+}
+
+.frac-bar-cell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1.5px solid #c4b5fd;
+  background: #faf5ff;
+  color: #6b21a8;
+  font-weight: 800;
+  font-size: 0.85rem;
+  user-select: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.frac-bar-cell:last-child {
+  border-right: none;
+}
+
+.frac-bar-cell.filled {
+  background: linear-gradient(135deg, #ec4899, #a855f7);
+  color: #ffffff;
+}
+
+.frac-comp-vis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.frac-target-pill {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ec4899, #9333ea);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.comp-eq { color: #059669; font-weight: 700; }
+.comp-gt { color: #7c3aed; font-weight: 700; }
+.comp-lt { color: #db2777; font-weight: 700; }
+
+.frac-quiz-feedback,
+.bm-feedback,
+.round-feedback {
+  margin-top: 14px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  min-height: 24px;
+  color: #5b21b6;
+}
+
+.frac-quiz-feedback.success,
+.bm-feedback.success,
+.round-feedback.success {
+  color: #059669;
+  font-weight: 800;
+}
+
+.frac-quiz-feedback.warn,
+.bm-feedback.warn,
+.round-feedback.warn {
+  color: #d97706;
+  font-weight: 800;
+}
+
+/* Problem Barı: JS ürettiği sınıflar */
+.bm-row-units {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.bm-unit {
+  min-width: 64px;
+  padding: 12px 10px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.bm-total-bracket {
+  margin-top: 6px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: #ede9fe;
+  color: #5b21b6;
+  font-weight: 800;
+  text-align: center;
+}
+
+.bm-hidden-msg {
+  padding: 20px;
+  text-align: center;
+  color: #6b21a8;
+  font-weight: 700;
+}
+
+/* Alan & Çevre: Görev tamamlandı */
+.geo-mission-done {
+  color: #059669;
+  font-weight: 800;
+}
+
+
+/* ========================================== */
+/* BAĞIMSIZ .btn-mode & BUTON GRUBU STİLLERİ  */
+/* ========================================== */
+.frac-vis-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 14px;
+  background: #f3e8ff;
+  border: 1.5px solid #e9d5ff;
+}
+
+.frac-vis-switch .btn-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #6b21a8;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.frac-vis-switch .btn-mode.active {
+  background: #ffffff;
+  color: #9333ea;
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.18);
+}
+
+.bm-action-bar .btn-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1.5px solid #d8b4fe;
+  background: #faf5ff;
+  color: #6b21a8;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 3px 10px rgba(139, 92, 246, 0.08);
+}
+
+.bm-action-bar .btn-mode:hover {
+  background: #f3e8ff;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(147, 51, 234, 0.16);
+}
+
+.bm-action-bar .btn-mode.active {
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 5px 15px rgba(147, 51, 234, 0.26);
+}
