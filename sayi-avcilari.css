@@ -1514,8 +1514,32 @@
   box-shadow: 0 8px 24px rgba(139, 92, 246, 0.08);
 }
 
+#viewSayiAvcilari .digit-cell,
 #viewSayiAvcilari .div-cell {
   color: #31105e;
+}
+
+#viewSayiAvcilari .digit-cell.empty {
+  color: transparent;
+}
+
+#viewSayiAvcilari .digit-cell.highlight-active {
+  color: #0284c7;
+  background: rgba(56, 189, 248, 0.16);
+}
+
+#viewSayiAvcilari .digit-cell.highlight-down {
+  color: #059669;
+  background: rgba(16, 185, 129, 0.16);
+}
+
+#viewSayiAvcilari .digit-cell.quotient-active {
+  color: #d97706;
+  background: rgba(245, 158, 11, 0.18);
+}
+
+#viewSayiAvcilari .sub-line {
+  background: #9333ea;
 }
 
 #viewSayiAvcilari .div-cell.quotient {
@@ -1595,10 +1619,21 @@
   border-color: transparent;
 }
 
-#viewSayiAvcilari .stat-item {
-  background: rgba(255, 255, 255, 0.92);
+#viewSayiAvcilari .score-stats {
+  background: rgba(255, 255, 255, 0.72);
   border: 1.5px solid #e9d5ff;
-  box-shadow: 0 6px 18px rgba(139, 92, 246, 0.08);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.08);
+  gap: 14px;
+  padding: 14px;
+}
+
+#viewSayiAvcilari .stat-item {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1.5px solid #e9d5ff;
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.08);
 }
 
 #viewSayiAvcilari .stat-num {
