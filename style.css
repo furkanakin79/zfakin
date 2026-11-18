@@ -4988,3 +4988,747 @@ body {
   border-color: transparent;
   box-shadow: 0 5px 15px rgba(147, 51, 234, 0.26);
 }
+
+
+/* ========================================== */
+/* ÖLÇME BİRİMLERİ LABORATUVARI               */
+/* ========================================== */
+.meas-input-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.meas-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  color: #4c1d95;
+}
+
+.meas-val-input {
+  width: 96px;
+  height: 44px;
+  padding: 6px 12px;
+  border-radius: 14px;
+  border: 2px solid #c084fc;
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-align: center;
+  color: #4c1d95;
+  background: #ffffff;
+  outline: none;
+}
+
+.meas-val-input:focus {
+  border-color: #9333ea;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.16);
+}
+
+.meas-preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.meas-ladder-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.meas-ladder-step {
+  flex: 1;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f5f3ff, #fdf2f8);
+  border: 1.5px solid #e9d5ff;
+}
+
+.meas-ladder-unit {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #6b21a8;
+}
+
+.meas-ladder-mult {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #9333ea;
+}
+
+.meas-conv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.meas-conv-card {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #faf5ff;
+  border: 1.5px solid #e9d5ff;
+  text-align: center;
+  transition: transform 0.15s ease;
+}
+
+.meas-conv-card.active {
+  background: linear-gradient(135deg, #ede9fe, #fce7f3);
+  border-color: #a855f7;
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.16);
+}
+
+.meas-conv-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #6b21a8;
+  margin-bottom: 4px;
+}
+
+.meas-conv-val {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #31105e;
+}
+
+.meas-vis-card {
+  padding: 18px;
+  border-radius: 18px;
+  background: #fdfaff;
+  border: 1.5px dashed #c084fc;
+  margin-bottom: 16px;
+}
+
+.meas-vis-title {
+  font-weight: 800;
+  color: #5b21b6;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.meas-ruler-wrap {
+  position: relative;
+  height: 36px;
+  border-radius: 10px;
+  background: #f3e8ff;
+  border: 2px solid #9333ea;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.meas-ruler-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #a855f7, #ec4899);
+  transition: width 0.3s ease;
+}
+
+.meas-ruler-ticks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: #31105e;
+}
+
+.meas-scale-svg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin: 12px 0;
+}
+
+.meas-scale-pan {
+  min-width: 130px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.15rem;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.24);
+}
+
+.meas-scale-beam {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #6b21a8;
+}
+
+.meas-jug-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.meas-jug {
+  position: relative;
+  width: 110px;
+  height: 150px;
+  border: 3px solid #7c3aed;
+  border-top: none;
+  border-radius: 0 0 18px 18px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.meas-jug-liquid {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, #38bdf8, #3b82f6);
+  opacity: 0.82;
+  transition: height 0.35s ease;
+}
+
+.meas-jug-marks {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #31105e;
+}
+
+.meas-jug-info {
+  max-width: 340px;
+  text-align: center;
+}
+
+.meas-cups-row {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+}
+
+.meas-vis-note {
+  text-align: center;
+  color: #4c1d95;
+  font-weight: 600;
+}
+
+.meas-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.meas-info-chip {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #faf5ff;
+  border: 1.5px solid #e9d5ff;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meas-info-chip strong {
+  color: #6b21a8;
+  font-size: 0.95rem;
+}
+
+.meas-info-chip span {
+  color: #4b5563;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.meas-quiz-badge {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #5b21b6;
+}
+
+.meas-quiz-prompt {
+  text-align: center;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #31105e;
+  margin: 12px 0 14px;
+}
+
+.meas-quiz-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.meas-opt-btn {
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 2px solid #c084fc;
+  background: #ffffff;
+  color: #4c1d95;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.meas-opt-btn:hover {
+  background: #f5f3ff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(147, 51, 234, 0.2);
+}
+
+.meas-quiz-feedback {
+  margin-top: 14px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #5b21b6;
+}
+
+.meas-quiz-feedback.success { color: #059669; font-weight: 800; }
+.meas-quiz-feedback.warn { color: #d97706; font-weight: 800; }
+
+
+/* ========================================== */
+/* DOĞRU, DOĞRU PARÇASI, IŞIN & AÇILAR        */
+/* ========================================== */
+.ang-panel {
+  display: none;
+}
+
+.ang-panel.active {
+  display: block;
+  animation: saFadeInUp 0.22s ease;
+}
+
+.ang-line-switch {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.ang-line-btn {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1.5px solid #d8b4fe;
+  background: #faf5ff;
+  color: #6b21a8;
+  font-weight: 800;
+  font-size: 0.96rem;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.ang-line-btn.active,
+.ang-line-btn:hover {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 5px 14px rgba(139, 92, 246, 0.25);
+}
+
+.ang-svg-stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  border-radius: 18px;
+  background: #fdfaff;
+  border: 1.5px dashed #c084fc;
+  min-height: 150px;
+}
+
+.ang-line-svg {
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+}
+
+.ang-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ede9fe, #fce7f3);
+  border: 1.5px solid #c084fc;
+  color: #6b21a8;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.ang-example-note {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e9d5ff;
+  color: #5b21b6;
+  font-weight: 700;
+}
+
+.ang-preset-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.ang-slider-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 16px;
+  font-weight: 800;
+  color: #4c1d95;
+}
+
+.ang-slider {
+  width: 260px;
+  accent-color: #9333ea;
+  cursor: pointer;
+}
+
+.ang-deg-display {
+  min-width: 56px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+  color: #ffffff;
+  text-align: center;
+  font-size: 1.15rem;
+}
+
+.ang-type-pill {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.ang-quiz-feedback {
+  margin-top: 14px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #5b21b6;
+}
+
+.ang-quiz-feedback.success { color: #059669; font-weight: 800; }
+.ang-quiz-feedback.warn { color: #d97706; font-weight: 800; }
+
+.ang-line-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ang-mini-icon {
+  width: 38px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+
+/* ========================================== */
+/* EŞİT KOLLU TERAZİ & AĞIRLIK TAŞLARI GRAFİĞİ */
+/* ========================================== */
+.meas-scale-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.meas-piece-selector {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #5b21b6;
+}
+
+.btn-preset-chip.active-chip {
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 3px 10px rgba(147, 51, 234, 0.25);
+}
+
+.meas-balance-stage {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.meas-balance-pans {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 12px;
+}
+
+.meas-pan-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.meas-pan-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #6b21a8;
+  margin-bottom: 8px;
+}
+
+.meas-pan-weights {
+  min-height: 82px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 8px 10px 4px;
+}
+
+.meas-weight-stone {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px 10px 6px 6px;
+  font-weight: 800;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(88, 28, 135, 0.22);
+}
+
+.meas-weight-stone .stone-knob {
+  position: absolute;
+  top: -7px;
+  width: 18px;
+  height: 7px;
+  border-radius: 6px 6px 0 0;
+  background: inherit;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  border-bottom: none;
+}
+
+.meas-weight-stone.big {
+  min-width: 96px;
+  height: 62px;
+  padding: 0 16px;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+}
+
+.meas-weight-stone.small {
+  min-width: 58px;
+  height: 44px;
+  padding: 0 10px;
+  font-size: 0.86rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.meas-weight-stone.rem {
+  min-width: 54px;
+  height: 38px;
+  padding: 0 8px;
+  font-size: 0.8rem;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.meas-weight-more {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #5b21b6;
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.meas-pan-plate {
+  width: 92%;
+  max-width: 260px;
+  height: 12px;
+  border-radius: 4px 4px 14px 14px;
+  background: linear-gradient(90deg, #9333ea, #c084fc, #9333ea);
+  box-shadow: 0 3px 8px rgba(147, 51, 234, 0.25);
+}
+
+.meas-pan-stem {
+  width: 8px;
+  height: 22px;
+  background: #7c3aed;
+}
+
+.meas-fulcrum-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 2px;
+}
+
+.meas-eq-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f3e8ff;
+  border: 2px solid #c084fc;
+  color: #6b21a8;
+  font-weight: 800;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.meas-fulcrum-triangle {
+  font-size: 2rem;
+  line-height: 1;
+  color: #6b21a8;
+}
+
+.meas-fulcrum-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #059669;
+  letter-spacing: 0.5px;
+}
+
+.meas-balance-beam-bar {
+  width: 78%;
+  max-width: 480px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #6b21a8, #a855f7, #6b21a8);
+}
+
+.meas-balance-base {
+  width: 140px;
+  height: 12px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: #4c1d95;
+}
+
+
+/* Uzunluk Cetvel Parçaları & Sıvı Ölçek Kapları */
+.meas-length-compare {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 660px;
+  margin: 0 auto;
+}
+
+.meas-length-main-bar {
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #8b5cf6, #ec4899);
+  color: #ffffff;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.22);
+}
+
+.meas-length-segs-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.meas-ruler-seg {
+  flex: 1;
+  min-width: 72px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-align: center;
+  border-bottom: 4px solid #047857;
+}
+
+.meas-ruler-seg.rem {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-bottom-color: #b45309;
+}
+
+.meas-cup-block {
+  position: relative;
+  min-width: 62px;
+  height: 52px;
+  padding: 0 10px;
+  border: 2.5px solid #0284c7;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  background: #ffffff;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: #0c4a6e;
+}
+
+.meas-cup-block .meas-cup-water {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 76%;
+  background: linear-gradient(180deg, #7dd3fc, #38bdf8);
+  opacity: 0.55;
+}
+
+.meas-cup-block span {
+  position: relative;
+  z-index: 2;
+}
+
+.meas-cup-block.rem {
+  border-color: #d97706;
+  color: #78350f;
+}
+
+.meas-cup-block.rem .meas-cup-water {
+  height: 45%;
+  background: linear-gradient(180deg, #fde68a, #f59e0b);
+}

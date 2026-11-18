@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const tabBtnFractions = document.getElementById('tabBtnFractions');
   const tabBtnBarModel = document.getElementById('tabBtnBarModel');
   const tabBtnGeometry = document.getElementById('tabBtnGeometry');
+  const tabBtnMeasurements = document.getElementById('tabBtnMeasurements');
+  const tabBtnAngles = document.getElementById('tabBtnAngles');
 
   const viewPlanner = document.getElementById('viewPlanner');
   const viewMath = document.getElementById('viewMath');
@@ -22,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const viewFractions = document.getElementById('viewFractions');
   const viewBarModel = document.getElementById('viewBarModel');
   const viewGeometry = document.getElementById('viewGeometry');
+  const viewMeasurements = document.getElementById('viewMeasurements');
+  const viewAngles = document.getElementById('viewAngles');
 
   const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
   const portalSidebar = document.getElementById('portalSidebar');
@@ -38,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tabBtnFractions) tabBtnFractions.classList.remove('active');
     if (tabBtnBarModel) tabBtnBarModel.classList.remove('active');
     if (tabBtnGeometry) tabBtnGeometry.classList.remove('active');
+    if (tabBtnMeasurements) tabBtnMeasurements.classList.remove('active');
+    if (tabBtnAngles) tabBtnAngles.classList.remove('active');
 
     if (viewPlanner) viewPlanner.classList.remove('active');
     if (viewMath) viewMath.classList.remove('active');
@@ -48,6 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (viewFractions) viewFractions.classList.remove('active');
     if (viewBarModel) viewBarModel.classList.remove('active');
     if (viewGeometry) viewGeometry.classList.remove('active');
+    if (viewMeasurements) viewMeasurements.classList.remove('active');
+    if (viewAngles) viewAngles.classList.remove('active');
 
     if (viewName === 'planner') {
       if (tabBtnPlanner) tabBtnPlanner.classList.add('active');
@@ -119,6 +127,22 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.initGeometryPage) {
         window.initGeometryPage();
       }
+    } else if (viewName === 'measurements') {
+      if (tabBtnMeasurements) tabBtnMeasurements.classList.add('active');
+      if (viewMeasurements) viewMeasurements.classList.add('active');
+      if (mobilePortalTitle) mobilePortalTitle.textContent = '⚖️ Ölçme Birimleri';
+
+      if (window.initMeasurementsPage) {
+        window.initMeasurementsPage();
+      }
+    } else if (viewName === 'angles') {
+      if (tabBtnAngles) tabBtnAngles.classList.add('active');
+      if (viewAngles) viewAngles.classList.add('active');
+      if (mobilePortalTitle) mobilePortalTitle.textContent = '📐 Doğru & Açı';
+
+      if (window.initAnglesPage) {
+        window.initAnglesPage();
+      }
     }
 
     // Mobilde/Tablette tıklandıktan sonra sol menüyü kapat
@@ -161,6 +185,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (tabBtnGeometry) {
     tabBtnGeometry.addEventListener('click', () => switchTab('geometry'));
+  }
+
+  if (tabBtnMeasurements) {
+    tabBtnMeasurements.addEventListener('click', () => switchTab('measurements'));
+  }
+
+  if (tabBtnAngles) {
+    tabBtnAngles.addEventListener('click', () => switchTab('angles'));
   }
 
   if (sidebarToggleBtn && portalSidebar) {

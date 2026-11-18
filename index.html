@@ -111,6 +111,21 @@
             <span class="nav-sub">Birim Kare & Sayı Doğrusu</span>
           </div>
         </button>
+        <button class="nav-item-btn" id="tabBtnMeasurements" data-view="measurements">
+          <span class="nav-icon">⚖️</span>
+          <div class="nav-text">
+            <span class="nav-title">Ölçme Birimleri</span>
+            <span class="nav-sub">Uzunluk, Ağırlık &amp; Sıvı</span>
+          </div>
+        </button>
+
+        <button class="nav-item-btn" id="tabBtnAngles" data-view="angles">
+          <span class="nav-icon">📐</span>
+          <div class="nav-text">
+            <span class="nav-title">Doğru &amp; Açı</span>
+            <span class="nav-sub">Işın, Doğru Parçası &amp; Açı</span>
+          </div>
+        </button>
       </nav>
 
       <!-- Sol Menü Alt Rozet / Karakter Kutusu -->
@@ -1651,6 +1666,159 @@
         </div>
       </section>
 
+      <!-- ========================================== -->
+      <!-- GÖRÜNÜM 10: ÖLÇME BİRİMLERİ (UZUNLUK/AĞIRLIK/SIVI) -->
+      <!-- ========================================== -->
+      <section id="viewMeasurements" class="portal-view">
+        <div class="area-mult-container">
+          <div class="mult-top-banner card-glass">
+            <div class="mult-title-wrap">
+              <div class="mult-icon-badge" style="background: linear-gradient(135deg, #06b6d4, #8b5cf6);">
+                <span>⚖️</span>
+              </div>
+              <div class="mult-title-text">
+                <h2>Ölçme Birimleri Laboratuvarı</h2>
+                <p>Uzunluk, ağırlık ve sıvı ölçülerini görsel olarak keşfet, dönüştür ve alıştırma yap! 📏</p>
+              </div>
+            </div>
+            <div class="mult-mode-toggle-bar">
+              <button class="btn-mode meas-cat-btn active" id="measCat_length" onclick="MEAS.setCategory('length')">
+                <span class="btn-mode-icon">📏</span>
+                <span>Uzunluk</span>
+              </button>
+              <button class="btn-mode meas-cat-btn" id="measCat_weight" onclick="MEAS.setCategory('weight')">
+                <span class="btn-mode-icon">⚖️</span>
+                <span>Ağırlık (Kütle)</span>
+              </button>
+              <button class="btn-mode meas-cat-btn" id="measCat_liquid" onclick="MEAS.setCategory('liquid')">
+                <span class="btn-mode-icon">🫗</span>
+                <span>Sıvı Ölçüleri</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KEŞİF & DÖNÜŞTÜRÜCÜ KARTI -->
+          <div class="ped-card card-glass">
+            <div class="meas-input-bar">
+              <div class="meas-input-group">
+                <label for="measValInput">Miktar:</label>
+                <input type="number" id="measValInput" class="meas-val-input" value="2" min="0" step="any" oninput="MEAS.onInputChange()">
+                <select id="measUnitSelect" class="styled-mult-select" onchange="MEAS.onInputChange()"></select>
+              </div>
+              <div id="measPresetRow" class="meas-preset-row"></div>
+            </div>
+
+            <div id="measLadderBox" class="meas-ladder-box"></div>
+            <div id="measConvGrid" class="meas-conv-grid"></div>
+            <div id="measVisualStage" class="meas-visual-stage"></div>
+            <div id="measUnitCards" class="meas-info-grid"></div>
+          </div>
+
+          <!-- ALIŞTIRMA & OYUN KARTI -->
+          <div class="ped-card card-glass" style="margin-top: 18px;">
+            <div class="frac-quiz-header">
+              <div class="meas-quiz-badge">🎯 Birim Dönüştürme Alıştırması</div>
+              <div class="ped-score-badge">Doğru Puanı: <span id="measScoreVal">0</span> ⭐</div>
+            </div>
+            <div id="measQuizPrompt" class="meas-quiz-prompt">2 metre (m) kaç santimetre (cm) eder?</div>
+            <div style="text-align: center; margin-bottom: 14px;">
+              <button class="btn-preset-chip" onclick="MEAS.toggleHint()">💡 İpucu Göster / Gizle</button>
+            </div>
+            <div id="measQuizHint" class="ped-explain-box" style="display: none; margin-bottom: 14px;"></div>
+            <div id="measQuizOptions" class="meas-quiz-options"></div>
+            <div id="measQuizFeedback" class="meas-quiz-feedback"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- GÖRÜNÜM 11: DOĞRU, DOĞRU PARÇASI, IŞIN & AÇI -->
+      <!-- ========================================== -->
+      <section id="viewAngles" class="portal-view">
+        <div class="area-mult-container">
+          <div class="mult-top-banner card-glass">
+            <div class="mult-title-wrap">
+              <div class="mult-icon-badge" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">
+                <span>📐</span>
+              </div>
+              <div class="mult-title-text">
+                <h2>Doğru, Işın &amp; Açılar Atölyesi</h2>
+                <p>Doğru, doğru parçası ve ışının farkını keşfet; iletkiyle açıları canlı döndür! ✨</p>
+              </div>
+            </div>
+            <div class="mult-mode-toggle-bar">
+              <button class="btn-mode ang-tab-btn active" id="angTab_lines" onclick="ANG.switchTab('lines')">
+                <span class="btn-mode-icon">➖</span>
+                <span>Doğru &amp; Işın</span>
+              </button>
+              <button class="btn-mode ang-tab-btn" id="angTab_angles" onclick="ANG.switchTab('angles')">
+                <span class="btn-mode-icon">📐</span>
+                <span>Açı Ölçer (İletki)</span>
+              </button>
+              <button class="btn-mode ang-tab-btn" id="angTab_quiz" onclick="ANG.switchTab('quiz')">
+                <span class="btn-mode-icon">🎯</span>
+                <span>Açı Avcısı</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- PANEL 1: DOĞRU, DOĞRU PARÇASI, IŞIN -->
+          <div id="angPanel_lines" class="ped-card card-glass ang-panel active">
+            <div class="ang-line-switch">
+              <button class="btn-mode ang-line-btn active" id="angLineBtn_line" onclick="ANG.setLineType('line')">
+                <svg class="ang-mini-icon" viewBox="0 0 44 14"><polygon points="1,7 9,2 9,12" fill="currentColor"/><line x1="8" y1="7" x2="36" y2="7" stroke="currentColor" stroke-width="2.6"/><polygon points="43,7 35,2 35,12" fill="currentColor"/></svg>
+                <span>Doğru</span>
+              </button>
+              <button class="btn-mode ang-line-btn" id="angLineBtn_segment" onclick="ANG.setLineType('segment')">
+                <svg class="ang-mini-icon" viewBox="0 0 44 14"><circle cx="6" cy="7" r="3.8" fill="currentColor"/><line x1="6" y1="7" x2="38" y2="7" stroke="currentColor" stroke-width="2.6"/><circle cx="38" cy="7" r="3.8" fill="currentColor"/></svg>
+                <span>Doğru Parçası</span>
+              </button>
+              <button class="btn-mode ang-line-btn" id="angLineBtn_ray" onclick="ANG.setLineType('ray')">
+                <svg class="ang-mini-icon" viewBox="0 0 44 14"><circle cx="6" cy="7" r="3.8" fill="currentColor"/><line x1="6" y1="7" x2="36" y2="7" stroke="currentColor" stroke-width="2.6"/><polygon points="43,7 35,2 35,12" fill="currentColor"/></svg>
+                <span>Işın</span>
+              </button>
+            </div>
+
+            <div id="angLineSvgStage" class="ang-svg-stage"></div>
+            <div id="angLineInfoBox" class="ped-explain-box"></div>
+          </div>
+
+          <!-- PANEL 2: AÇI ÖLÇER (İLETKİ) -->
+          <div id="angPanel_angles" class="ped-card card-glass ang-panel">
+            <div class="ang-preset-row">
+              <button class="btn-preset-chip" onclick="ANG.setAngle(35)">35° Dar Açı</button>
+              <button class="btn-preset-chip" onclick="ANG.setAngle(60)">60° Dar Açı</button>
+              <button class="btn-preset-chip" onclick="ANG.setAngle(90)">90° Dik Açı</button>
+              <button class="btn-preset-chip" onclick="ANG.setAngle(125)">125° Geniş Açı</button>
+              <button class="btn-preset-chip" onclick="ANG.setAngle(180)">180° Doğru Açı</button>
+            </div>
+
+            <div class="ang-slider-row">
+              <span>Açıyı Döndür:</span>
+              <input type="range" id="angDegSlider" class="ang-slider" min="0" max="180" value="60" oninput="ANG.setAngle(this.value)">
+              <strong id="angDegDisplay" class="ang-deg-display">60°</strong>
+            </div>
+
+            <div id="angProtractorStage" class="ang-svg-stage"></div>
+            <div id="angTypeExplain" class="ped-explain-box" style="text-align: center;"></div>
+          </div>
+
+          <!-- PANEL 3: AÇI AVCISI OYUNU -->
+          <div id="angPanel_quiz" class="ped-card card-glass ang-panel">
+            <div class="frac-quiz-header">
+              <div id="angQuizPrompt" class="frac-quiz-prompt">Bu şekil hangisidir?</div>
+              <div class="ped-score-badge">Puan: <span id="angQuizScore">0</span> ⭐</div>
+            </div>
+            <div id="angQuizVisual" class="ang-svg-stage"></div>
+            <div id="angQuizOptions" class="meas-quiz-options" style="margin-top: 14px;"></div>
+            <div id="angQuizFeedback" class="ang-quiz-feedback"></div>
+            <div style="text-align: center; margin-top: 12px;">
+              <button class="btn btn-secondary" onclick="ANG.newQuiz()">Yeni Soru 🎲</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </div>
 
@@ -1962,7 +2130,9 @@
   <script src="fractions.js?v=3.0"></script>
   <script src="bar-model.js?v=3.4"></script>
   <script src="geometry.js?v=3.0"></script>
-  <script src="app.js?v=3.0"></script>
+  <script src="measurements.js?v=4.6"></script>
+  <script src="angles.js?v=4.4"></script>
+  <script src="app.js?v=4.3"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
