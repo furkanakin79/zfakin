@@ -1,5 +1,5 @@
 // Service Worker - Çevrimdışı Çalışma & Anında Güncelleme Desteği
-const CACHE_NAME = 'ders-yildizi-v4.6';
+const CACHE_NAME = 'ders-yildizi-v4.8';
 const ASSETS = [
   './',
   './index.html',

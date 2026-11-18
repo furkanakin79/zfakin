@@ -1697,8 +1697,9 @@
             </div>
           </div>
 
-          <!-- KEŞİF & DÖNÜŞTÜRÜCÜ KARTI -->
+          <!-- 1. KART: BİRİM MERDİVENİ & DÖNÜŞTÜRÜCÜ -->
           <div class="ped-card card-glass">
+            <div class="meas-card-section-title">🔢 Birim Merdiveni &amp; Otomatik Dönüştürücü</div>
             <div class="meas-input-bar">
               <div class="meas-input-group">
                 <label for="measValInput">Miktar:</label>
@@ -1709,13 +1710,18 @@
             </div>
 
             <div id="measLadderBox" class="meas-ladder-box"></div>
-            <div id="measConvGrid" class="meas-conv-grid"></div>
+            <div id="measConvGrid" class="meas-conv-grid" style="margin-bottom: 0;"></div>
+          </div>
+
+          <!-- 2. KART: GÖRSEL EŞDEĞERLİK & BİRİM REHBERİ -->
+          <div class="ped-card card-glass" style="margin-top: 22px;">
+            <div class="meas-card-section-title">🎨 Görsel Eşdeğerlik &amp; Birim Rehberi</div>
             <div id="measVisualStage" class="meas-visual-stage"></div>
             <div id="measUnitCards" class="meas-info-grid"></div>
           </div>
 
-          <!-- ALIŞTIRMA & OYUN KARTI -->
-          <div class="ped-card card-glass" style="margin-top: 18px;">
+          <!-- 3. KART: ALIŞTIRMA & OYUN KARTI -->
+          <div class="ped-card card-glass" style="margin-top: 22px;">
             <div class="frac-quiz-header">
               <div class="meas-quiz-badge">🎯 Birim Dönüştürme Alıştırması</div>
               <div class="ped-score-badge">Doğru Puanı: <span id="measScoreVal">0</span> ⭐</div>
@@ -2130,7 +2136,7 @@
   <script src="fractions.js?v=3.0"></script>
   <script src="bar-model.js?v=3.4"></script>
   <script src="geometry.js?v=3.0"></script>
-  <script src="measurements.js?v=4.6"></script>
+  <script src="measurements.js?v=4.8"></script>
   <script src="angles.js?v=4.4"></script>
   <script src="app.js?v=4.3"></script>
   <script>

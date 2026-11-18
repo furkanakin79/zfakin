@@ -60,13 +60,14 @@
         { label: '🍫 Çeyrek kg (250 g)', val: 250, unit: 'g' }
       ],
       ladder: [
-        { u: 't → kg', mult: '× 1000' },
+        { u: 't', mult: '× 1000 → kg' },
         { u: 'kg', mult: '× 10 → hg' },
         { u: 'hg', mult: '× 10 → dag' },
         { u: 'dag', mult: '× 10 → g' },
         { u: 'g', mult: '× 10 → dg' },
         { u: 'dg', mult: '× 10 → cg' },
-        { u: 'cg → mg', mult: '× 10' }
+        { u: 'cg', mult: '× 10 → mg' },
+        { u: 'mg', mult: 'En hafif birim' }
       ]
     },
     liquid: {
@@ -228,17 +229,22 @@
       const pieceLabel = `${pieceVal} ${subUnit}`;
       const wholeCount = Math.floor(totalInSub / pieceVal);
       const remainder = Number((totalInSub - wholeCount * pieceVal).toFixed(2));
-      const maxShown = Math.min(wholeCount, 12);
+      const maxShown = Math.min(wholeCount, 20);
+      const cols = Math.max(1, Math.min(maxShown + (remainder > 0 ? 1 : 0), 10));
+      const gapPx = 6;
+      const unitWidthCalc = `calc((100% - ${(cols - 1) * gapPx}px) / ${cols})`;
 
       let segsHtml = '';
       for (let i = 0; i < maxShown; i++) {
-        segsHtml += `<div class="meas-ruler-seg"><span>${pieceLabel}</span></div>`;
+        segsHtml += `<div class="meas-ruler-seg" style="flex: 0 0 ${unitWidthCalc}; width: ${unitWidthCalc};"><span>${pieceLabel}</span></div>`;
       }
-      if (wholeCount > 12) {
-        segsHtml += `<div class="meas-weight-more">+${wholeCount - 12} parça daha</div>`;
+      if (wholeCount > 20) {
+        segsHtml += `<div class="meas-weight-more">+${wholeCount - 20} parça daha</div>`;
       }
       if (remainder > 0) {
-        segsHtml += `<div class="meas-ruler-seg rem"><span>+${formatNum(remainder)} ${subUnit}</span></div>`;
+        const remRatio = Math.max(0.35, Math.min(1, remainder / pieceVal));
+        const remWidthCalc = `calc(((100% - ${(cols - 1) * gapPx}px) / ${cols}) * ${remRatio.toFixed(3)})`;
+        segsHtml += `<div class="meas-ruler-seg rem" style="flex: 0 0 ${remWidthCalc}; width: ${remWidthCalc};"><span>+${formatNum(remainder)} ${subUnit}</span></div>`;
       }
       if (wholeCount === 0 && remainder === 0) {
         segsHtml = `<span class="meas-empty-pan">0 ${subUnit}</span>`;
@@ -488,22 +494,26 @@
     }
 
     if (ladderEl) {
-      ladderEl.innerHTML = meta.ladder.map((step, i) => `
-        <div class="meas-ladder-step">
-          <span class="meas-ladder-unit">${step.u}</span>
-          <span class="meas-ladder-mult">${step.mult}</span>
-        </div>
-      `).join('');
+      ladderEl.style.display = 'none';
+      ladderEl.innerHTML = '';
     }
 
     if (convGrid) {
       const rows = computeConversions();
-      convGrid.innerHTML = rows.map(r => `
-        <div class="meas-conv-card ${r.active ? 'active' : ''}">
-          <div class="meas-conv-label">${r.label}</div>
-          <div class="meas-conv-val">${r.value}</div>
-        </div>
-      `).join('');
+      convGrid.innerHTML = rows.map((r, i) => {
+        const unitInfo = meta.units[i] || { id: '', name: r.label, desc: '' };
+        const stepInfo = meta.ladder[i] || { mult: '' };
+        return `
+          <div class="meas-conv-card unified ${r.active ? 'active' : ''}" onclick="MEAS.selectUnit('${unitInfo.id}')" title="Bu birimi seçmek için tıkla">
+            <div class="meas-conv-top">
+              <div class="meas-conv-label">${unitInfo.name}</div>
+              <span class="meas-ladder-pill">${stepInfo.mult}</span>
+            </div>
+            <div class="meas-conv-val">${r.value}</div>
+            <div class="meas-conv-desc">${unitInfo.desc}</div>
+          </div>
+        `;
+      }).join('');
     }
 
     if (visStage) {
@@ -511,12 +521,8 @@
     }
 
     if (unitCards) {
-      unitCards.innerHTML = meta.units.map(u => `
-        <div class="meas-info-chip">
-          <strong>${u.name}</strong>
-          <span>${u.desc}</span>
-        </div>
-      `).join('');
+      unitCards.style.display = 'none';
+      unitCards.innerHTML = '';
     }
   }
 
@@ -731,6 +737,12 @@
     setLengthPiece(val) {
       playTone(560);
       lengthPieceMode = val;
+      renderExplore();
+    },
+    selectUnit(uId) {
+      if (!uId) return;
+      playTone(550);
+      exploreUnit = uId;
       renderExplore();
     },
     applyPreset(idx) {
