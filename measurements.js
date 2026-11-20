@@ -7,6 +7,8 @@
   let weightPieceMode = 500; // 250, 500, 1000
   let liquidPieceMode = 500; // 250, 500, 1000 (mL)
   let lengthPieceMode = 50;  // 25, 50, 100 (cm or m depending on unit)
+  let customSplitActive = false;
+  let customSplitParts = 4;
   let score = 0;
   let currentQ = null;
   let initialized = false;
@@ -225,34 +227,63 @@
         lengthPieceMode = choices[1].val;
       }
 
-      const pieceVal = lengthPieceMode;
-      const pieceLabel = `${pieceVal} ${subUnit}`;
-      const wholeCount = Math.floor(totalInSub / pieceVal);
-      const remainder = Number((totalInSub - wholeCount * pieceVal).toFixed(2));
-      const maxShown = Math.min(wholeCount, 20);
-      const cols = Math.max(1, Math.min(maxShown + (remainder > 0 ? 1 : 0), 10));
-      const gapPx = 6;
-      const unitWidthCalc = `calc((100% - ${(cols - 1) * gapPx}px) / ${cols})`;
+      const customSplitWidget = `
+        <div class="meas-custom-split ${customSplitActive ? 'active' : ''}" onclick="MEAS.enableCustomSplit()">
+          <span>✂️ Eşit Böl:</span>
+          <button type="button" class="meas-split-step" onclick="event.stopPropagation(); MEAS.stepCustomSplit(-1)">-</button>
+          <input type="number" class="meas-split-input" min="1" max="20" value="${customSplitParts}" oninput="MEAS.setCustomSplit(this.value)" onclick="event.stopPropagation(); MEAS.enableCustomSplit();">
+          <button type="button" class="meas-split-step" onclick="event.stopPropagation(); MEAS.stepCustomSplit(1)">+</button>
+          <span>parça</span>
+        </div>
+      `;
 
       let segsHtml = '';
-      for (let i = 0; i < maxShown; i++) {
-        segsHtml += `<div class="meas-ruler-seg" style="flex: 0 0 ${unitWidthCalc}; width: ${unitWidthCalc};"><span>${pieceLabel}</span></div>`;
-      }
-      if (wholeCount > 20) {
-        segsHtml += `<div class="meas-weight-more">+${wholeCount - 20} parça daha</div>`;
-      }
-      if (remainder > 0) {
-        const remRatio = Math.max(0.35, Math.min(1, remainder / pieceVal));
-        const remWidthCalc = `calc(((100% - ${(cols - 1) * gapPx}px) / ${cols}) * ${remRatio.toFixed(3)})`;
-        segsHtml += `<div class="meas-ruler-seg rem" style="flex: 0 0 ${remWidthCalc}; width: ${remWidthCalc};"><span>+${formatNum(remainder)} ${subUnit}</span></div>`;
-      }
-      if (wholeCount === 0 && remainder === 0) {
-        segsHtml = `<span class="meas-empty-pan">0 ${subUnit}</span>`;
-      }
+      let summaryFormula = '';
 
-      const summaryFormula = wholeCount > 0
-        ? `${wholeCount} tane <b>${pieceLabel}</b>${remainder > 0 ? ` + ${formatNum(remainder)} ${subUnit}` : ''} = <b>${formatNum(totalInSub)} ${subUnit}</b>`
-        : `<b>${formatNum(totalInSub)} ${subUnit}</b>`;
+      if (customSplitActive) {
+        const parts = Math.max(1, Math.min(20, customSplitParts));
+        const eachMain = v / parts;
+        const eachSub = totalInSub / parts;
+        const cols = Math.min(parts, 10);
+        const gapPx = 6;
+        const unitWidthCalc = `calc((100% - ${(cols - 1) * gapPx}px) / ${cols})`;
+        const segText = exploreUnit === subUnit
+          ? `${formatNum(eachMain)} ${exploreUnit}`
+          : `${formatNum(eachMain)} ${exploreUnit} (${formatNum(eachSub)} ${subUnit})`;
+
+        for (let i = 0; i < parts; i++) {
+          segsHtml += `<div class="meas-ruler-seg" style="flex: 0 0 ${unitWidthCalc}; width: ${unitWidthCalc};"><span>${segText}</span></div>`;
+        }
+        summaryFormula = `<b>${parts} eşit parçaya</b> bölündüğünde her bir parça <b>${formatNum(eachMain)} ${exploreUnit}</b> (${formatNum(eachSub)} ${subUnit})`;
+      } else {
+        const pieceVal = lengthPieceMode;
+        const pieceLabel = `${pieceVal} ${subUnit}`;
+        const wholeCount = Math.floor(totalInSub / pieceVal);
+        const remainder = Number((totalInSub - wholeCount * pieceVal).toFixed(2));
+        const maxShown = Math.min(wholeCount, 20);
+        const cols = Math.max(1, Math.min(maxShown + (remainder > 0 ? 1 : 0), 10));
+        const gapPx = 6;
+        const unitWidthCalc = `calc((100% - ${(cols - 1) * gapPx}px) / ${cols})`;
+
+        for (let i = 0; i < maxShown; i++) {
+          segsHtml += `<div class="meas-ruler-seg" style="flex: 0 0 ${unitWidthCalc}; width: ${unitWidthCalc};"><span>${pieceLabel}</span></div>`;
+        }
+        if (wholeCount > 20) {
+          segsHtml += `<div class="meas-weight-more">+${wholeCount - 20} parça daha</div>`;
+        }
+        if (remainder > 0) {
+          const remRatio = Math.max(0.35, Math.min(1, remainder / pieceVal));
+          const remWidthCalc = `calc(((100% - ${(cols - 1) * gapPx}px) / ${cols}) * ${remRatio.toFixed(3)})`;
+          segsHtml += `<div class="meas-ruler-seg rem" style="flex: 0 0 ${remWidthCalc}; width: ${remWidthCalc};"><span>+${formatNum(remainder)} ${subUnit}</span></div>`;
+        }
+        if (wholeCount === 0 && remainder === 0) {
+          segsHtml = `<span class="meas-empty-pan">0 ${subUnit}</span>`;
+        }
+
+        summaryFormula = wholeCount > 0
+          ? `uç uca eklenen ${wholeCount} tane <b>${pieceLabel}</b>${remainder > 0 ? ` + ${formatNum(remainder)} ${subUnit}` : ''} = <b>${formatNum(totalInSub)} ${subUnit}</b>`
+          : `<b>${formatNum(totalInSub)} ${subUnit}</b>`;
+      }
 
       return `
         <div class="meas-vis-card">
@@ -261,8 +292,9 @@
             <div class="meas-piece-selector">
               <span>Cetvel Parçaları:</span>
               ${choices.map(c => `
-                <button class="btn-preset-chip ${lengthPieceMode === c.val ? 'active-chip' : ''}" onclick="MEAS.setLengthPiece(${c.val})">${c.label}</button>
+                <button class="btn-preset-chip ${!customSplitActive && lengthPieceMode === c.val ? 'active-chip' : ''}" onclick="MEAS.setLengthPiece(${c.val})">${c.label}</button>
               `).join('')}
+              ${customSplitWidget}
             </div>
           </div>
 
@@ -276,7 +308,7 @@
           </div>
 
           <div class="meas-vis-note" style="margin-top: 12px;">
-            🎯 <b>${formatNum(v)} ${exploreUnit}</b> uzunluğu uç uca eklenen ${summaryFormula} eder!
+            🎯 <b>${formatNum(v)} ${exploreUnit}</b> uzunluğu ${summaryFormula} eder!
           </div>
         </div>
       `;
@@ -285,53 +317,80 @@
     if (category === 'weight') {
       const gFactor = { t: 1000000, kg: 1000, hg: 100, dag: 10, g: 1, dg: 0.1, cg: 0.01, mg: 0.001 }[exploreUnit] || 1;
       const totalGrams = v * gFactor;
+      const unitNameRight = exploreUnit === 't' ? 'kg' : 'g';
+      const totalInRightUnit = exploreUnit === 't' ? v * 1000 : totalGrams;
 
-      let pieceVal = weightPieceMode; // 250, 500, 1000
-      let pieceLabel = `${pieceVal} g`;
-      let totalInPieceUnit = totalGrams;
-
-      if (exploreUnit === 't') {
-        pieceLabel = `${pieceVal} kg`;
-        totalInPieceUnit = v * 1000;
-      } else if (totalGrams < 250 && totalGrams > 0) {
-        pieceVal = totalGrams >= 100 ? 50 : totalGrams >= 10 ? 10 : 1;
-        pieceLabel = `${pieceVal} g`;
-      }
-
-      const exactCount = pieceVal > 0 ? totalInPieceUnit / pieceVal : 0;
-      const wholeCount = Math.floor(exactCount);
-      const remainder = Number((totalInPieceUnit - wholeCount * pieceVal).toFixed(2));
-      const maxShown = Math.min(wholeCount, 12);
+      const customSplitWidget = `
+        <div class="meas-custom-split ${customSplitActive ? 'active' : ''}" onclick="MEAS.enableCustomSplit()">
+          <span>✂️ Eşit Böl:</span>
+          <button type="button" class="meas-split-step" onclick="event.stopPropagation(); MEAS.stepCustomSplit(-1)">-</button>
+          <input type="number" class="meas-split-input" min="1" max="20" value="${customSplitParts}" oninput="MEAS.setCustomSplit(this.value)" onclick="event.stopPropagation(); MEAS.enableCustomSplit();">
+          <button type="button" class="meas-split-step" onclick="event.stopPropagation(); MEAS.stepCustomSplit(1)">+</button>
+          <span>parça</span>
+        </div>
+      `;
 
       let blocksHtml = '';
-      for (let i = 0; i < maxShown; i++) {
-        blocksHtml += `
-          <div class="meas-weight-stone small">
-            <div class="stone-knob"></div>
-            <span>${pieceLabel}</span>
-          </div>
-        `;
-      }
-      if (wholeCount > 12) {
-        blocksHtml += `<div class="meas-weight-more">+${wholeCount - 12} adet daha</div>`;
-      }
-      if (remainder > 0) {
-        const remUnit = exploreUnit === 't' ? 'kg' : 'g';
-        blocksHtml += `
-          <div class="meas-weight-stone rem">
-            <div class="stone-knob"></div>
-            <span>+${formatNum(remainder)} ${remUnit}</span>
-          </div>
-        `;
-      }
-      if (wholeCount === 0 && remainder === 0) {
-        blocksHtml = `<span class="meas-empty-pan">0 g</span>`;
-      }
+      let summaryFormula = '';
 
-      const unitNameRight = exploreUnit === 't' ? 'kg' : 'g';
-      const summaryFormula = wholeCount > 0
-        ? `${wholeCount} tane <b>${pieceLabel}</b>${remainder > 0 ? ` + ${formatNum(remainder)} ${unitNameRight}` : ''} = <b>${formatNum(totalInPieceUnit)} ${unitNameRight}</b>`
-        : `<b>${formatNum(totalInPieceUnit)} ${unitNameRight}</b>`;
+      if (customSplitActive) {
+        const parts = Math.max(1, Math.min(20, customSplitParts));
+        const eachMain = v / parts;
+        const eachSub = totalInRightUnit / parts;
+        const stoneText = exploreUnit === unitNameRight
+          ? `${formatNum(eachMain)} ${exploreUnit}`
+          : `${formatNum(eachMain)} ${exploreUnit}<small style="display:block;font-size:0.72rem;opacity:0.9;">(${formatNum(eachSub)} ${unitNameRight})</small>`;
+
+        for (let i = 0; i < parts; i++) {
+          blocksHtml += `
+            <div class="meas-weight-stone small" style="height:auto;min-height:48px;padding:6px 10px;flex-direction:column;">
+              <div class="stone-knob"></div>
+              <span>${stoneText}</span>
+            </div>
+          `;
+        }
+        summaryFormula = `<b>${parts} eşit parçaya</b> bölündüğünde her bir taş <b>${formatNum(eachMain)} ${exploreUnit}</b> (${formatNum(eachSub)} ${unitNameRight}) olur`;
+      } else {
+        let pieceVal = weightPieceMode; // 250, 500, 1000
+        let pieceLabel = `${pieceVal} ${unitNameRight}`;
+
+        if (exploreUnit !== 't' && totalGrams < 250 && totalGrams > 0) {
+          pieceVal = totalGrams >= 100 ? 50 : totalGrams >= 10 ? 10 : 1;
+          pieceLabel = `${pieceVal} g`;
+        }
+
+        const exactCount = pieceVal > 0 ? totalInRightUnit / pieceVal : 0;
+        const wholeCount = Math.floor(exactCount);
+        const remainder = Number((totalInRightUnit - wholeCount * pieceVal).toFixed(2));
+        const maxShown = Math.min(wholeCount, 12);
+
+        for (let i = 0; i < maxShown; i++) {
+          blocksHtml += `
+            <div class="meas-weight-stone small">
+              <div class="stone-knob"></div>
+              <span>${pieceLabel}</span>
+            </div>
+          `;
+        }
+        if (wholeCount > 12) {
+          blocksHtml += `<div class="meas-weight-more">+${wholeCount - 12} adet daha</div>`;
+        }
+        if (remainder > 0) {
+          blocksHtml += `
+            <div class="meas-weight-stone rem">
+              <div class="stone-knob"></div>
+              <span>+${formatNum(remainder)} ${unitNameRight}</span>
+            </div>
+          `;
+        }
+        if (wholeCount === 0 && remainder === 0) {
+          blocksHtml = `<span class="meas-empty-pan">0 ${unitNameRight}</span>`;
+        }
+
+        summaryFormula = wholeCount > 0
+          ? `${wholeCount} tane <b>${pieceLabel}</b>${remainder > 0 ? ` + ${formatNum(remainder)} ${unitNameRight}` : ''} = <b>${formatNum(totalInRightUnit)} ${unitNameRight}</b> koyduk`
+          : `<b>${formatNum(totalInRightUnit)} ${unitNameRight}</b> koyduk`;
+      }
 
       return `
         <div class="meas-vis-card">
@@ -339,9 +398,10 @@
             <div class="meas-vis-title" style="margin-bottom:0;">⚖️ Eşit Kollu Denge Terazisi</div>
             <div class="meas-piece-selector">
               <span>Sağ Kefe Taşları:</span>
-              <button class="btn-preset-chip ${weightPieceMode === 250 ? 'active-chip' : ''}" onclick="MEAS.setWeightPiece(250)">Çeyrek (${exploreUnit === 't' ? '250 kg' : '250 g'})</button>
-              <button class="btn-preset-chip ${weightPieceMode === 500 ? 'active-chip' : ''}" onclick="MEAS.setWeightPiece(500)">Yarım (${exploreUnit === 't' ? '500 kg' : '500 g'})</button>
-              <button class="btn-preset-chip ${weightPieceMode === 1000 ? 'active-chip' : ''}" onclick="MEAS.setWeightPiece(1000)">Tam (${exploreUnit === 't' ? '1000 kg' : '1000 g'})</button>
+              <button class="btn-preset-chip ${!customSplitActive && weightPieceMode === 250 ? 'active-chip' : ''}" onclick="MEAS.setWeightPiece(250)">Çeyrek (${exploreUnit === 't' ? '250 kg' : '250 g'})</button>
+              <button class="btn-preset-chip ${!customSplitActive && weightPieceMode === 500 ? 'active-chip' : ''}" onclick="MEAS.setWeightPiece(500)">Yarım (${exploreUnit === 't' ? '500 kg' : '500 g'})</button>
+              <button class="btn-preset-chip ${!customSplitActive && weightPieceMode === 1000 ? 'active-chip' : ''}" onclick="MEAS.setWeightPiece(1000)">Tam (${exploreUnit === 't' ? '1000 kg' : '1000 g'})</button>
+              ${customSplitWidget}
             </div>
           </div>
 
@@ -382,7 +442,7 @@
           </div>
 
           <div class="meas-vis-note" style="margin-top: 12px;">
-            🎯 Sol kefedeki <b>${formatNum(v)} ${exploreUnit}</b> yükü dengelemek için sağ kefeye ${summaryFormula} koyduk!
+            🎯 Sol kefedeki <b>${formatNum(v)} ${exploreUnit}</b> yükü dengelemek için sağ kefede ${summaryFormula}!
           </div>
         </div>
       `;
@@ -391,41 +451,73 @@
     // liquid
     const mlFactor = { kL: 1000000, hL: 100000, daL: 10000, L: 1000, dL: 100, cL: 10, mL: 1 }[exploreUnit] || 1;
     const mL = v * mlFactor;
+    const totalLitres = mL / 1000;
     const pct = Math.min(100, Math.max(8, (mL / 2000) * 100));
 
-    const pieceVal = liquidPieceMode; // 250, 500, 1000 mL
-    const pieceLabel = `${pieceVal} mL`;
-    const wholeCount = Math.floor(mL / pieceVal);
-    const remainder = Number((mL - wholeCount * pieceVal).toFixed(2));
-    const maxShown = Math.min(wholeCount, 12);
+    const customSplitWidget = `
+      <div class="meas-custom-split ${customSplitActive ? 'active' : ''}" onclick="MEAS.enableCustomSplit()">
+        <span>✂️ Eşit Böl:</span>
+        <button type="button" class="meas-split-step" onclick="event.stopPropagation(); MEAS.stepCustomSplit(-1)">-</button>
+        <input type="number" class="meas-split-input" min="1" max="20" value="${customSplitParts}" oninput="MEAS.setCustomSplit(this.value)" onclick="event.stopPropagation(); MEAS.enableCustomSplit();">
+        <button type="button" class="meas-split-step" onclick="event.stopPropagation(); MEAS.stepCustomSplit(1)">+</button>
+        <span>parça</span>
+      </div>
+    `;
 
     let cupsHtml = '';
-    for (let i = 0; i < maxShown; i++) {
-      cupsHtml += `
-        <div class="meas-cup-block">
-          <div class="meas-cup-water"></div>
-          <span>${pieceLabel}</span>
-        </div>
-      `;
-    }
-    if (wholeCount > 12) {
-      cupsHtml += `<div class="meas-weight-more">+${wholeCount - 12} kap daha</div>`;
-    }
-    if (remainder > 0) {
-      cupsHtml += `
-        <div class="meas-cup-block rem">
-          <div class="meas-cup-water"></div>
-          <span>+${formatNum(remainder)} mL</span>
-        </div>
-      `;
-    }
-    if (wholeCount === 0 && remainder === 0) {
-      cupsHtml = `<span class="meas-empty-pan">0 mL</span>`;
-    }
+    let summaryLiquid = '';
+    let rightTitle = '';
 
-    const summaryLiquid = wholeCount > 0
-      ? `${wholeCount} tane <b>${pieceLabel}</b>${remainder > 0 ? ` + ${formatNum(remainder)} mL` : ''} = <b>${formatNum(mL)} mL</b>`
-      : `<b>${formatNum(mL)} mL</b>`;
+    if (customSplitActive) {
+      const parts = Math.max(1, Math.min(20, customSplitParts));
+      const eachL = totalLitres / parts;
+      const eachMl = mL / parts;
+      rightTitle = `${parts} Eşit Kaba Bölündüğünde`;
+      for (let i = 0; i < parts; i++) {
+        cupsHtml += `
+          <div class="meas-cup-block" style="min-width:78px;height:60px;flex-direction:column;">
+            <div class="meas-cup-water"></div>
+            <span>${formatNum(eachL)} L</span>
+            <small style="position:relative;z-index:2;font-size:0.72rem;font-weight:700;opacity:0.9;">(${formatNum(eachMl)} mL)</small>
+          </div>
+        `;
+      }
+      summaryLiquid = `<b>${parts} eşit parçaya</b> bölündüğünde her bir kaba <b>${formatNum(eachL)} L</b> (<b>${formatNum(eachMl)} mL</b>) düşer`;
+    } else {
+      const pieceVal = liquidPieceMode; // 250, 500, 1000 mL
+      const pieceLabel = `${pieceVal} mL`;
+      rightTitle = `Eşdeğer Ölçek Kapları (${pieceLabel})`;
+      const wholeCount = Math.floor(mL / pieceVal);
+      const remainder = Number((mL - wholeCount * pieceVal).toFixed(2));
+      const maxShown = Math.min(wholeCount, 12);
+
+      for (let i = 0; i < maxShown; i++) {
+        cupsHtml += `
+          <div class="meas-cup-block">
+            <div class="meas-cup-water"></div>
+            <span>${pieceLabel}</span>
+          </div>
+        `;
+      }
+      if (wholeCount > 12) {
+        cupsHtml += `<div class="meas-weight-more">+${wholeCount - 12} kap daha</div>`;
+      }
+      if (remainder > 0) {
+        cupsHtml += `
+          <div class="meas-cup-block rem">
+            <div class="meas-cup-water"></div>
+            <span>+${formatNum(remainder)} mL</span>
+          </div>
+        `;
+      }
+      if (wholeCount === 0 && remainder === 0) {
+        cupsHtml = `<span class="meas-empty-pan">0 mL</span>`;
+      }
+
+      summaryLiquid = wholeCount > 0
+        ? `tam olarak ${wholeCount} tane <b>${pieceLabel}</b>${remainder > 0 ? ` + ${formatNum(remainder)} mL` : ''} = <b>${formatNum(mL)} mL</b> doldurur`
+        : `<b>${formatNum(mL)} mL</b> doldurur`;
+    }
 
     return `
       <div class="meas-vis-card">
@@ -433,9 +525,10 @@
           <div class="meas-vis-title" style="margin-bottom:0;">🫗 Dereceli Sürahi &amp; Eşdeğer Kaplar</div>
           <div class="meas-piece-selector">
             <span>Ölçek Kapları:</span>
-            <button class="btn-preset-chip ${liquidPieceMode === 250 ? 'active-chip' : ''}" onclick="MEAS.setLiquidPiece(250)">Çeyrek L (250 mL)</button>
-            <button class="btn-preset-chip ${liquidPieceMode === 500 ? 'active-chip' : ''}" onclick="MEAS.setLiquidPiece(500)">Yarım L (500 mL)</button>
-            <button class="btn-preset-chip ${liquidPieceMode === 1000 ? 'active-chip' : ''}" onclick="MEAS.setLiquidPiece(1000)">Tam L (1000 mL)</button>
+            <button class="btn-preset-chip ${!customSplitActive && liquidPieceMode === 250 ? 'active-chip' : ''}" onclick="MEAS.setLiquidPiece(250)">Çeyrek L (250 mL)</button>
+            <button class="btn-preset-chip ${!customSplitActive && liquidPieceMode === 500 ? 'active-chip' : ''}" onclick="MEAS.setLiquidPiece(500)">Yarım L (500 mL)</button>
+            <button class="btn-preset-chip ${!customSplitActive && liquidPieceMode === 1000 ? 'active-chip' : ''}" onclick="MEAS.setLiquidPiece(1000)">Tam L (1000 mL)</button>
+            ${customSplitWidget}
           </div>
         </div>
 
@@ -452,8 +545,8 @@
 
           <div class="meas-eq-badge">=</div>
 
-          <div class="meas-pan-col" style="flex: 1; max-width: 420px;">
-            <div class="meas-pan-title">Eşdeğer Ölçek Kapları (${pieceLabel})</div>
+          <div class="meas-pan-col" style="flex: 1; max-width: 460px;">
+            <div class="meas-pan-title">${rightTitle}</div>
             <div class="meas-pan-weights">
               ${cupsHtml}
             </div>
@@ -461,7 +554,7 @@
         </div>
 
         <div class="meas-vis-note" style="margin-top: 12px;">
-          🎯 <b>${formatNum(v)} ${exploreUnit}</b> sıvı, tam olarak ${summaryLiquid} doldurur!
+          🎯 <b>${formatNum(v)} ${exploreUnit}</b> sıvı, ${summaryLiquid}!
         </div>
       </div>
     `;
@@ -726,17 +819,46 @@
     },
     setWeightPiece(val) {
       playTone(560);
+      customSplitActive = false;
       weightPieceMode = val;
       renderExplore();
     },
     setLiquidPiece(val) {
       playTone(560);
+      customSplitActive = false;
       liquidPieceMode = val;
       renderExplore();
     },
     setLengthPiece(val) {
       playTone(560);
+      customSplitActive = false;
       lengthPieceMode = val;
+      renderExplore();
+    },
+    enableCustomSplit() {
+      if (!customSplitActive) {
+        playTone(580);
+        customSplitActive = true;
+        renderExplore();
+      }
+    },
+    setCustomSplit(val) {
+      const n = parseInt(val, 10);
+      if (!isNaN(n) && n >= 1) {
+        customSplitParts = Math.min(20, n);
+        customSplitActive = true;
+        renderExplore();
+        const inp = document.querySelector('#viewMeasurements .meas-split-input');
+        if (inp) {
+          inp.focus();
+          inp.setSelectionRange(inp.value.length, inp.value.length);
+        }
+      }
+    },
+    stepCustomSplit(delta) {
+      playTone(580);
+      customSplitParts = Math.max(1, Math.min(20, customSplitParts + delta));
+      customSplitActive = true;
       renderExplore();
     },
     selectUnit(uId) {

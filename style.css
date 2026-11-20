@@ -5783,3 +5783,68 @@ body {
   height: 45%;
   background: linear-gradient(180deg, #fde68a, #f59e0b);
 }
+
+
+/* Özel Eşit Parçaya Bölme Seçicisi */
+.meas-custom-split {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1.5px solid #c4b5fd;
+  background: #f5f3ff;
+  color: #5b21b6;
+  font-weight: 800;
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.meas-custom-split.active {
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 3px 10px rgba(147, 51, 234, 0.25);
+}
+
+.meas-split-step {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  background: #ffffff;
+  color: #6b21a8;
+  font-weight: 800;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.meas-split-step:hover {
+  background: #ede9fe;
+}
+
+.meas-split-input {
+  width: 42px;
+  height: 26px;
+  border-radius: 8px;
+  border: 1.5px solid #c084fc;
+  background: #ffffff;
+  color: #4c1d95;
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-align: center;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.meas-split-input::-webkit-outer-spin-button,
+.meas-split-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
